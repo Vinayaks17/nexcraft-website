@@ -23,6 +23,11 @@ export type Project = {
   domain: string | null;
   /** 1-3 mono chips laid over the image, bottom-right. */
   tags: string[];
+  /**
+   * Surfaced in the homepage's featured carousel. Purely additive — the
+   * /portfolio grid still renders every project regardless.
+   */
+  featured?: boolean;
 };
 
 export const portfolioHero = {
@@ -48,6 +53,7 @@ export type ProjectFilterId = (typeof projectFilters)[number]["id"];
 export const projects: Project[] = [
   {
     id: "aidify",
+    featured: true,
     tags: ["Web design", "AI voice"],
     name: "Aidify",
     industry: "AI Voice Services",
@@ -73,6 +79,7 @@ export const projects: Project[] = [
   },
   {
     id: "the-big-media",
+    featured: true,
     tags: ["Web design", "Showcase"],
     name: "The Big Media Studios",
     industry: "Video Editing Studio",
@@ -136,6 +143,7 @@ export const projects: Project[] = [
   },
   {
     id: "qadira",
+    featured: true,
     tags: ["E-commerce", "Checkout"],
     name: "Qadira",
     industry: "E-commerce, Women's Health",
@@ -161,6 +169,7 @@ export const projects: Project[] = [
   },
   {
     id: "sportikon",
+    featured: true,
     tags: ["Booking system", "Web design"],
     name: "Sportikon",
     industry: "University Sports Fest",

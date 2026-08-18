@@ -1,16 +1,17 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, Mail, Phone } from "lucide-react";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
 import { RevealHeading } from "@/components/ui/RevealHeading";
 import { SlideLabel } from "@/components/ui/SlideLabel";
+import { Wordmark } from "@/components/ui/Wordmark";
 import { LinkedInIcon } from "@/components/ui/BrandIcons";
+import { FuelFooter } from "@/components/fuel/FuelFooter";
 import { contact, footerLegal, footerPages, routes, site } from "@/lib/site";
-import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 
 const year = 2026;
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -62,74 +63,13 @@ function LinkColumn({
   );
 }
 
-/**
- * The oversized wordmark. Two stacked copies: a cream stroke that is always
- * there, and an orange stroke revealed only inside a radial mask that follows
- * the cursor — so the letters warm where the pointer is.
- *
- * The mask is built with useMotionTemplate from motion values, which keeps the
- * whole effect off React's render path: a pointermove updates a CSS string, not
- * component state.
- */
-function Wordmark() {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = usePrefersReducedMotion();
-  const fine = useMediaQuery("(hover: hover) and (pointer: fine)");
-
-  const mx = useMotionValue(-9999);
-  const my = useMotionValue(-9999);
-  const mask = useMotionTemplate`radial-gradient(220px circle at ${mx}px ${my}px, #000 0%, rgba(0,0,0,0.35) 45%, transparent 72%)`;
-
-  const active = fine && !reduceMotion;
-
-  const onMove = (e: React.PointerEvent) => {
-    if (!active) return;
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    mx.set(e.clientX - r.left);
-    my.set(e.clientY - r.top);
-  };
-
-  /* Sized from the real advance width — re-measured for Switzer, which is a
-     normal-width face and so runs wider than the condensed one this replaced.
-     See the vw value below; it holds at every width because text and viewport
-     both scale in vw. Bumped to 700 so the outline has enough presence at this
-     size. */
-  const stroke =
-    "font-display text-[14.5vw] leading-[0.8] font-bold tracking-[-0.03em] whitespace-nowrap uppercase select-none";
-
-  return (
-    <div
-      ref={ref}
-      onPointerMove={onMove}
-      onPointerLeave={() => {
-        mx.set(-9999);
-        my.set(-9999);
-      }}
-      // Clipped so the wordmark can bleed off the bottom edge without ever
-      // widening the page.
-      className="pointer-events-auto relative mt-14 h-[10.5vw] w-full overflow-hidden select-none"
-      aria-hidden
-    >
-      <span
-        className={`${stroke} absolute inset-x-0 bottom-[-0.16em] block text-center text-transparent [-webkit-text-stroke:1px_rgba(242,237,228,0.16)]`}
-      >
-        {site.name}
-      </span>
-
-      {active && (
-        <motion.span
-          style={{ WebkitMaskImage: mask, maskImage: mask }}
-          className={`${stroke} absolute inset-x-0 bottom-[-0.16em] block text-center text-transparent [-webkit-text-stroke:1px_rgba(255,146,77,0.85)]`}
-        >
-          {site.name}
-        </motion.span>
-      )}
-    </div>
-  );
-}
-
 export function Footer() {
+  /* The fuel-redesign homepage folds its CTA and footer into one closing band,
+     so the shared footer stands aside for it. Scoped to "/" on purpose: every
+     other route keeps this footer untouched while the direction is reviewed. */
+  const pathname = usePathname();
+  if (pathname === "/") return <FuelFooter />;
+
   return (
     <footer className="relative mt-auto overflow-hidden bg-void text-cream">
       {/* Signature gradient hairline across the top edge */}
@@ -218,8 +158,10 @@ export function Footer() {
 
       </div>
 
-      {/* 3 — the signature, full-bleed rather than gutter-bound */}
-      <Wordmark />
+      {/* 3 — the signature, full-bleed rather than gutter-bound. The margin
+          used to live inside the component; it moved out with the extraction
+          so the Fuel footer can set its own. */}
+      <Wordmark className="mt-14" />
 
       <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10">
         {/* 4 — bottom bar */}
