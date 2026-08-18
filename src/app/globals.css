@@ -1,26 +1,341 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------------------
+   NexCRAFT design tokens — dark base, orange anchor.
+   Every value here is exposed both as a CSS variable (var(--color-primary))
+   and as a Tailwind utility (bg-primary, text-primary, ...).
+--------------------------------------------------------------------------- */
+@theme {
+  /* Brand */
+  --color-primary: #ff924d;
+  --color-primary-dark: #e6702a;
+  --color-primary-darker: #c9551a;
+  --color-primary-light: #ffb27f;
+
+  /* Surfaces, darkest to lightest */
+  --color-void: #000000; /* footer only — reads as a distinct plane */
+  --color-ink: #0a0a0a; /* page base */
+  --color-ink-alt: #101010; /* alternating section bands */
+  --color-surface: #141414; /* cards */
+  --color-surface-raised: #181818; /* nested / lifted surfaces */
+
+  /* Text — warm off-white, never pure white */
+  --color-cream: #f2ede4;
+  --color-cream-dark: #d8d2c7; /* cream that still reads on the orange band */
+
+  /**
+   * Foreground for the orange gradient (buttons, CTA band). White on #ff924d
+   * is only 2:1 — nowhere near AA — so anything sitting on brand orange uses
+   * these warm near-blacks instead. Both clear 4.5:1 against the darkest stop
+   * of the gradient.
+   */
+  --color-on-brand: #1f0f02;
+  --color-on-brand-soft: #43220a;
+
+  /* Semantic aliases */
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-cream);
+
+  /* Signature gradient */
+  --gradient-brand: linear-gradient(
+    135deg,
+    #ff924d 0%,
+    #ff7f36 45%,
+    #e6702a 100%
+  );
+  --gradient-brand-soft: linear-gradient(
+    135deg,
+    rgba(255, 146, 77, 0.14) 0%,
+    rgba(230, 112, 42, 0.14) 100%
+  );
+
+  /* Elevation — on black, shadows read as depth only when they're near-opaque
+     black; the old translucent-grey values were invisible. */
+  --shadow-soft: 0 4px 20px -4px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 14px 38px -10px rgb(0 0 0 / 0.7);
+  --shadow-glow: 0 10px 34px -8px rgb(255 146 77 / 0.45);
+  --shadow-glass: 0 8px 32px -8px rgb(0 0 0 / 0.6), 0 2px 8px -2px rgb(0 0 0 / 0.4);
+
+  /* Layout */
+  --spacing-navbar: 5rem;
+  --container-content: 1280px;
+  --container-wide: 1440px;
 }
 
+/* Fonts are injected by next/font (see src/lib/fonts.ts) — `inline` keeps the
+   generated utilities pointing at the runtime CSS variables. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* One neutral grotesque across every role — the calm Swiss register. The
+     personality comes from how much work the mono does beside it, not from a
+     second display face. Switzer is variable, so every weight is a real
+     instance and `font-semibold` is safe anywhere. */
+  --font-sans: var(--font-switzer), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-heading: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-accent: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  /* The detail layer — eyebrows, index labels, tags, step numbers. */
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------------------------------------------------------------------------
+   Base layer
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchor targets clear of the floating navbar */
+    scroll-padding-top: 7rem;
+    /* Sections that enter from the left or right are briefly wider than the
+       viewport; this contains that.
+       It must live here rather than on `body`, and it must be `clip`:
+       overflow only propagates from body to the viewport while html's own
+       overflow is `visible`. Set anything here and that propagation stops, so
+       a leftover `overflow-x: hidden` on body would no longer be handed to the
+       viewport — body would keep it, become a scroll container, and every
+       position: sticky descendant (the automation panel) would resolve against
+       a scrollport that never scrolls. `clip` also avoids making the root
+       itself scrollable, which `hidden` would. */
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--color-background);
+    /* Overscroll past either end of the page shows the page colour, not white. */
+    color-scheme: dark;
+  }
+
+  /* Lenis contract. It adds these classes to <html> itself once it takes over,
+     so these rules are inert until smooth scroll is actually running — which
+     means reduced-motion and touch users keep native scrolling untouched.
+     `scroll-behavior: smooth` above has to yield, or the browser's own smooth
+     scroll fights Lenis's rAF loop on every anchor jump. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Horizontal clipping is handled on <html> above — see the note there for
+       why it must not be duplicated here. */
+  }
+
+  /* Display headlines: Switzer 500, sentence case. Switzer is a normal-width
+     grotesque rather than a condensed one, so its letters have room to be
+     pulled together — -0.02em reads tight and deliberate where the same value
+     made the previous, narrower face collide. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--color-cream);
+    text-wrap: balance;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-cream);
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-on-brand);
+  }
+
+  /* Custom scrollbar — thin, orange thumb on a near-black track */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users. The dark offset keeps a
+     gap between ring and control on every surface we use. */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Autofilled inputs otherwise get Chrome's white-on-white treatment. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-cream);
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface-raised) inset;
+    caret-color: var(--color-cream);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------------------------------------------------------------------------
+   Reusable utilities
+--------------------------------------------------------------------------- */
+
+/* Signature gradient background */
+@utility gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+/* Signature gradient as text fill */
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 1px gradient hairline — used as the footer top border / section accents */
+@utility gradient-border-top {
+  border-top: 2px solid transparent;
+  border-image: var(--gradient-brand) 1;
+}
+
+/* Frosted panel used by the navbar + mobile menu.
+   Only the standard property is written — Lightning CSS adds the -webkit-
+   prefix from browserslist. Writing both makes it keep just the prefixed one,
+   which loses the blur in Firefox. */
+@utility glass {
+  background-color: rgb(10 10 10 / 0.55);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* Same frost, more opaque — full-screen surfaces need the extra legibility. */
+@utility glass-strong {
+  background-color: rgb(10 10 10 / 0.92);
+  backdrop-filter: blur(24px) saturate(160%);
+}
+
+/* Slightly lifted glass for panels sitting on top of cards. */
+@utility glass-raised {
+  background-color: rgb(255 255 255 / 0.04);
+  backdrop-filter: blur(12px);
+}
+
+/**
+ * The supporting-text voice: short lines that sit under or beside a headline.
+ * Defined once so the scale stays identical everywhere — 11px, 0.1em tracking,
+ * uppercase — rather than being re-guessed per component.
+ *
+ * Deliberately sets no colour. These captions sit on near-black, on cards, on
+ * the orange band and on the cream band, and each needs its own value to clear
+ * AA; leaving colour to the call site avoids a utility-order fight with the
+ * `text-*` class that has to override it.
+ */
+@utility mono-caption {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.75;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/**
+ * Same voice, longer copy. The hero subheadline is ~150 characters — at
+ * caption size and uppercase it becomes a wall of caps that nobody reads, so
+ * this variant keeps the mono but goes up a size and stays sentence case.
+ */
+@utility mono-lead {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+/* Consistent horizontal gutters */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--container-content);
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Decorative patterns (hero ambiance)
+--------------------------------------------------------------------------- */
+
+/* Dot grid that fades out towards the edges. Very low alpha — on black a grid
+   at the old 0.16 read as a visible mesh rather than texture. */
+.hero-dot-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(242 237 228 / 0.09) 1px,
+    transparent 0
+  );
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 75% 60% at 50% 45%, #000 20%, transparent 78%);
+}
+
+/* Fine grain, inlined as SVG so there's no extra request */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------------------
+   Accessibility — honour the OS "reduce motion" setting everywhere
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
