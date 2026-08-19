@@ -12,7 +12,6 @@ import { SlideLabel } from "@/components/ui/SlideLabel";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { navLinks, routes } from "@/lib/site";
-import { fuelNav } from "@/lib/home-fuel-content";
 import { springSoft } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -25,14 +24,19 @@ export function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/**
+ * Site navigation — one bar on every route.
+ *
+ * Links carry their index as a superscript, the convention the rest of the site
+ * numbers by. The floating-pill behaviour is kept: it is ours, it works on both
+ * the dark and cream bands, and the glass panel is what keeps the bar legible
+ * over the cream sections the numbered links now sit above.
+ */
 export function Navbar() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  /* See the desktop-links block below — the homepage runs the numbered nav. */
-  const fuel = pathname === "/";
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Small hysteresis band so a bar sitting exactly on the threshold can't flicker.
@@ -70,36 +74,28 @@ export function Navbar() {
             >
               <Logo />
 
-              {/* Desktop links.
-
-                  On the fuel-redesign homepage these switch to the numbered
-                  convention — label with its index set as a superscript — and
-                  to that page's own link set. Scoped to "/" so every other
-                  route keeps the existing nav while the direction is reviewed. */}
               <div className="hidden items-center lg:flex">
-                {(fuel ? fuelNav : navLinks).map((link) => {
+                {navLinks.map((link) => {
                   const active = isActivePath(pathname, link.href);
-                  const num = "num" in link ? link.num : null;
                   return (
                     <Link
                       key={link.href}
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group/link relative rounded-full py-2 font-mono text-[0.8125rem] font-normal tracking-[0.01em]",
-                        num ? "px-3.5 pr-5" : "px-3.5",
+                        "group/link relative rounded-full py-2 pr-5 pl-3.5 font-mono text-[0.8125rem] font-normal tracking-[0.01em]",
                         active ? "text-cream" : "text-cream/70",
                       )}
                     >
                       <SlideLabel className="relative z-10">{link.label}</SlideLabel>
-                      {num && (
-                        <sup
-                          aria-hidden
-                          className="relative z-10 ml-1 align-super text-[0.5625rem] tracking-[0.08em] text-cream/45"
-                        >
-                          {num}
-                        </sup>
-                      )}
+                      {/* The index. Decorative — the label is the accessible
+                          name, and reading "Portfolio 02" aloud helps nobody. */}
+                      <sup
+                        aria-hidden
+                        className="relative z-10 ml-1 align-super text-[0.5625rem] tracking-[0.08em] text-cream/55"
+                      >
+                        {link.num}
+                      </sup>
                       {active && (
                         <motion.span
                           layoutId="navbar-active-indicator"

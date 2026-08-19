@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
+import { fuelBody, fuelLabel } from "@/components/fuel/FuelPrimitives";
 import type { Flow } from "@/lib/portfolio-content";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
@@ -56,17 +57,17 @@ export function FlowCard({ flow, index }: { flow: Flow; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, ease: EASE, delay: (index % 2) * 0.08 }}
-      className="flex h-full flex-col rounded-2xl border border-white/8 bg-surface p-6 shadow-soft sm:p-7"
+      className="flex h-full flex-col rounded-[3px] border border-cream/12 bg-surface p-6 sm:p-7"
     >
-      <span className="font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary uppercase">
-        Flow / {String(index + 1).padStart(2, "0")}
+      <span className={cn(fuelLabel, "text-primary")}>
+        ({String(index + 1).padStart(2, "0")}) Flow
       </span>
 
-      <h3 className="mt-4 text-2xl leading-[1.05] tracking-[-0.022em] text-cream sm:text-[1.75rem]">
+      <h3 className="mt-5 font-display text-[clamp(1.375rem,2vw,1.75rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-cream">
         {flow.title}
       </h3>
 
-      <p className="mt-3 text-sm leading-relaxed text-cream/70">{flow.description}</p>
+      <p className={cn(fuelBody, "mt-3 text-cream/60")}>{flow.description}</p>
 
       <ol className="mt-6 flex flex-wrap items-center gap-y-2.5">
         {flow.steps.map((step, i) => {
@@ -78,7 +79,7 @@ export function FlowCard({ flow, index }: { flow: Flow; index: number }) {
             <li key={step} className="flex items-center">
               <span
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5",
+                  "inline-flex items-center gap-1.5 rounded-[2px] border px-2.5 py-1.5",
                   "font-mono text-[0.6875rem] font-medium whitespace-nowrap",
                   "transition-[color,border-color,background-color,box-shadow,transform] duration-500 ease-out",
                   on

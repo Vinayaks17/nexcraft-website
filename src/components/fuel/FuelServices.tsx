@@ -14,7 +14,7 @@ import {
   fuelShell,
   fuelStatement,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelServices, type FuelService } from "@/lib/home-fuel-content";
+import { fuelServices, type FuelService, sectionIndex } from "@/lib/home-fuel-content";
 import { diagramById } from "@/lib/automation-graph";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { enterProps } from "@/lib/motion";
@@ -102,7 +102,7 @@ export function FuelServices() {
       className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
     >
       <div className={fuelShell}>
-        <FuelSectionMeta section="services" tone="light" />
+        <FuelSectionMeta {...sectionIndex.services} tone="light" />
 
         <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:items-end lg:gap-12">
           <RevealHeading
@@ -147,7 +147,7 @@ export function FuelServices() {
               <h3 className="mt-6 text-[1.5rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink sm:text-[1.75rem]">
                 {service.title}
               </h3>
-              <p className={cn(fuelLabel, "mt-3 text-ink/55")}>
+              <p className={cn(fuelLabel, "mt-3 text-ink/65")}>
                 {service.kicker}
               </p>
               <p className={cn(fuelBody, "mt-4 grow text-ink/70")}>

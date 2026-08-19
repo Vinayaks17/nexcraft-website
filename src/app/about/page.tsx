@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { RevealHeading } from "@/components/ui/RevealHeading";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { CountUp } from "@/components/ui/CountUp";
-import { Button } from "@/components/ui/Button";
+import {
+  FuelBracketLink,
+  FuelPageHeader,
+  FuelSectionMeta,
+  fuelBody,
+  fuelLabel,
+  fuelNumeral,
+  fuelShell,
+  fuelStatement,
+} from "@/components/fuel/FuelPrimitives";
 import { TeamCard } from "@/components/about/TeamCard";
 import { LifeAtNexcraft } from "@/components/about/LifeAtNexcraft";
+import { CountUp } from "@/components/ui/CountUp";
+import { renderAccent } from "@/components/ui/AccentWord";
 import {
   aboutCta,
   aboutHero,
@@ -15,6 +22,7 @@ import {
   team,
   teamSection,
 } from "@/lib/about-content";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -22,114 +30,130 @@ export const metadata: Metadata = {
     "Founded in New Delhi in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of Indian engineers while doing it.",
 };
 
+/**
+ * /about — four numbered bands.
+ *
+ * The page header carries no number of its own: the bands below run (01)–(04),
+ * and a fifth number above them would read as a numbering mistake rather than
+ * as a second scope.
+ */
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <SectionWrapper
-        outerClassName="relative overflow-hidden"
-        spacing="none"
-        animate={false}
-        width="wide"
-        className="pt-32 pb-10 md:pt-40 md:pb-16"
-      >
-        <div
-          className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-[radial-gradient(ellipse_60%_100%_at_50%_100%,rgba(255,132,50,0.22),transparent_70%)]"
-          aria-hidden
-        />
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary uppercase">
-            <span className="h-px w-6 bg-primary" aria-hidden />
-            {aboutHero.eyebrow}
-          </span>
-          <RevealHeading
-            text={aboutHero.heading}
-            as="h1"
-            className="mt-5 text-[2.5rem] sm:text-6xl lg:text-7xl"
-          />
-          <p className="mono-lead mt-6 max-w-xl text-cream/70">
-            {aboutHero.intro}
-          </p>
-        </div>
-      </SectionWrapper>
+      <FuelPageHeader
+        label="About us"
+        heading={aboutHero.heading}
+        intro={aboutHero.intro}
+      />
 
-      {/* Story + stat strip */}
-      <SectionWrapper spacing="md" width="wide" enterFrom="left">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-          <SectionHeading
-            eyebrow={story.eyebrow}
-            heading={story.heading}
-            className="max-w-none"
-          />
-          <div>
-            {story.paragraphs.map((p) => (
-              <p
+      {/* (01) The story — the page's cream inversion, matching the homepage's
+          (01) About band so "about" reads as the same ground site-wide. */}
+      <section className="mt-16 bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:mt-20 sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <FuelSectionMeta num="01" label="The story" tone="light" />
+
+          <h2 className={cn(fuelStatement, "mt-12 max-w-[20ch] text-ink sm:mt-16")}>
+            {renderAccent(story.heading)}
+          </h2>
+
+          {/* Two paragraphs, two columns — the dual mission is literally a pair,
+              so setting it as one is the layout doing the explaining. */}
+          <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:gap-12">
+            {story.paragraphs.map((p, i) => (
+              <div
                 key={p}
-                className="mt-5 text-base leading-relaxed text-cream/80 first:mt-0 sm:text-lg"
+                className={cn(
+                  "lg:col-span-5",
+                  i === 0 ? "lg:col-start-2" : "lg:col-start-8",
+                )}
               >
-                {p}
-              </p>
+                <p className={cn(fuelLabel, "text-ink/65")}>(0{i + 1})</p>
+                <p className={cn(fuelBody, "mt-4 text-ink/75")}>{p}</p>
+              </div>
             ))}
           </div>
         </div>
+      </section>
 
-        <dl className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/8 lg:grid-cols-4">
-          {/* col-reverse puts each number above its label visually, while the
-              DOM keeps the term-before-description order a <dl> needs. */}
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col-reverse bg-surface px-5 py-7 text-center sm:px-6"
-            >
-              <dt className="mt-3 font-mono text-[0.625rem] font-medium tracking-[0.18em] text-primary uppercase">
-                {stat.label}
-              </dt>
-              <dd className="font-display text-[1.75rem] leading-none font-medium tracking-[-0.01em] text-cream sm:text-[2.25rem]">
-                <CountUp value={stat.value} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </SectionWrapper>
+      {/* (02) The team */}
+      <section id="team" className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <FuelSectionMeta num="02" label="The team" />
 
-      {/* Team */}
-      <SectionWrapper id="team" spacing="lg" animate={false} width="wide" outerClassName="scroll-mt-28">
-        <SectionHeading
-          eyebrow={teamSection.eyebrow}
-          heading={teamSection.heading}
-          intro={teamSection.intro}
-        />
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {team.map((member, i) => (
-            <TeamCard key={member.id} member={member} index={i} />
-          ))}
-        </ul>
-      </SectionWrapper>
+          <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <h2 className={cn(fuelStatement, "text-cream lg:col-span-8")}>
+              {renderAccent(teamSection.heading)}
+            </h2>
+            <p className={cn(fuelBody, "text-cream/60 lg:col-span-4")}>
+              {teamSection.intro}
+            </p>
+          </div>
 
-      {/* Life at NexCRAFT */}
+          <ul className="mt-16 grid grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {team.map((member, i) => (
+              <TeamCard key={member.id} member={member} index={i} />
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* (03) Life at NexCRAFT */}
       <LifeAtNexcraft />
 
+      {/* (04) Stats */}
+      <section className="bg-ink py-20 sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <FuelSectionMeta num="04" label="By the numbers" />
+
+          <dl className="mt-14 grid grid-cols-1 gap-x-12 gap-y-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <dd
+                  className={cn(
+                    fuelNumeral,
+                    // "New Delhi" is several times the width of any figure
+                    // beside it, so long values step down rather than overflow.
+                    stat.value.length > 6
+                      ? "text-[clamp(1.75rem,3vw,2.5rem)]"
+                      : "text-[clamp(2.25rem,4vw,3.5rem)]",
+                    "text-cream",
+                  )}
+                >
+                  <CountUp value={stat.value} />
+                </dd>
+                <div className="mt-5 h-px w-full bg-cream/15" aria-hidden />
+                <dt className="mt-4 text-[0.9375rem] font-medium tracking-[-0.01em] text-cream/70">
+                  {stat.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* Closing CTA */}
-      <SectionWrapper spacing="lg" width="wide" enterFrom="scale">
-        <div className="flex flex-col items-center text-center">
-          <RevealHeading
-            text={aboutCta.heading}
-            as="h2"
-            className="max-w-2xl text-[2rem] sm:text-5xl lg:text-6xl"
-          />
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-cream/70 sm:text-lg">
-            {aboutCta.description}
-          </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href={aboutCta.primary.href} size="lg" magnetic>
-              {aboutCta.primary.label}
-            </Button>
-            <Button href={aboutCta.secondary.href} variant="outline" size="lg">
-              {aboutCta.secondary.label}
-            </Button>
+      <section className="bg-ink-alt py-20 sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <h2 className={cn(fuelStatement, "text-cream lg:col-span-7")}>
+              {renderAccent(aboutCta.heading)}
+            </h2>
+            <div className="lg:col-span-5">
+              <p className={cn(fuelBody, "text-cream/60")}>
+                {aboutCta.description}
+              </p>
+              <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:gap-12">
+                <FuelBracketLink href={aboutCta.primary.href}>
+                  {aboutCta.primary.label}
+                </FuelBracketLink>
+                <FuelBracketLink href={aboutCta.secondary.href}>
+                  {aboutCta.secondary.label}
+                </FuelBracketLink>
+              </div>
+            </div>
           </div>
         </div>
-      </SectionWrapper>
+      </section>
     </>
   );
 }

@@ -9,7 +9,7 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { archiveYears, fuelArchive } from "@/lib/home-fuel-content";
+import { fuelArchive, sectionIndex } from "@/lib/home-fuel-content";
 import { projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { EASE, enterProps } from "@/lib/motion";
@@ -19,10 +19,14 @@ import { cn } from "@/lib/utils";
  * Newest first, with the original data order as the tie-break — several
  * projects share a year and `sort` is stable, so within a year they stay in
  * the order portfolio-content lists them.
+ *
+ * `sort` mutates, so this copies first: `projects` is a module-level array
+ * shared with /portfolio, and reordering it in place would silently reorder
+ * that grid too.
  */
-const archive: Array<Project & { year: string }> = projects
-  .map((p) => ({ ...p, year: archiveYears[p.id] ?? "—" }))
-  .sort((a, b) => b.year.localeCompare(a.year));
+const archive: Project[] = [...projects].sort((a, b) =>
+  b.year.localeCompare(a.year),
+);
 
 const PREVIEW_W = 260;
 const PREVIEW_H = 163;
@@ -111,11 +115,11 @@ export function FuelArchive() {
   return (
     <section className="bg-ink py-20 sm:py-24 lg:py-32">
       <div className={fuelShell}>
-        <FuelSectionMeta section="archive" />
+        <FuelSectionMeta {...sectionIndex.archive} />
 
         <motion.p
           {...enterProps("fade")}
-          className={cn(fuelLabel, "mt-6 text-cream/45")}
+          className={cn(fuelLabel, "mt-6 text-cream/55")}
         >
           {fuelArchive.intro}
         </motion.p>
@@ -141,7 +145,7 @@ export function FuelArchive() {
                     "col-span-9 font-display leading-[1.05] font-semibold tracking-[-0.03em] transition-colors duration-300",
                     "text-[clamp(1.375rem,3vw,2.75rem)]",
                     floating && hovered !== null && !active
-                      ? "text-cream/35"
+                      ? "text-cream/55"
                       : "text-cream",
                     "sm:col-span-6",
                   )}
@@ -169,7 +173,7 @@ export function FuelArchive() {
                   <span
                     className={cn(
                       fuelLabel,
-                      "col-span-4 hidden text-right text-cream/40 sm:block",
+                      "col-span-4 hidden text-right text-cream/55 sm:block",
                     )}
                   >
                     {live ? project.domain : "Private build"}

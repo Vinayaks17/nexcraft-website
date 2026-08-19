@@ -7,10 +7,14 @@ export const estimateHero = {
     "Tell us what you need — we'll reply within 24 hours with a tailored quote.",
 } as const;
 
+/**
+ * `num` is presentational — the form's logic indexes this array positionally,
+ * so reordering the steps renumbers them without any code change.
+ */
 export const steps = [
-  { id: "need", title: "What do you need?", short: "Needs" },
-  { id: "details", title: "Project details", short: "Details" },
-  { id: "contact", title: "How do we reach you?", short: "Contact" },
+  { id: "need", num: "01", title: "What do you need?", short: "Needs" },
+  { id: "details", num: "02", title: "Project details", short: "Details" },
+  { id: "contact", num: "03", title: "How do we reach you?", short: "Contact" },
 ] as const;
 
 export const needOptions: {

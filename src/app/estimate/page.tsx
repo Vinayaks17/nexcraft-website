@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { FuelPageHeader, fuelShell } from "@/components/fuel/FuelPrimitives";
 import { EstimateForm } from "@/components/estimate/EstimateForm";
 import { EstimateSidebar } from "@/components/estimate/EstimateSidebar";
 import { estimateHero } from "@/lib/estimate-content";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Get a Quick Estimate",
@@ -17,18 +17,18 @@ export const metadata: Metadata = {
 function FormSkeleton() {
   return (
     <div
-      className="rounded-2xl border border-white/8 bg-surface p-6 shadow-soft sm:p-8"
+      className="rounded-[3px] border border-cream/12 bg-surface p-6 sm:p-8"
       aria-hidden
     >
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         {[0, 1, 2].map((i) => (
-          <span key={i} className="h-1.5 flex-1 animate-pulse rounded-full bg-cream/12" />
+          <span key={i} className="h-[2px] flex-1 animate-pulse bg-cream/12" />
         ))}
       </div>
-      <div className="mt-10 h-7 w-2/3 animate-pulse rounded-full bg-cream/12" />
+      <div className="mt-12 h-8 w-2/3 animate-pulse rounded-[3px] bg-cream/12" />
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="h-44 animate-pulse rounded-2xl bg-cream/8" />
+          <div key={i} className="h-44 animate-pulse rounded-[3px] bg-cream/8" />
         ))}
       </div>
       <div className="mt-9 flex justify-end">
@@ -38,36 +38,35 @@ function FormSkeleton() {
   );
 }
 
+/**
+ * /estimate — the form is untouched; only its surroundings changed.
+ *
+ * The page header carries no number: the form's own steps run (01)–(03) a few
+ * hundred pixels below, and a page number above them would compete with the one
+ * sequence the visitor actually has to follow.
+ */
 export default function EstimatePage() {
   return (
     <>
-      <SectionWrapper
-        outerClassName="relative overflow-hidden"
-        spacing="none"
-        animate={false}
-        width="wide"
-        className="pt-32 pb-8 md:pt-40 md:pb-10"
-      >
-        <div
-          className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-[radial-gradient(ellipse_60%_100%_at_50%_100%,rgba(255,132,50,0.22),transparent_70%)]"
-          aria-hidden
-        />
-        <SectionHeading
-          eyebrow={estimateHero.eyebrow}
-          heading={estimateHero.heading}
-          intro={estimateHero.intro}
-        />
-      </SectionWrapper>
+      <FuelPageHeader
+        label="Quick estimate"
+        heading={estimateHero.heading}
+        intro={estimateHero.intro}
+      />
 
-      <SectionWrapper spacing="none" animate={false} width="wide" className="pb-24 md:pb-32">
-        <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-12">
-          {/* useSearchParams needs a Suspense boundary to keep this route static. */}
-          <Suspense fallback={<FormSkeleton />}>
-            <EstimateForm />
-          </Suspense>
-          <EstimateSidebar />
+      <section className={cn(fuelShell, "pt-14 pb-24 sm:pt-16 lg:pt-20 lg:pb-32")}>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7 xl:col-span-8">
+            {/* useSearchParams needs a Suspense boundary to keep this route static. */}
+            <Suspense fallback={<FormSkeleton />}>
+              <EstimateForm />
+            </Suspense>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <EstimateSidebar />
+          </div>
         </div>
-      </SectionWrapper>
+      </section>
     </>
   );
 }

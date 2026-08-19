@@ -7,6 +7,9 @@
  * avatar instead — swapping a headshot in later is a one-line change here.
  */
 
+import { routes } from "@/lib/site";
+
+
 export const aboutHero = {
   eyebrow: "About NexCRAFT",
   heading: "Built in India. *Crafted* for the world.",
@@ -134,6 +137,6 @@ export const aboutCta = {
   heading: "Come build *with us.*",
   description:
     "Whether you know exactly what you need or you're still shaping it, the first conversation is free.",
-  primary: { label: "Book Your Free Strategy Call", href: "#" },
+  primary: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondary: { label: "Get a quick estimate", href: "/estimate" },
 } as const;

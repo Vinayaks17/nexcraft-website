@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { RevealHeading } from "@/components/ui/RevealHeading";
-import { Button } from "@/components/ui/Button";
+import {
+  FuelBracketLink,
+  FuelPageHeader,
+  FuelSectionMeta,
+  fuelBody,
+  fuelLabel,
+  fuelShell,
+  fuelStatement,
+} from "@/components/fuel/FuelPrimitives";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { FlowCard } from "@/components/portfolio/FlowCard";
+import { renderAccent } from "@/components/ui/AccentWord";
 import {
   automationsSection,
   flows,
   portfolioCta,
   portfolioHero,
+  projects,
 } from "@/lib/portfolio-content";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -21,99 +30,75 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   return (
     <>
-      {/* Compact page hero */}
-      <SectionWrapper
-        outerClassName="relative overflow-hidden"
-        spacing="none"
-        animate={false}
-        width="wide"
-        className="pt-32 pb-10 md:pt-40 md:pb-14"
+      <FuelPageHeader
+        num="02"
+        label="Portfolio"
+        heading={portfolioHero.heading}
+        intro={portfolioHero.intro}
       >
-        <div
-          className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-[radial-gradient(ellipse_60%_100%_at_50%_100%,rgba(255,132,50,0.22),transparent_70%)]"
-          aria-hidden
-        />
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary uppercase">
-            <span className="h-px w-6 bg-primary" aria-hidden />
-            {portfolioHero.eyebrow}
-          </span>
-          <RevealHeading
-            text={portfolioHero.heading}
-            as="h1"
-            className="mt-5 text-[2.5rem] sm:text-6xl lg:text-7xl"
-          />
-          <p className="mono-lead mt-6 max-w-xl text-cream/70">
-            {portfolioHero.intro}
-          </p>
-        </div>
-      </SectionWrapper>
+        <p className={cn(fuelLabel, "mt-8 text-cream/55")}>
+          {projects.length} projects · 2024—2026
+        </p>
+      </FuelPageHeader>
 
-      {/* Websites — editorial grid */}
-      <SectionWrapper
-        id="websites"
-        spacing="md"
-        animate={false}
-        width="wide"
-        outerClassName="scroll-mt-28"
-      >
+      {/* The editorial grid. The hover-dim and cursor chip are kept as they
+          were — they already speak the same restrained language the rest of the
+          site now uses, and rebuilding them would only lose the tuning. */}
+      <section id="websites" className={cn(fuelShell, "scroll-mt-28 pt-16 pb-20 sm:pt-20 lg:pt-24")}>
         <ProjectsSection />
-      </SectionWrapper>
+      </section>
 
-      {/* Automations — capability flows, not client projects */}
-      <SectionWrapper
-        id="automations"
-        spacing="lg"
-        animate={false}
-        width="wide"
-        outerClassName="scroll-mt-28 bg-ink-alt"
-      >
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium tracking-[0.18em] text-primary uppercase">
-            <span className="h-px w-6 bg-primary" aria-hidden />
-            {automationsSection.eyebrow}
-          </span>
-          <RevealHeading
-            text={automationsSection.heading}
-            as="h2"
-            className="mt-5 text-[2rem] sm:text-[2.75rem] lg:text-[3.25rem]"
-          />
-        </div>
+      {/* Automations — capability flows, not client projects. */}
+      <section id="automations" className="scroll-mt-28 bg-ink-alt py-20 sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <FuelSectionMeta num="03" label="Automation flows" />
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          {flows.map((flow, i) => (
-            <FlowCard key={flow.id} flow={flow} index={i} />
-          ))}
-        </div>
+          <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <h2 className={cn(fuelStatement, "text-cream lg:col-span-9")}>
+              {renderAccent(automationsSection.heading)}
+            </h2>
+            <p className={cn(fuelBody, "text-cream/60 lg:col-span-3")}>
+              {automationsSection.note}
+            </p>
+          </div>
 
-        <div className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="max-w-md text-sm leading-relaxed text-cream/70">
-            {automationsSection.note}
-          </p>
-          <Button href={automationsSection.cta.href} size="lg">
+          <div className="mt-14 grid gap-6 lg:grid-cols-2">
+            {flows.map((flow, i) => (
+              <FlowCard key={flow.id} flow={flow} index={i} />
+            ))}
+          </div>
+
+          <FuelBracketLink
+            href={automationsSection.cta.href}
+            className="mt-12"
+          >
             {automationsSection.cta.label}
-          </Button>
+          </FuelBracketLink>
         </div>
-      </SectionWrapper>
+      </section>
 
-      {/* Closing CTA */}
-      <SectionWrapper spacing="lg" width="wide" enterFrom="scale">
-        <div className="flex flex-col items-center text-center">
-          <RevealHeading
-            text={portfolioCta.heading}
-            as="h2"
-            className="max-w-2xl text-[2rem] sm:text-5xl lg:text-6xl"
-          />
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-cream/70 sm:text-lg">
-            {portfolioCta.description}
-          </p>
-          <div className="mt-9">
-            <Button href={portfolioCta.cta.href} size="lg">
-              {portfolioCta.cta.label}
-            </Button>
+      {/* Closing CTA — cream inversion, the page's one change of ground. */}
+      <section className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-28">
+        <div className={fuelShell}>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <h2 className={cn(fuelStatement, "text-ink lg:col-span-8")}>
+              {renderAccent(portfolioCta.heading)}
+            </h2>
+            <div className="lg:col-span-4">
+              <p className={cn(fuelBody, "text-ink/70")}>
+                {portfolioCta.description}
+              </p>
+              <FuelBracketLink
+                href={portfolioCta.cta.href}
+                tone="light"
+                className="mt-8 max-w-none"
+              >
+                {portfolioCta.cta.label}
+              </FuelBracketLink>
+            </div>
           </div>
         </div>
-      </SectionWrapper>
+      </section>
     </>
   );
 }

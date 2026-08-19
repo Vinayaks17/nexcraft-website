@@ -7,6 +7,9 @@
  * falls back to a branded gradient panel rather than a broken image.
  */
 
+import { routes } from "@/lib/site";
+
+
 export type Project = {
   id: string;
   name: string;
@@ -28,6 +31,13 @@ export type Project = {
    * /portfolio grid still renders every project regardless.
    */
   featured?: boolean;
+  /**
+   * TODO — PLACEHOLDER. Ship year, shown in the portfolio grid and used to
+   * order the homepage archive. No real dates were recorded for these builds,
+   * so every value below is a plausible guess against a Jan-2024 founding.
+   * Confirm each one before launch.
+   */
+  year: string;
 };
 
 export const portfolioHero = {
@@ -53,6 +63,7 @@ export type ProjectFilterId = (typeof projectFilters)[number]["id"];
 export const projects: Project[] = [
   {
     id: "aidify",
+    year: "2026",
     featured: true,
     tags: ["Web design", "AI voice"],
     name: "Aidify",
@@ -66,6 +77,7 @@ export const projects: Project[] = [
   },
   {
     id: "ans-rpo",
+    year: "2026",
     tags: ["Web design", "Recruitment"],
     name: "ANS RPO",
     industry: "Recruitment (RPO)",
@@ -79,6 +91,7 @@ export const projects: Project[] = [
   },
   {
     id: "the-big-media",
+    year: "2025",
     featured: true,
     tags: ["Web design", "Showcase"],
     name: "The Big Media Studios",
@@ -93,6 +106,7 @@ export const projects: Project[] = [
   },
   {
     id: "ovalon",
+    year: "2025",
     tags: ["Web design", "Corporate"],
     name: "Ovalon",
     industry: "Tech Company",
@@ -105,6 +119,7 @@ export const projects: Project[] = [
   },
   {
     id: "visual-view-media",
+    year: "2025",
     tags: ["Web design", "Agency"],
     name: "Visual View Media",
     industry: "Digital Agency",
@@ -117,6 +132,7 @@ export const projects: Project[] = [
   },
   {
     id: "sony-video-vision",
+    year: "2025",
     tags: ["Web design", "Retail"],
     name: "Sony Video Vision",
     industry: "Retail",
@@ -130,6 +146,7 @@ export const projects: Project[] = [
   },
   {
     id: "vinayak-singh",
+    year: "2025",
     tags: ["Web design", "Portfolio"],
     name: "Vinayak Singh",
     industry: "Personal Portfolio",
@@ -143,6 +160,7 @@ export const projects: Project[] = [
   },
   {
     id: "qadira",
+    year: "2024",
     featured: true,
     tags: ["E-commerce", "Checkout"],
     name: "Qadira",
@@ -157,6 +175,7 @@ export const projects: Project[] = [
   },
   {
     id: "jvb-testing",
+    year: "2024",
     tags: ["Web design", "Corporate"],
     name: "JVB Testing",
     industry: "Hardware Testing (US)",
@@ -169,6 +188,7 @@ export const projects: Project[] = [
   },
   {
     id: "sportikon",
+    year: "2024",
     featured: true,
     tags: ["Booking system", "Web design"],
     name: "Sportikon",
@@ -183,6 +203,7 @@ export const projects: Project[] = [
   },
   {
     id: "reality-sphere",
+    year: "2024",
     tags: ["Real estate", "Booking system"],
     name: "Reality Sphere",
     industry: "Real Estate (US)",
@@ -212,7 +233,7 @@ export const automationsSection = {
   eyebrow: "AI & Automation",
   heading: "We don't just use tools. We *build the ones* that do the work.",
   note: "Built in-house for our clients. Ask us for a walkthrough on your strategy call.",
-  cta: { label: "Book Your Free Strategy Call", href: "#" },
+  cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
 } as const;
 
 export const flows: Flow[] = [

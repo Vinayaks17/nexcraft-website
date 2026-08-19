@@ -3,74 +3,76 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { RevealHeading } from "@/components/ui/RevealHeading";
+import {
+  FuelSectionMeta,
+  fuelBody,
+  fuelShell,
+  fuelStatement,
+} from "@/components/fuel/FuelPrimitives";
+import { renderAccent } from "@/components/ui/AccentWord";
 import { lifeAt } from "@/lib/about-content";
-import { enterProps } from "@/lib/motion";
+import { enterProps, mediaReveal } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Static tilts, alternating, so the pair reads as dropped-on-a-desk polaroids. */
-const TILT = ["-rotate-3", "rotate-2"];
-
 /**
- * Candid team band. The source photos are small (the widest is 1008px), so the
- * frames are deliberately capped rather than stretched across the column —
- * blowing them up past their intrinsic size would just look soft.
+ * (03) Life at NexCRAFT — the candid band.
+ *
+ * The polaroid tilt and cream mounts that used to frame these are gone: on a
+ * page ruled with hairlines and set in a Swiss ramp, a pair of rotated snapshots
+ * read as a different site's idea. They sit square now, at the same radius as
+ * every other media block, and the photographs carry themselves.
+ *
+ * The sources are small (the widest is 1008px), so the pair is capped rather
+ * than stretched across the band — blowing them past their intrinsic size would
+ * only look soft.
  */
 export function LifeAtNexcraft() {
   // The band is content, not chrome: with no photos there's nothing to show.
   if (lifeAt.photos.length === 0) return null;
 
   return (
-    <SectionWrapper spacing="lg" animate={false} width="wide" outerClassName="bg-ink-alt">
-      <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-        <motion.div
-          {...enterProps("left")}
-        >
-          <RevealHeading
-            text={lifeAt.heading}
-            as="h2"
-            className="text-[2rem] sm:text-[2.75rem] lg:text-[3.25rem]"
-          />
-          {lifeAt.paragraphs.map((p) => (
-            <p key={p} className="mt-5 text-base leading-relaxed text-cream/70">
-              {p}
-            </p>
-          ))}
-        </motion.div>
+    <section className="bg-ink-alt py-20 sm:py-24 lg:py-28">
+      <div className={fuelShell}>
+        <FuelSectionMeta num="03" label="Life at NexCRAFT" />
 
-        <div className="flex flex-col items-center gap-8 sm:flex-row sm:justify-center sm:gap-6 lg:gap-8">
-          {lifeAt.photos.map((photo, i) => (
-            <motion.figure
-              key={photo.src}
-              initial={{ opacity: 0, y: 30, rotate: 0 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.6, ease: EASE, delay: i * 0.12 }}
-              className={cn(
-                "w-full max-w-[19rem] shrink-0 rounded-lg bg-cream p-2.5 pb-8 shadow-lift",
-                "transition-transform duration-500 ease-out hover:rotate-0 hover:scale-[1.03]",
-                TILT[i % TILT.length],
-                // Overlap the pair slightly on wide screens.
-                i === 1 && "sm:-ml-6 lg:-ml-8",
-              )}
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-surface-raised">
+        <div className="mt-12 grid grid-cols-1 gap-12 sm:mt-16 lg:grid-cols-12 lg:gap-12">
+          <motion.div {...enterProps("left")} className="lg:col-span-5">
+            <h2 className={cn(fuelStatement, "text-cream")}>
+              {renderAccent(lifeAt.heading)}
+            </h2>
+            {lifeAt.paragraphs.map((p) => (
+              <p key={p} className={cn(fuelBody, "mt-6 text-cream/60")}>
+                {p}
+              </p>
+            ))}
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+            {lifeAt.photos.map((photo, i) => (
+              <motion.figure
+                key={photo.src}
+                {...mediaReveal}
+                transition={{ ...mediaReveal.transition, delay: i * 0.1 }}
+                className={cn(
+                  "relative aspect-[4/3] w-full overflow-hidden rounded-[3px] bg-surface-raised",
+                  // The second drops half a step, so the pair reads as placed
+                  // rather than as a two-cell table.
+                  i === 1 && "sm:mt-12",
+                )}
+              >
                 <Image
                   src={photo.src}
                   alt={photo.alt}
                   fill
-                  sizes="(min-width: 640px) 19rem, 100vw"
+                  sizes="(min-width: 1024px) 26vw, (min-width: 640px) 45vw, 100vw"
                   className="object-cover"
                 />
-              </div>
-            </motion.figure>
-          ))}
+              </motion.figure>
+            ))}
+          </div>
         </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }
 

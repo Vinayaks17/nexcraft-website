@@ -44,7 +44,7 @@ export function LanguageSwitcher({ className, tone = "light" }: LanguageSwitcher
                   ? "font-bold text-ink"
                   : "font-bold text-cream"
                 : tone === "onLight"
-                  ? "font-medium text-ink/50 hover:text-ink"
+                  ? "font-medium text-ink/65 hover:text-ink"
                   : "font-medium text-cream/55 hover:text-cream",
             )}
           >

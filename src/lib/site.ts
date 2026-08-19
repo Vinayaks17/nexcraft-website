@@ -21,18 +21,24 @@ export type NavLink = {
   href: string;
 };
 
-export const navLinks: NavLink[] = [
-  { label: "Services", href: "/#services" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "About Us", href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
+/**
+ * Primary navigation, in the numbered convention the whole site now uses.
+ * The number is presentational — it is the reading order, not an id — so
+ * reordering this array is all that's needed to renumber the nav.
+ */
+export type NumberedNavLink = NavLink & { num: string };
+
+export const navLinks: NumberedNavLink[] = [
+  { label: "Home", num: "01", href: "/" },
+  { label: "Portfolio", num: "02", href: "/portfolio" },
+  { label: "About", num: "03", href: "/about" },
+  { label: "Contact", num: "04", href: "/contact" },
 ];
 
+/** Secondary routes — reachable from the footer rather than the nav. */
 export const footerPages: NavLink[] = [
   { label: "Pricing", href: "/pricing" },
-  { label: "About Us", href: "/about" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Services", href: "/#services" },
+  { label: "Get an estimate", href: "/estimate" },
 ];
 
 export const footerLegal: NavLink[] = [
@@ -40,7 +46,11 @@ export const footerLegal: NavLink[] = [
   { label: "Privacy Policy", href: "/privacy" },
 ];
 
-/** All placeholders for now. */
+/**
+ * TODO — every value here is a placeholder. This is the single place they are
+ * defined; the contact page, the footer and the floating buttons all read from
+ * it, so filling these in once updates the whole site.
+ */
 export const contact = {
   email: "hello@nexcraft.com",
   phone: "+31 6 00 00 00 00",
@@ -49,7 +59,45 @@ export const contact = {
   calendly: "#",
 } as const;
 
+/**
+ * The contact channels as a list, so the contact page renders them in one pass
+ * instead of hand-writing four near-identical rows. `href` is derived here
+ * rather than at the call site — the mailto:/tel: prefixes are part of what the
+ * channel *is*.
+ */
+export const contactChannels = [
+  {
+    id: "email",
+    label: "Email",
+    value: contact.email,
+    href: `mailto:${contact.email}`,
+    external: false,
+  },
+  {
+    id: "phone",
+    label: "Phone",
+    value: contact.phone,
+    href: `tel:${contact.phone.replace(/\s/g, "")}`,
+    external: false,
+  },
+  {
+    id: "whatsapp",
+    label: "WhatsApp",
+    value: "Message us directly",
+    href: contact.whatsapp,
+    external: true,
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    value: "NexCRAFT",
+    href: contact.linkedin,
+    external: true,
+  },
+] as const;
+
 export const routes = {
   estimate: "/estimate",
-  bookCall: "#", // Calendly link lands here later
+  contact: "/contact",
+  bookCall: "#", // TODO: Calendly link lands here
 } as const;

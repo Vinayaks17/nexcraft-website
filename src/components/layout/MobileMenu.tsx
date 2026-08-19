@@ -108,7 +108,15 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                       )}
                       aria-hidden
                     />
-                    {link.label}
+                    <span className="flex-1">{link.label}</span>
+                    {/* Same numbered convention as the desktop bar. Decorative:
+                        the label is already the link's accessible name. */}
+                    <span
+                      aria-hidden
+                      className="font-mono text-[0.6875rem] tracking-[0.1em] text-cream/55"
+                    >
+                      {link.num}
+                    </span>
                   </Link>
                 </motion.div>
               );

@@ -13,6 +13,7 @@
  */
 
 import { projects } from "@/lib/portfolio-content";
+import { routes } from "@/lib/site";
 
 /** Rendered as `© 2026` in every section meta row and in the footer. */
 export const YEAR = 2026;
@@ -47,18 +48,6 @@ export const sectionIndex: Record<SectionId, { num: string; label: string }> = {
 };
 
 /* -------------------------------------------------------------------------
-   Navigation — Fuel's numbered convention.
-   Contact points at /estimate until the Calendly link lands.
-------------------------------------------------------------------------- */
-
-export const fuelNav = [
-  { label: "Home", num: "01", href: "/" },
-  { label: "Portfolio", num: "02", href: "/portfolio" },
-  { label: "About", num: "03", href: "/about" },
-  { label: "Contact", num: "04", href: "/estimate" },
-] as const;
-
-/* -------------------------------------------------------------------------
    HERO
 ------------------------------------------------------------------------- */
 
@@ -68,7 +57,7 @@ export const fuelHero = {
   /** Small mono block, bottom-left of the media frame — Fuel's "01/ …" list. */
   disciplineIndex: "01/",
   disciplines: ["Websites", "Automations", "E-commerce"],
-  primaryCta: { label: "Book Your Free Strategy Call", href: "#" },
+  primaryCta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondaryCta: { label: "Get a quick estimate", href: "/estimate" },
   /** Sits in the frame instead of Fuel's photography. */
   video: {
@@ -283,24 +272,10 @@ export const fuelTestimonialSection = {
 /* -------------------------------------------------------------------------
    (06) ARCHIVE — chronological, most recent first
 
-   TODO: portfolio-content.ts carries no ship dates, so the years below are
-   PLACEHOLDERS derived from nothing but plausibility. Confirm each one (or add
-   a real `year` field to Project) before this branch ships.
+   The years themselves live on `Project.year` in portfolio-content.ts, so the
+   archive and the /portfolio grid can't disagree about when something shipped.
+   They are still placeholders — see the TODO on that field.
 ------------------------------------------------------------------------- */
-
-export const archiveYears: Record<string, string> = {
-  aidify: "2026",
-  "ans-rpo": "2026",
-  "the-big-media": "2025",
-  ovalon: "2025",
-  "visual-view-media": "2025",
-  "sony-video-vision": "2025",
-  "vinayak-singh": "2025",
-  qadira: "2024",
-  "jvb-testing": "2024",
-  sportikon: "2024",
-  "reality-sphere": "2024",
-};
 
 export const fuelArchive = {
   intro: "Everything we've shipped, newest first.",
@@ -351,7 +326,7 @@ export const fuelFaq = {
 
 export const fuelFooter = {
   lead: "Let's work together",
-  cta: { label: "Book Your Free Strategy Call", href: "#" },
+  cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondary: { label: "Get a quick estimate", href: "/estimate" },
   wordmark: "NEXCRAFT",
   location: "Crafted in New Delhi, India",

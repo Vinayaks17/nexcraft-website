@@ -11,8 +11,8 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { YEAR, fuelFooter, fuelNav } from "@/lib/home-fuel-content";
-import { contact, footerLegal } from "@/lib/site";
+import { YEAR, fuelFooter } from "@/lib/home-fuel-content";
+import { contact, footerLegal, footerPages, navLinks } from "@/lib/site";
 import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export function FuelFooter() {
         <div className="mt-14 grid grid-cols-1 gap-12 sm:mt-20 lg:grid-cols-12 lg:gap-12">
           {/* Lead + email + actions */}
           <motion.div {...enterProps("up")} className="lg:col-span-7">
-            <p className={cn(fuelHeadline, "text-cream/40")}>
+            <p className={cn(fuelHeadline, "text-cream/55")}>
               {fuelFooter.lead}
             </p>
             <a
@@ -65,7 +65,7 @@ export function FuelFooter() {
             className="lg:col-span-4 lg:col-start-9"
           >
             <ul className="border-t border-cream/12">
-              {fuelNav.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href} className="border-b border-cream/12">
                   <Link
                     href={link.href}
@@ -75,9 +75,10 @@ export function FuelFooter() {
                       {link.label}
                     </span>
                     <span
+                      aria-hidden
                       className={cn(
                         fuelLabel,
-                        "text-cream/35 transition-colors duration-200 group-hover:text-primary",
+                        "text-cream/55 transition-colors duration-200 group-hover:text-primary",
                       )}
                     >
                       {link.num}
@@ -87,14 +88,16 @@ export function FuelFooter() {
               ))}
             </ul>
 
+            {/* Routes the numbered nav doesn't carry, plus the legal pages.
+                Both are secondary, so they share one quiet mono row. */}
             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              {footerLegal.map((link) => (
+              {[...footerPages, ...footerLegal].map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     className={cn(
                       fuelLabel,
-                      "text-cream/40 transition-colors duration-200 hover:text-cream",
+                      "text-cream/55 transition-colors duration-200 hover:text-cream",
                     )}
                   >
                     {link.label}
@@ -117,8 +120,8 @@ export function FuelFooter() {
 
       <div className={cn(fuelShell, "pb-8")}>
         <div className={cn("flex flex-col gap-2 sm:flex-row sm:justify-between", fuelLabel)}>
-          <p className="text-cream/45">© {YEAR} NexCRAFT</p>
-          <p className="text-cream/45">{fuelFooter.location}</p>
+          <p className="text-cream/55">© {YEAR} NexCRAFT</p>
+          <p className="text-cream/55">{fuelFooter.location}</p>
         </div>
       </div>
     </footer>

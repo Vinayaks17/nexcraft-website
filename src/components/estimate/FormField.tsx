@@ -26,7 +26,7 @@ export function FieldShell({
     <div className={className}>
       <label
         htmlFor={id}
-        className="mb-2 block font-mono text-[0.75rem] font-medium tracking-[0.06em] text-cream uppercase"
+        className="mb-2.5 block font-mono text-[0.6875rem] leading-none tracking-[0.1em] text-cream/60 uppercase"
       >
         {label}
         {optional && (
@@ -46,8 +46,8 @@ export function FieldShell({
 }
 
 const controlClasses =
-  "w-full rounded-2xl border-2 border-white/10 bg-surface-raised px-4 py-3 text-base text-cream " +
-  "transition-colors duration-200 placeholder:text-cream/55 hover:border-white/20 " +
+  "w-full rounded-[3px] border border-cream/15 bg-surface-raised px-4 py-3 text-base text-cream " +
+  "transition-colors duration-200 placeholder:text-cream/55 hover:border-cream/30 " +
   /* Keeping the outline (rather than focus:outline-none + a border swap) means
      the focus ring stays visible against both the card and the input fill. */
   "focus:border-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary";

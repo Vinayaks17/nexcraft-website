@@ -3,6 +3,9 @@
  * ranges, and per-month suffixes without any formatting logic in components.
  */
 
+import { routes } from "@/lib/site";
+
+
 export type AddOn = {
   label: string;
   price: string;
@@ -124,6 +127,16 @@ export const automationTier: PricingTier = {
   cta: { label: "Customise this plan", href: "/estimate?plan=automation" },
 };
 
+/**
+ * All four tiers in one list, websites first.
+ *
+ * Both the homepage band and /pricing render from this, so the set and its
+ * order can't drift between the two. `websiteTiers` and `automationTier` stay
+ * exported separately because the automation tier is a different kind of offer
+ * and some layouts still want to treat it that way.
+ */
+export const pricingTiers: PricingTier[] = [...websiteTiers, automationTier];
+
 export const reassurances = [
   "Free strategy call",
   "Clickable prototype before you commit",
@@ -134,5 +147,5 @@ export const pricingCta = {
   heading: "Not sure which plan *fits?*",
   description:
     "Walk us through the project on a free call — we'll point you at the right tier, even if it's the smaller one.",
-  cta: { label: "Book Your Free Strategy Call", href: "#" },
+  cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
 } as const;

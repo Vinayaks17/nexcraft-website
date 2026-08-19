@@ -13,7 +13,7 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelPortfolio } from "@/lib/home-fuel-content";
+import { fuelPortfolio, sectionIndex } from "@/lib/home-fuel-content";
 import { projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { enterProps, springSnappy } from "@/lib/motion";
@@ -223,7 +223,7 @@ export function FuelPortfolio() {
   return (
     <section id="work" className="bg-ink py-20 sm:py-24 lg:py-32">
       <div className={fuelShell}>
-        <FuelSectionMeta section="portfolio" />
+        <FuelSectionMeta {...sectionIndex.portfolio} />
 
         <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
           {/* Left rail — title, arrows, "see all". Sticky from lg so it holds
@@ -255,7 +255,7 @@ export function FuelPortfolio() {
                 <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
               </ArrowButton>
 
-              <span className={cn(fuelLabel, "ml-2 text-cream/45")}>
+              <span className={cn(fuelLabel, "ml-2 text-cream/55")}>
                 {String(Math.min(index + 1, featured.length)).padStart(2, "0")} /{" "}
                 {String(featured.length).padStart(2, "0")}
               </span>

@@ -14,8 +14,7 @@ import {
 } from "@/components/fuel/FuelPrimitives";
 import {
   fuelTestimonialSection,
-  fuelTestimonials,
-} from "@/lib/home-fuel-content";
+  fuelTestimonials, sectionIndex } from "@/lib/home-fuel-content";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { EASE, enterProps, springSnappy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -55,7 +54,7 @@ export function FuelTestimonial() {
       onBlurCapture={() => setPaused(false)}
     >
       <div className={fuelShell}>
-        <FuelSectionMeta section="testimonial" />
+        <FuelSectionMeta {...sectionIndex.testimonial} />
 
         <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
           {/* Left rail — the standing flag that none of this is real yet. */}
@@ -120,7 +119,7 @@ export function FuelTestimonial() {
                 >
                   <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
                 </RotateButton>
-                <span className={cn(fuelLabel, "ml-2 text-cream/45")}>
+                <span className={cn(fuelLabel, "ml-2 text-cream/55")}>
                   {String(index + 1).padStart(2, "0")} /{" "}
                   {String(count).padStart(2, "0")}
                 </span>
@@ -140,7 +139,7 @@ export function FuelTestimonial() {
                     <dt className="mt-3 text-[0.9375rem] font-medium tracking-[-0.01em] text-cream">
                       {stat.label}
                     </dt>
-                    <p className={cn(fuelLabel, "mt-2 text-cream/45")}>
+                    <p className={cn(fuelLabel, "mt-2 text-cream/55")}>
                       {stat.sub}
                     </p>
                   </div>

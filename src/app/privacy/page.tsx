@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 
-import { PagePlaceholder } from "@/components/ui/PagePlaceholder";
+import { LegalDocument } from "@/components/legal/LegalDocument";
+import { privacy } from "@/lib/legal-content";
 
-export const metadata: Metadata = { title: "Privacy Policy" };
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "What NexCRAFT collects, why we hold it, who else sees it, and how to get it back or get it deleted.",
+};
 
 export default function PrivacyPage() {
-  return (
-    <PagePlaceholder
-      eyebrow="Legal"
-      title="Privacy *policy.*"
-      description="Full privacy copy lands in a later stage."
-    />
-  );
+  return <LegalDocument doc={privacy} />;
 }

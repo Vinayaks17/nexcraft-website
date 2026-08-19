@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { FuelFooter } from "@/components/fuel/FuelFooter";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 
 export const metadata: Metadata = {
@@ -43,7 +43,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             <main className="flex-1">{children}</main>
-            <Footer />
+            <FuelFooter />
             <FloatingContact />
           </SmoothScrollProvider>
         </MotionProvider>

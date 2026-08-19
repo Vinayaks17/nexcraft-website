@@ -6,6 +6,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronLeft, X } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
+import {
+  FuelBracketLink,
+  fuelBody,
+  fuelLabel,
+  fuelStatement,
+} from "@/components/fuel/FuelPrimitives";
 import { renderAccent } from "@/components/ui/AccentWord";
 import { OptionCard, OptionChip } from "@/components/estimate/OptionInputs";
 import { TextAreaField, TextField } from "@/components/estimate/FormField";
@@ -110,60 +116,72 @@ export function EstimateForm() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="rounded-2xl border border-primary/30 bg-surface p-8 text-center shadow-lift sm:p-12"
+        className="rounded-[3px] border border-cream/12 bg-surface p-8 sm:p-12"
         role="status"
       >
         <motion.span
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
-          className="gradient-brand mx-auto flex h-16 w-16 items-center justify-center rounded-full text-on-brand shadow-glow"
+          className="gradient-brand flex h-12 w-12 items-center justify-center rounded-[3px] text-on-brand"
         >
-          <Check className="h-8 w-8" strokeWidth={3} aria-hidden />
+          <Check className="h-6 w-6" strokeWidth={3} aria-hidden />
         </motion.span>
-        <h2 className="mt-6 text-[1.75rem] sm:text-4xl">{renderAccent(successState.heading)}</h2>
-        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-cream/70">
+
+        <p className={cn(fuelLabel, "mt-8 text-primary")}>(04) Sent</p>
+
+        <h2 className={cn(fuelStatement, "mt-4 max-w-[18ch] text-cream")}>
+          {renderAccent(successState.heading)}
+        </h2>
+        <p className={cn(fuelBody, "mt-6 max-w-[48ch] text-cream/60")}>
           {successState.description}
         </p>
-        <div className="mt-8 flex justify-center">
-          <Button href={successState.cta.href} variant="outline">
-            {successState.cta.label}
-          </Button>
-        </div>
+        <FuelBracketLink href={successState.cta.href} className="mt-10">
+          {successState.cta.label}
+        </FuelBracketLink>
       </motion.div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-white/8 bg-surface p-6 shadow-soft sm:p-8">
-      {/* Progress */}
-      <ol className="flex items-center gap-2" aria-label="Progress">
+    <div className="rounded-[3px] border border-cream/12 bg-surface p-6 sm:p-8">
+      {/* Progress — a hairline rule per step that fills as you advance, with the
+          step's own number beside its label. Square and flat: the pill-shaped
+          gradient bars it replaced were the last rounded chrome on the page. */}
+      <ol className="flex items-start gap-3" aria-label="Progress">
         {steps.map((s, i) => (
-          <li key={s.id} className="flex flex-1 flex-col gap-2">
+          <li key={s.id} className="flex flex-1 flex-col gap-2.5">
             <span
               className={cn(
-                "h-1.5 w-full rounded-full transition-colors duration-500",
-                i <= step ? "gradient-brand" : "bg-cream/12",
+                "h-[2px] w-full transition-colors duration-500",
+                i <= step ? "bg-primary" : "bg-cream/12",
               )}
             />
             <span
               aria-current={i === step ? "step" : undefined}
               className={cn(
-                "font-mono text-[0.6875rem] font-medium tracking-[0.16em] uppercase transition-colors duration-300",
-                i <= step ? "text-primary" : "text-cream/50",
+                fuelLabel,
+                "flex items-baseline gap-1.5 transition-colors duration-300",
+                i <= step ? "text-cream" : "text-cream/55",
               )}
             >
-              {s.short}
+              <span className={i <= step ? "text-primary" : undefined}>
+                ({s.num})
+              </span>
+              <span className="hidden sm:inline">{s.short}</span>
             </span>
           </li>
         ))}
       </ol>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-8">
+      <form onSubmit={handleSubmit} noValidate className="mt-10">
+        <p className={cn(fuelLabel, "text-cream/55")}>({steps[step].num})</p>
         <h2
           ref={headingRef}
           tabIndex={-1}
-          className="text-2xl outline-none sm:text-3xl"
+          className={cn(
+            "mt-3 font-display text-[clamp(1.5rem,2.6vw,2.25rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-cream outline-none",
+          )}
         >
           {steps[step].title}
         </h2>
@@ -175,9 +193,9 @@ export function EstimateForm() {
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-cream px-3.5 py-1.5"
+              className="mt-5 inline-flex items-center gap-2 rounded-[2px] bg-cream px-3 py-2"
             >
-              <span className="font-mono text-[0.6875rem] font-semibold tracking-[0.04em] text-ink">
+              <span className="font-mono text-[0.6875rem] leading-none tracking-[0.08em] text-ink uppercase">
                 Customising: {planLabels[data.plan]}
               </span>
               <button
@@ -231,7 +249,7 @@ export function EstimateForm() {
               {step === 1 && (
                 <div className="flex flex-col gap-7">
                   <fieldset>
-                    <legend className="mb-3 font-mono text-[0.75rem] font-medium tracking-[0.06em] text-cream uppercase">
+                    <legend className="mb-3 font-mono text-[0.6875rem] leading-none tracking-[0.1em] text-cream/60 uppercase">
                       Budget range
                     </legend>
                     <div className="flex flex-wrap gap-2.5">
@@ -254,7 +272,7 @@ export function EstimateForm() {
                   </fieldset>
 
                   <fieldset>
-                    <legend className="mb-3 font-mono text-[0.75rem] font-medium tracking-[0.06em] text-cream uppercase">
+                    <legend className="mb-3 font-mono text-[0.6875rem] leading-none tracking-[0.1em] text-cream/60 uppercase">
                       Timeline
                     </legend>
                     <div className="flex flex-wrap gap-2.5">
@@ -335,7 +353,7 @@ export function EstimateForm() {
             <button
               type="button"
               onClick={handleBack}
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 font-heading text-sm font-medium text-cream/70 transition-colors duration-200 hover:text-primary"
+              className={cn(fuelLabel, "inline-flex items-center gap-1.5 py-2 text-cream/60 transition-colors duration-200 hover:text-primary")}
             >
               <ChevronLeft className="h-4 w-4" aria-hidden />
               Back

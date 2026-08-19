@@ -9,7 +9,7 @@ import {
   fuelNumeral,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelStats } from "@/lib/home-fuel-content";
+import { fuelStats, sectionIndex } from "@/lib/home-fuel-content";
 import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ export function FuelStats() {
   return (
     <section className="bg-ink-alt py-20 sm:py-24 lg:py-32">
       <div className={fuelShell}>
-        <FuelSectionMeta section="stats" />
+        <FuelSectionMeta {...sectionIndex.stats} />
 
         <dl className="mt-14 grid grid-cols-1 gap-x-12 gap-y-14 sm:mt-20 sm:grid-cols-2">
           {fuelStats.map((stat, i) => (

@@ -13,7 +13,7 @@ import {
   fuelShell,
   fuelStatement,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelAbout } from "@/lib/home-fuel-content";
+import { fuelAbout, sectionIndex } from "@/lib/home-fuel-content";
 import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,7 @@ export function FuelAbout() {
       className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
     >
       <div className={fuelShell}>
-        <FuelSectionMeta section="about" tone="light" />
+        <FuelSectionMeta {...sectionIndex.about} tone="light" />
 
         {/* The oversized statement. The first line is indented, which is the
             reference's one real typographic signature — it turns a block of

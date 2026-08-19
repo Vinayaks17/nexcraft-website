@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 
-import { YEAR, sectionIndex, type SectionId } from "@/lib/home-fuel-content";
+import { renderAccent } from "@/components/ui/AccentWord";
+
+import { YEAR } from "@/lib/home-fuel-content";
 import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------
@@ -46,7 +48,16 @@ export const fuelNumeral =
 export const fuelBody =
   "text-[0.9375rem] leading-[1.55] tracking-[-0.005em] sm:text-base";
 
-/** The mono detail layer — every label, index and meta value on the page. */
+/**
+ * The mono detail layer — every label, index and meta value on the page.
+ *
+ * CONTRAST FLOOR: this renders at 11px, which WCAG treats as small text and
+ * holds to 4.5:1. On our surfaces that means `text-cream/55` is the lowest
+ * usable tone on any dark band (5.45:1 against the lightest of them, #141414)
+ * and `text-ink/65` the lowest on the cream band (5.95:1). Anything fainter
+ * fails — the whole first pass of this design used /40 and /45 and every one
+ * of them came in between 2.65:1 and 4.05:1.
+ */
 export const fuelLabel =
   "font-mono text-[0.6875rem] leading-none tracking-[0.1em] uppercase";
 
@@ -64,16 +75,23 @@ export const fuelLabel =
 ------------------------------------------------------------------------- */
 
 export function FuelSectionMeta({
-  section,
+  num,
+  label,
   className,
   tone = "dark",
 }: {
-  section: SectionId;
+  /**
+   * Two digits, e.g. "01". Rendered as `(01)`. Optional: pages that carry
+   * their own numbered bands (about, estimate) would otherwise show a page
+   * number and a band number at the same time, which reads as a numbering
+   * mistake rather than as two scopes.
+   */
+  num?: string;
+  label: string;
   className?: string;
   /** `light` = the band is cream and the row has to invert. */
   tone?: "dark" | "light";
 }) {
-  const { num, label } = sectionIndex[section];
   const rule = tone === "light" ? "bg-ink/15" : "bg-cream/15";
   const ink = tone === "light" ? "text-ink/70" : "text-cream/60";
   const strong = tone === "light" ? "text-ink" : "text-cream";
@@ -91,7 +109,7 @@ export function FuelSectionMeta({
           <span aria-hidden className="text-primary">
             ◆
           </span>
-          ({num})
+          {num ? `(${num})` : null}
         </p>
         <p className={cn("sm:text-center", ink)}>({label})</p>
         <p className={cn("hidden sm:block sm:text-right", ink)}>© {YEAR}</p>
@@ -179,6 +197,57 @@ export function FuelBracketLink({
     <Link href={href} className={classes}>
       {inner}
     </Link>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   Page header
+
+   The interior-page counterpart to the homepage hero: the numbered meta row,
+   an oversized statement, and an optional intro. Every route below "/" opens
+   with this, which is most of what makes the set read as one site rather than
+   as a homepage plus seven others.
+
+   The heading is a plain element rather than RevealHeading: this sits above
+   the fold on a route the visitor navigated to deliberately, and a masked
+   line-by-line reveal on arrival delays the one thing they came to read. The
+   homepage hero can afford the entrance; a page header can't.
+------------------------------------------------------------------------- */
+
+export function FuelPageHeader({
+  num,
+  label,
+  heading,
+  intro,
+  tone = "dark",
+  children,
+}: {
+  num?: string;
+  label: string;
+  /** Accent phrases in *asterisks* — see renderAccent. */
+  heading: string;
+  intro?: string;
+  tone?: "dark" | "light";
+  /** Actions or extra detail, laid out under the intro. */
+  children?: ReactNode;
+}) {
+  const ink = tone === "light" ? "text-ink" : "text-cream";
+  const muted = tone === "light" ? "text-ink/70" : "text-cream/65";
+
+  return (
+    <header className={cn(fuelShell, "pt-32 pb-4 sm:pt-36 lg:pt-40")}>
+      <FuelSectionMeta num={num} label={label} tone={tone} />
+
+      <h1 className={cn(fuelStatement, "mt-12 max-w-[18ch] sm:mt-16", ink)}>
+        {renderAccent(heading)}
+      </h1>
+
+      {intro && (
+        <p className={cn(fuelBody, "mt-8 max-w-[52ch]", muted)}>{intro}</p>
+      )}
+
+      {children}
+    </header>
   );
 }
 

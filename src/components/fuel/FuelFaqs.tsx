@@ -9,7 +9,7 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelFaq } from "@/lib/home-fuel-content";
+import { fuelFaq, sectionIndex } from "@/lib/home-fuel-content";
 import { faqs } from "@/lib/home-content";
 import { EASE, enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -28,12 +28,12 @@ export function FuelFaqs() {
   return (
     <section id="faqs" className="bg-ink py-20 sm:py-24 lg:py-32">
       <div className={fuelShell}>
-        <FuelSectionMeta section="faq" />
+        <FuelSectionMeta {...sectionIndex.faq} />
 
         <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
           <motion.p
             {...enterProps("left")}
-            className={cn(fuelLabel, "text-cream/45 lg:col-span-3")}
+            className={cn(fuelLabel, "text-cream/55 lg:col-span-3")}
           >
             {fuelFaq.intro}
           </motion.p>
@@ -64,7 +64,7 @@ export function FuelFaqs() {
                           className={cn(
                             fuelLabel,
                             "mt-1.5 shrink-0 transition-colors duration-200",
-                            isOpen ? "text-primary" : "text-cream/40",
+                            isOpen ? "text-primary" : "text-cream/55",
                           )}
                         >
                           (0{i + 1})

@@ -79,7 +79,7 @@ export function FuelLogoMarquee() {
   return (
     <section className="border-y border-cream/12 bg-ink py-10 sm:py-12">
       <div className={cn(fuelShell, "mb-6")}>
-        <p className={cn(fuelLabel, "text-cream/45")}>{marqueeCaption}</p>
+        <p className={cn(fuelLabel, "text-cream/55")}>{marqueeCaption}</p>
       </div>
 
       <div

@@ -113,7 +113,7 @@ function ProjectItem({
       )}
 
       <div className="mt-5 flex items-start justify-between gap-6">
-        <h3 className="font-display text-[1.625rem] leading-tight font-medium tracking-[-0.02em] text-cream sm:text-[1.75rem]">
+        <h3 className="font-display text-[clamp(1.5rem,2.2vw,2rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-cream">
           {project.name}
         </h3>
 
@@ -135,9 +135,15 @@ function ProjectItem({
         )}
       </div>
 
-      {/* Description in the shared caption voice — this treatment is where the
-          site-wide .mono-caption scale was derived from. */}
-      <p className="mono-caption mt-3 max-w-md text-cream/60">
+      {/* Meta row: year and industry in the mono register, then the blurb.
+          The year is the one fact the archive shows that the grid didn't, and
+          without it the two views of the same project disagree. */}
+      <p className="mono-caption mt-3 flex flex-wrap items-center gap-x-3 text-cream/50">
+        <span className="text-primary">{project.year}</span>
+        <span aria-hidden>/</span>
+        <span>{project.industry}</span>
+      </p>
+      <p className="mono-caption mt-2 max-w-md text-cream/60">
         {project.blurb}
       </p>
     </motion.li>
