@@ -208,8 +208,12 @@ export const fuelPreview = {
 
 export const valueLine = {
   statement: "Pick a plan. Send the brief. We start within 24 hours.",
-  /** Mono qualifier under the statement — the "zero templates" USP, early. */
-  note: "No templates — every build from scratch",
+  /**
+   * Mono qualifier under the statement — (03) Why NexCRAFT's fifth USP, stated
+   * early. Worded to echo that claim rather than paraphrase it: if the USP is
+   * edited, this moves with it.
+   */
+  note: "No copy-paste websites — every build from scratch",
   items: ["Websites", "Automations", "E-commerce"],
   /**
    * The strip carries a real ask now. It sits directly under the hero and the
@@ -310,8 +314,8 @@ export const fuelPortfolio = {
 
    Five claims, each one a sentence a prospect could repeat to a colleague.
    These are commitments, not features. Two of them are echoed higher up the
-   page — the two-hour mockup as the hero chip, the built-from-scratch promise
-   in the value line — so anything edited here has to be edited there too.
+   page — the two-hour mockup as the hero chip, the no-copy-paste promise in
+   the value line — so anything edited here has to be edited there too.
 ------------------------------------------------------------------------- */
 
 export type FuelUsp = {
@@ -351,9 +355,9 @@ export const fuelUsps: FuelUsp[] = [
   },
   {
     num: "05",
-    title: "Zero templates",
-    kicker: "Designed and built from nothing",
-    body: "Every site is drawn and coded from scratch. No themes, no page-builder scaffolding, no copy-paste — the build is original and it is yours to own.",
+    title: "No copy-paste websites",
+    kicker: "Original by default",
+    body: "Custom-built, made from scratch — no themes, no templates, one of one.",
   },
 ];
 

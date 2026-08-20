@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -16,6 +17,10 @@ const SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
 /**
  * Branded monogram used until a headshot lands. Set `photo` on the member in
  * about-content.ts and this is replaced automatically — no component change.
+ *
+ * Unused as of F7: all three of the current team have real photographs. It
+ * stays because the next person to join won't, and the fallback is one null
+ * away from being live again.
  */
 function InitialsAvatar({ initials }: { initials: string }) {
   return (
@@ -38,6 +43,15 @@ function InitialsAvatar({ initials }: { initials: string }) {
 export function TeamCard({ member, index }: { member: TeamMember; index: number }) {
   const linkedinLabel = member.linkedinLabel ?? "Connect on LinkedIn";
 
+  /* Framing is per photo and lives in about-content.ts — see PhotoFraming for
+     what the numbers mean and how to measure a new one. The position doubles as
+     the transform-origin so `zoom` magnifies about the same point the crop is
+     anchored to; without that the zoom would pull away from the face it was
+     added to reach. Defaults reproduce the old `object-top` behaviour for any
+     member added without framing. */
+  const position = member.framing?.position ?? "50% 0%";
+  const zoom = member.framing?.zoom ?? 1;
+
   return (
     <motion.li
       {...enterProps("up", index * 0.09)}
@@ -51,12 +65,27 @@ export function TeamCard({ member, index }: { member: TeamMember; index: number 
               alt={`${member.name}, ${member.role} at NexCRAFT`}
               fill
               sizes={SIZES}
+              style={
+                {
+                  objectPosition: position,
+                  transformOrigin: position,
+                  "--photo-zoom": zoom,
+                } as CSSProperties
+              }
               className={cn(
-                "object-cover object-top",
+                "object-cover",
                 // Warm duotone at rest, full colour on hover/focus.
                 "grayscale-[0.65] sepia-[0.28] contrast-[1.05] brightness-[0.92]",
                 "transition-[filter,transform] duration-700 ease-out",
-                "group-hover:scale-[1.03] group-hover:grayscale-0 group-hover:sepia-0 group-hover:brightness-100",
+                /* The hover lift multiplies the framing zoom rather than
+                   replacing it — a plain `scale-[1.03]` here would throw a
+                   zoomed photo back to its uncropped framing the moment the
+                   pointer touched the card. Arbitrary-property syntax, not
+                   `scale-[…]`, so tailwind-merge groups it by property name
+                   and a later utility can't silently drop it. */
+                "[transform:scale(var(--photo-zoom))]",
+                "group-hover:[transform:scale(calc(var(--photo-zoom)*1.03))]",
+                "group-hover:grayscale-0 group-hover:sepia-0 group-hover:brightness-100",
                 "group-focus-within:grayscale-0 group-focus-within:sepia-0 group-focus-within:brightness-100",
               )}
             />

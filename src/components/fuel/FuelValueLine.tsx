@@ -32,7 +32,7 @@ export function FuelValueLine() {
             <p className="text-[1.25rem] leading-[1.25] font-medium tracking-[-0.02em] text-cream sm:text-[1.5rem]">
               {valueLine.statement}
             </p>
-            {/* The "zero templates" USP, stated once early. (03) Why NexCRAFT
+            {/* The "no copy-paste" USP, stated once early. (03) Why NexCRAFT
                 makes the full argument; this is the qualifier a visitor needs
                 while they are still reading the offer. */}
             <p className={cn(fuelLabel, "mt-4 text-cream/60")}>

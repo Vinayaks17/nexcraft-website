@@ -34,6 +34,44 @@ export const stats = [
   { value: "15+", label: "Projects shipped" },
 ] as const;
 
+/**
+ * How one headshot sits inside the card's 4:5 frame.
+ *
+ * The three photographs were not shot as a set — they are a lecture snap, a
+ * night portrait and a wide festival shot, at three different aspect ratios and
+ * three different subject distances. Dropped into the same frame with a plain
+ * `object-cover` they land with eye-lines 20 points apart and faces at very
+ * different sizes, which is what made the row read as crooked.
+ *
+ * These two values pull them onto one eye-line. They live here rather than in
+ * TeamCard so swapping a photo is a content edit: measure where the new face
+ * sits, set the numbers, done.
+ *
+ * HOW TO TUNE A NEW PHOTO. Overlay a percentage grid on the raw file and read
+ * off three things — the eye-line, the top of the hair, and the chin — as
+ * fractions of the *image*. Then match the reference, which is Vinayak's card:
+ * eyes at 20% of the frame height, face (hair to chin) about 28% of it, face
+ * horizontally centred.
+ *
+ * - `position` is the CSS `object-position`. Its percentages address the part
+ *   of the image that `object-cover` crops away, so it can only move the photo
+ *   along the axis that actually overflows the frame: a portrait taller than
+ *   4:5 can be slid vertically but not horizontally, and vice versa.
+ * - `zoom` is for the photo that needs more than a slide. Namit's is a wide
+ *   environmental shot: at 4:5 it overflows the frame by 6% of its height and
+ *   not at all in width, so `position` alone cannot lift his eye-line by the
+ *   19 points it needs, nor bring his face in from 38% of the width to the
+ *   middle. `zoom` magnifies the cover fit about `position` (it is used as the
+ *   `transform-origin` too), which re-crops the photo tighter and gives the
+ *   slide something to work with. 1 — the default — means no magnification.
+ */
+export type PhotoFraming = {
+  /** CSS object-position, and the transform-origin that `zoom` scales about. */
+  position: string;
+  /** Magnification on top of the cover fit. Omit for photos that don't need it. */
+  zoom?: number;
+};
+
 export type TeamMember = {
   id: string;
   name: string;
@@ -41,6 +79,8 @@ export type TeamMember = {
   blurb: string;
   /** Path under /public/team, or null to render the initials avatar. */
   photo: string | null;
+  /** How the photo is cropped into the 4:5 frame. See PhotoFraming. */
+  framing?: PhotoFraming;
   /** Fallback monogram, used when `photo` is null. */
   initials: string;
   linkedin: string;
@@ -57,6 +97,11 @@ export const team: TeamMember[] = [
     role: "Founder & CEO",
     blurb: "Leading strategy, client relations, and overall business operations.",
     photo: "/team/vinayak.jpeg",
+    /* 992x1103, so wider than 4:5 — the full height shows and only the sides
+       crop. That fixes his eye-line at 20% of the frame with nothing to tune,
+       which is why this card is the reference the other two are matched to;
+       the 59% only slides him sideways onto the centre line. */
+    framing: { position: "59% 50%" },
     initials: "VS",
     linkedin: "https://www.linkedin.com/in/vinayak08/",
     linkedinLabel: "Connect with me on LinkedIn",
@@ -68,6 +113,14 @@ export const team: TeamMember[] = [
     role: "Growth & Lead Generation",
     blurb: "Driving scalable acquisition and managing the sales pipeline.",
     photo: "/team/manish.png",
+    /* 768x1365 — far taller than 4:5, so the frame shows the full width and
+       crops 30% of the height. Measured on the raw file his eyes sit at 39% of
+       the image; sliding the crop down to 85% lifts them to 20% of the frame
+       and leaves the same 5% of headroom above his hair that Vinayak's card
+       has. His face is already within half a percent of the centre line, which
+       is as close as this crop can get — the frame uses the photo's full width,
+       so the horizontal value is inert here. */
+    framing: { position: "50% 85%" },
     initials: "MM",
     linkedin: "https://www.linkedin.com/in/manish-mishra-a39476249/",
   },
@@ -77,8 +130,18 @@ export const team: TeamMember[] = [
     role: "Technical Lead",
     blurb:
       "Architecting the tech, managing website development, and leading the intern engineering team.",
-    // No headshot yet — the card renders the `initials` monogram until one lands.
-    photo: null,
+    photo: "/team/namit.jpeg",
+    /* 1086x1448, and a wide festival shot rather than a portrait: his face is
+       a fifth of the frame and sits at 38% of the width. At 4:5 this overflows
+       by only 6% of its height and not at all in width, so `position` alone
+       reaches neither the centre line nor the 20% eye-line — hence the zoom,
+       which re-crops to roughly the subject distance of the other two (face at
+       ~28% of the frame) and gives the slide the overflow it needs. The
+       delivered file is kept whole rather than cropped, so a future re-crop is
+       a number here, not a lost original. */
+    framing: { position: "5% 84%", zoom: 1.35 },
+    /* Kept for the next teammate who joins before a headshot does — TeamCard
+       still falls back to the monogram whenever `photo` is null. */
     initials: "NJ",
     linkedin: "https://www.linkedin.com/in/namit-joshi-b39487270/",
   },
