@@ -11,7 +11,7 @@ const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
 /**
  * Splits a stat like "15+" or "2024" into a number to count and the characters
- * that bracket it. Anything without digits ("New Delhi") comes back numberless
+ * that bracket it. Anything without digits ("India") comes back numberless
  * and is rendered untouched.
  */
 function parse(value: string) {

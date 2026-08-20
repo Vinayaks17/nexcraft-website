@@ -20,14 +20,25 @@ export const YEAR = 2026;
 
 /* -------------------------------------------------------------------------
    Section register
-   The numbers are the page's spine — they appear in the meta row above each
-   band and nowhere else, so renumbering a section is a one-line change.
-   (08) is deliberately absent: Fuel's articles/blog band has no equivalent
-   here, and skipping the number is more honest than resequencing.
+
+   The page's spine. Each entry carries everything the header block over a band
+   needs — the number, the mono meta label, a plain-language title, and one
+   mono line saying what the visitor is looking at — so a section can never
+   drift out of sequence with its own heading.
+
+   The numbers run 01..09 with no gaps. An earlier pass skipped (08) because
+   Fuel's articles band has no equivalent here; in review that read as a
+   numbering mistake rather than as an omission, so the register is now simply
+   contiguous and `sectionOrder` is the single source for both the page and the
+   scrollspy rail.
+
+   `id` is the scroll target. The three that already had anchors — about, work,
+   services, pricing, faqs — keep the ids they shipped with.
 ------------------------------------------------------------------------- */
 
 export type SectionId =
   | "about"
+  | "why"
   | "portfolio"
   | "services"
   | "pricing"
@@ -36,16 +47,106 @@ export type SectionId =
   | "stats"
   | "faq";
 
-export const sectionIndex: Record<SectionId, { num: string; label: string }> = {
-  about: { num: "01", label: "About us" },
-  portfolio: { num: "02", label: "Portfolio" },
-  services: { num: "03", label: "Services" },
-  pricing: { num: "04", label: "Pricing" },
-  testimonial: { num: "05", label: "Testimonial" },
-  archive: { num: "06", label: "Archive" },
-  stats: { num: "07", label: "Stats" },
-  faq: { num: "09", label: "Frequently asked questions" },
+export type SectionEntry = {
+  /** DOM id on the `<section>` — what the scrollspy jumps to. */
+  id: string;
+  /** Two digits, rendered as `(0N)`. */
+  num: string;
+  /** Mono label in the meta row's centre column. */
+  label: string;
+  /** Plain-language heading, set in Switzer. Says what the section *is*. */
+  title: string;
+  /** One mono line under the title: what the visitor is looking at. */
+  subline: string;
 };
+
+export const sectionIndex: Record<SectionId, SectionEntry> = {
+  about: {
+    id: "about",
+    num: "01",
+    label: "About us",
+    title: "Who we are",
+    subline: "A studio in India building websites and the systems behind them",
+  },
+  why: {
+    id: "why-nexcraft",
+    num: "02",
+    label: "Why us",
+    title: "Why NexCRAFT",
+    subline: "Four reasons clients pick us over a template shop",
+  },
+  portfolio: {
+    id: "work",
+    num: "03",
+    label: "Portfolio",
+    title: "Our work",
+    subline: "Four builds we'd show a stranger first",
+  },
+  services: {
+    id: "services",
+    num: "04",
+    label: "Services",
+    title: "What we build",
+    subline: "Three ways we take work off your plate",
+  },
+  pricing: {
+    id: "pricing",
+    num: "05",
+    label: "Pricing",
+    title: "Pricing",
+    subline: "Four fixed-scope plans — pick one and we start",
+  },
+  testimonial: {
+    id: "clients",
+    num: "06",
+    label: "Testimonial",
+    title: "What clients say",
+    subline: "In their words, after launch",
+  },
+  archive: {
+    id: "archive",
+    num: "07",
+    label: "Archive",
+    title: "Every project so far",
+    subline: `${projects.length} projects, live and private, newest first`,
+  },
+  stats: {
+    id: "numbers",
+    num: "08",
+    label: "Stats",
+    title: "The numbers",
+    subline: "The studio in four figures",
+  },
+  faq: {
+    id: "faqs",
+    num: "09",
+    label: "FAQ",
+    title: "Questions, answered",
+    subline: "Still deciding? Start here",
+  },
+};
+
+/**
+ * Page order, top to bottom. The homepage renders in this order and the
+ * scrollspy reads it directly, so there is exactly one place to reorder or
+ * renumber the page.
+ */
+export const sectionOrder: SectionId[] = [
+  "about",
+  "why",
+  "portfolio",
+  "services",
+  "pricing",
+  "testimonial",
+  "archive",
+  "stats",
+  "faq",
+];
+
+/** The register as a list, in page order — what the scrollspy rail renders. */
+export const sectionList: SectionEntry[] = sectionOrder.map(
+  (id) => sectionIndex[id],
+);
 
 /* -------------------------------------------------------------------------
    HERO
@@ -57,17 +158,71 @@ export const fuelHero = {
   /** Small mono block, bottom-left of the media frame — Fuel's "01/ …" list. */
   disciplineIndex: "01/",
   disciplines: ["Websites", "Automations", "E-commerce"],
+  /**
+   * Mono chip sitting directly over the primary CTA. The speed claim is the
+   * single most persuasive thing we say, and it belongs where the decision is
+   * being made rather than only in the USP band nine screens down.
+   */
+  highlight: "Delivered in as little as 2 days",
   primaryCta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondaryCta: { label: "Get a quick estimate", href: "/estimate" },
-  /** Sits in the frame instead of Fuel's photography. */
+  /**
+   * The full-bleed hero image, distorted under the cursor by HeroRipple.
+   *
+   * The client's own photograph. `background-two.png` is their original
+   * (1535×1024, 1.7 MB); this is a web copy re-encoded to JPEG — same pixels,
+   * 84 KB. The original stays in /public as the master.
+   *
+   * It suits the effect: dusk silhouettes against a low sun, so it is dark,
+   * warm, and built from broad soft gradients rather than fine detail — which
+   * is what the ripple needs, since it bends what is there and a busy image
+   * reads as noise while a flat one shows nothing at all.
+   *
+   * The scrim in FuelHero is shaped to this image's particular tonal layout:
+   * heavy over the sun in the top fifth, releasing through the middle, and
+   * lifting again at the foot for the small mono type. Those stops do not
+   * transfer — `background-one` (a bright daylight photo) needed nearly
+   * double, and `background-three` (dark at the top, bright below) needed the
+   * shape inverted. Any further swap wants the contrast sampling re-run rather
+   * than the stops inherited; the method is written up in FuelHero.
+   *
+   * The one caveat: at 1535px it is below the ~2160px a 1440 viewport wants at
+   * our 1.5x DPR cap, so it is upscaled slightly on large displays. A 2400px
+   * master would be sharper.
+   */
+  background: { src: "/background-two.jpg" },
+  /** Oversized wordmark bleeding off the bottom edge. */
+  wordmark: "NEXCRAFT",
+  locationTag: "India",
+} as const;
+
+/* -------------------------------------------------------------------------
+   PREVIEW — the media band directly under the hero
+
+   A beat rather than a numbered section, on the same reasoning as the value
+   line below it: the register counts down the page from (01) About, so a band
+   sitting above it can't take a number without making the sequence read
+   backwards.
+------------------------------------------------------------------------- */
+
+export const fuelPreview = {
+  /** Mono caption under the frame. */
+  caption: "Real build — scroll preview",
   video: {
     src: "/video-nex-one.mp4",
+    /**
+     * Re-cut from the recording at 00:04 — the previous poster was grabbed
+     * from a frame where the recorded page's own video embed had failed, so
+     * the still that greeted every visitor read "this video isn't available".
+     * Regenerate with:
+     *   ffmpeg -ss 4 -i public/video-nex-one.mp4 -frames:v 1 -q:v 4 \
+     *     public/video-posters/nex-one.jpg
+     * Keep it a full 1080×1920 frame: it is object-cover'd exactly like the
+     * video, so a pre-cropped poster would jump when playback starts.
+     */
     poster: "/video-posters/nex-one.jpg",
     alt: "A website we shipped, scrolling",
   },
-  /** Oversized wordmark bleeding off the bottom edge. */
-  wordmark: "NEXCRAFT",
-  locationTag: "New Delhi, IN",
 } as const;
 
 /* -------------------------------------------------------------------------
@@ -76,6 +231,8 @@ export const fuelHero = {
 
 export const valueLine = {
   statement: "Pick a plan. Send the brief. We start within 24 hours.",
+  /** Mono qualifier under the statement — the "zero templates" USP, early. */
+  note: "No templates — every build from scratch",
   items: ["Websites", "Automations", "E-commerce"],
 } as const;
 
@@ -84,9 +241,13 @@ export const valueLine = {
 ------------------------------------------------------------------------- */
 
 export const fuelAbout = {
-  /** The oversized two-line statement. */
+  /**
+   * The oversized two-line statement. It sits *under* the section header's
+   * title, so it is a lead line rather than the heading — rendered as a `<p>`
+   * for exactly that reason.
+   */
   statement:
-    "A studio that treats craft and automation as one job — built in *New Delhi,* shipping to the world.",
+    "A studio that treats craft and automation as one job — built in *India,* shipping to the world.",
   /** Fuel's (Pre) / (+Post) / (=Results) label column, in our language. */
   blocks: [
     {
@@ -120,6 +281,58 @@ export const fuelAbout = {
 } as const;
 
 /* -------------------------------------------------------------------------
+   (02) WHY NEXCRAFT — the page's thesis
+
+   Four claims, each one a sentence a prospect could repeat to a colleague.
+   These are commitments, not features: the two-day figure and the
+   built-from-scratch promise are both echoed higher up the page (the hero chip
+   and the value line), so anything edited here has to be edited there too.
+------------------------------------------------------------------------- */
+
+export type FuelUsp = {
+  num: string;
+  /** Big Switzer statement — the claim itself. */
+  title: string;
+  /** Mono supporting line, one clause. */
+  kicker: string;
+  /** The claim in plain language. */
+  body: string;
+};
+
+export const fuelUsps: FuelUsp[] = [
+  {
+    num: "01",
+    title: "Launch-ready in days, not months",
+    kicker: "From brief to first version",
+    body: "The first version of your website lands in as little as two days — a real, clickable build you can react to, not a mockup and a timeline.",
+  },
+  {
+    num: "02",
+    title: "Built to rank",
+    kicker: "SEO-first structure and speed",
+    body: "Search structure and performance are designed in from the first file, not retrofitted. The point is to move you up the results, not just onto the web.",
+  },
+  {
+    num: "03",
+    title: "Automations from scratch",
+    kicker: "Workflows, not plugins",
+    body: "Custom-built workflows wired into the tools you already run, so the repetitive work comes off your team's plate instead of moving around on it.",
+  },
+  {
+    num: "04",
+    title: "Zero templates",
+    kicker: "Designed and built from nothing",
+    body: "Every site is drawn and coded from scratch. No themes, no page-builder scaffolding, no copy-paste — the build is original and it is yours to own.",
+  },
+];
+
+export const fuelWhy = {
+  /** The oversized lead statement under the section header. */
+  statement:
+    "Four things we won't compromise on — and the reason clients stay past the *first build.*",
+} as const;
+
+/* -------------------------------------------------------------------------
    LOGO MARQUEE — tool logos, monochrome
    Drawn from lib/tech-graph so the marquee and the stack section can never
    drift apart.
@@ -128,23 +341,25 @@ export const fuelAbout = {
 export const marqueeCaption = "The stack we build on";
 
 /* -------------------------------------------------------------------------
-   (02) PORTFOLIO — featured carousel
+   (03) PORTFOLIO — featured carousel
    Which projects appear is decided by the `featured` flag in
    portfolio-content.ts, so the carousel and the /portfolio grid can never
    disagree about what a project is called or what it links to.
 ------------------------------------------------------------------------- */
 
 export const fuelPortfolio = {
-  /** Fuel sets a short coded title here; ours names the year of work. */
-  title: "NX-26'",
-  intro: "Four we'd show a stranger first.",
+  /**
+   * The short coded title in the sticky rail — decoration, not the section
+   * heading. "Our work" is the heading now, and it lives in the register.
+   */
+  code: "NX-26'",
   seeAll: { label: `See all (${projects.length})`, href: "/portfolio" },
   prevLabel: "Previous project",
   nextLabel: "Next project",
 } as const;
 
 /* -------------------------------------------------------------------------
-   (03) SERVICES
+   (04) SERVICES
 ------------------------------------------------------------------------- */
 
 export type FuelService = {
@@ -210,7 +425,7 @@ export const fuelServices = {
 } as const;
 
 /* -------------------------------------------------------------------------
-   (04) PRICING
+   (05) PRICING
    Prices and feature lists come straight from pricing-content.ts — this file
    only carries the surrounding chrome.
 ------------------------------------------------------------------------- */
@@ -218,11 +433,52 @@ export const fuelServices = {
 export const fuelPricing = {
   includedLabel: "What's included",
   addOnsLabel: "Add-ons",
-  note: "Free strategy call · Clickable prototype before you commit · No hidden fees",
+  note: "Free strategy call · SEO-first build · Clickable prototype before you commit · No hidden fees",
 } as const;
 
 /* -------------------------------------------------------------------------
-   (05) TESTIMONIAL
+   CTA BANDS
+
+   Two asks placed so nothing on the page runs more than three sections without
+   one: band A after (03) Portfolio, band B after (06) Testimonial, and the
+   footer's own CTA closing the last three. Same pair of actions in all three —
+   a visitor who has decided shouldn't have to learn a new control — but the
+   headline is written fresh each time so the repeat doesn't read as a
+   duplicated component.
+------------------------------------------------------------------------- */
+
+export type FuelCtaBandContent = {
+  eyebrow: string;
+  heading: string;
+  body: string;
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+};
+
+const bandActions = {
+  primary: { label: "Book Your Free Strategy Call", href: routes.bookCall },
+  secondary: { label: "Get a quick estimate", href: "/estimate" },
+};
+
+export const fuelCtaBands: Record<"work" | "clients", FuelCtaBandContent> = {
+  /** After (03) Portfolio — the visitor has just seen the proof. */
+  work: {
+    eyebrow: "Next step",
+    heading: "Like what you see?",
+    body: "Thirty minutes, no deck. We'll scope what you need and tell you what it costs.",
+    ...bandActions,
+  },
+  /** After (06) Testimonial — the visitor has just heard from someone else. */
+  clients: {
+    eyebrow: "Next step",
+    heading: "Your project could be next.",
+    body: "Send the brief and we start within 24 hours — first version in as little as two days.",
+    ...bandActions,
+  },
+};
+
+/* -------------------------------------------------------------------------
+   (06) TESTIMONIAL
    TODO — every quote, name, company and role below is a PLACEHOLDER. The
    names are deliberately obviously fake ("Client Name") so none of this can
    reach production mistaken for a real endorsement. Replace with signed-off
@@ -270,19 +526,18 @@ export const fuelTestimonialSection = {
 } as const;
 
 /* -------------------------------------------------------------------------
-   (06) ARCHIVE — chronological, most recent first
+   (07) ARCHIVE — chronological, most recent first
 
    The years themselves live on `Project.year` in portfolio-content.ts, so the
    archive and the /portfolio grid can't disagree about when something shipped.
    They are still placeholders — see the TODO on that field.
+
+   The one-line description of this band lives on `sectionIndex.archive.subline`
+   with every other section's, so it can't drift from the heading above it.
 ------------------------------------------------------------------------- */
 
-export const fuelArchive = {
-  intro: "Everything we've shipped, newest first.",
-} as const;
-
 /* -------------------------------------------------------------------------
-   (07) STATS — real figures, straight from about-content.ts
+   (08) STATS — real figures, straight from about-content.ts
 ------------------------------------------------------------------------- */
 
 export const fuelStats = [
@@ -302,10 +557,10 @@ export const fuelStats = [
     value: "2024",
     label: "Founded",
     description:
-      "Started in January 2024 in New Delhi and building for clients abroad from the first month.",
+      "Started in January 2024 in India and building for clients abroad from the first month.",
   },
   {
-    value: "New Delhi",
+    value: "India",
     label: "Headquarters",
     description:
       "One studio, no account managers in between, online across European and US time zones.",
@@ -314,11 +569,8 @@ export const fuelStats = [
 
 /* -------------------------------------------------------------------------
    (09) FAQ — the three from home-content.ts, in Fuel's numbered accordion
+   Its intro line is `sectionIndex.faq.subline`.
 ------------------------------------------------------------------------- */
-
-export const fuelFaq = {
-  intro: "Still deciding? Start here.",
-} as const;
 
 /* -------------------------------------------------------------------------
    CTA + FOOTER
@@ -329,5 +581,5 @@ export const fuelFooter = {
   cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondary: { label: "Get a quick estimate", href: "/estimate" },
   wordmark: "NEXCRAFT",
-  location: "Crafted in New Delhi, India",
+  location: "Crafted in India, shipped worldwide",
 } as const;

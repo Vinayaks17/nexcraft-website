@@ -53,13 +53,14 @@ export default function PricingPage() {
         <p className={cn(fuelLabel, "mt-10 text-cream/55")}>{fuelPricing.note}</p>
       </section>
 
-      {/* Reassurances — the same three promises, as a numbered row rather than
-          a pill strip, so they sit in the same register as every other list on
-          the site. */}
+      {/* Reassurances — the same promises, as a numbered row rather than a
+          pill strip, so they sit in the same register as every other list on
+          the site. Four across from lg and two-up at sm: a three-column grid
+          left the fourth stranded on its own row. */}
       <section className="bg-ink-alt py-16 sm:py-20">
         <div className={fuelShell}>
           <FuelSectionMeta label="What you get either way" />
-          <ul className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
+          <ul className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
             {reassurances.map((item, i) => (
               <li key={item} className="flex gap-4">
                 <span className={cn(fuelLabel, "mt-1 shrink-0 text-primary")}>

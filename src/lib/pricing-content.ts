@@ -139,6 +139,7 @@ export const pricingTiers: PricingTier[] = [...websiteTiers, automationTier];
 
 export const reassurances = [
   "Free strategy call",
+  "SEO-first build, from the first file",
   "Clickable prototype before you commit",
   "No hidden fees",
 ] as const;

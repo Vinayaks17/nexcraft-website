@@ -14,14 +14,14 @@ export const aboutHero = {
   eyebrow: "About NexCRAFT",
   heading: "Built in India. *Crafted* for the world.",
   intro:
-    "Founded in January 2024 in New Delhi, we're a team of 10+ designers, engineers, and automation builders shipping for clients across Europe and beyond.",
+    "Founded in January 2024 in India, we're a team of 10+ designers, engineers, and automation builders shipping for clients across Europe and beyond.",
 } as const;
 
 export const story = {
   eyebrow: "Our story",
   heading: "One mission, *two* beneficiaries.",
   paragraphs: [
-    "NexCRAFT started with a simple observation: the studios doing genuinely excellent web and automation work were charging like it was a luxury, and the ones charging fairly were shipping templates. We decided to be the third option — senior-grade craft, delivered from New Delhi, priced like we want the relationship to last.",
+    "NexCRAFT started with a simple observation: the studios doing genuinely excellent web and automation work were charging like it was a luxury, and the ones charging fairly were shipping templates. We decided to be the third option — senior-grade craft, delivered from India, priced like we want the relationship to last.",
     "The second half of the mission is closer to home. Every project we take on becomes a training ground for young Indian engineers who have the talent but not the reps. They build real products for real clients with real mentorship beside them — and our clients get a team that is genuinely invested in the outcome. That isn't charity. It's how we build people who are world-class, and how we stay that way ourselves.",
   ],
 } as const;
@@ -29,7 +29,7 @@ export const story = {
 /** Stat strip under the story. Update the numbers here. */
 export const stats = [
   { value: "2024", label: "Founded" },
-  { value: "New Delhi", label: "HQ" },
+  { value: "India", label: "HQ" },
   { value: "10+", label: "Team" },
   { value: "15+", label: "Projects shipped" },
 ] as const;
@@ -114,7 +114,7 @@ export const lifeAt: {
 } = {
   heading: "Builders, *not vendors.*",
   paragraphs: [
-    "We work out of one room in New Delhi, which means decisions happen in conversation rather than in ticket queues. Most days that room is a mix of senior engineers shipping client work and interns two months into their first real codebase, arguing about the same problem.",
+    "We work out of one room in India, which means decisions happen in conversation rather than in ticket queues. Most days that room is a mix of senior engineers shipping client work and interns two months into their first real codebase, arguing about the same problem.",
     "We're online across time zones for clients in Europe and the US, and we run an intern engineering program that puts young talent on production work from week one — supervised, reviewed, and held to the standard our clients pay for.",
   ],
   photos: [

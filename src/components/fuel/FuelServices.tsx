@@ -8,7 +8,7 @@ import { AutomationDiagram } from "@/components/home/AutomationDiagram";
 import { FuelVideo } from "@/components/fuel/FuelVideo";
 import {
   FuelBracketLink,
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelBody,
   fuelLabel,
   fuelShell,
@@ -96,18 +96,22 @@ function ServiceMedia({ media }: { media: FuelService["media"] }) {
 ------------------------------------------------------------------------- */
 
 export function FuelServices() {
+  const section = sectionIndex.services;
+
   return (
     <section
-      id="services"
-      className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
+      id={section.id}
+      className="scroll-mt-28 bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
     >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.services} tone="light" />
+        <FuelSectionHeader {...section} tone="light" />
 
-        <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:items-end lg:gap-12">
+        {/* The statement is a `<p>`: the band's heading is "What we build",
+            in the header above, and this is the claim under it. */}
+        <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:items-end lg:gap-12">
           <RevealHeading
             text={fuelServices.statement}
-            as="h2"
+            as="p"
             className={cn(fuelStatement, "text-ink lg:col-span-9")}
           />
           <motion.div {...enterProps("up", 0.1)} className="lg:col-span-3">

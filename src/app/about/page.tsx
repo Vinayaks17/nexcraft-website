@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Founded in New Delhi in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of Indian engineers while doing it.",
+    "Founded in India in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of Indian engineers while doing it.",
 };
 
 /**
@@ -111,8 +111,9 @@ export default function AboutPage() {
                 <dd
                   className={cn(
                     fuelNumeral,
-                    // "New Delhi" is several times the width of any figure
-                    // beside it, so long values step down rather than overflow.
+                    // A word-valued figure ("India") is wider than any
+                    // numeral beside it, so long values step down rather
+                    // than overflow.
                     stat.value.length > 6
                       ? "text-[clamp(1.75rem,3vw,2.5rem)]"
                       : "text-[clamp(2.25rem,4vw,3.5rem)]",

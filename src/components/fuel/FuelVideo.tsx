@@ -38,9 +38,28 @@ export function FuelVideo({
       return;
     }
 
-    // Autoplay can still be refused (low-power mode, a browser policy). The
-    // poster stays up in that case, which is a perfectly good still.
-    void el.play().catch(() => {});
+    // Playback is gated on visibility. A playing <video> is decoded every frame
+    // whether or not it is on screen, and this page carries more than one of
+    // them — leaving them all running is a steady main-thread and GPU cost paid
+    // for something nobody is looking at.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Autoplay can still be refused (low-power mode, a browser policy).
+          // The poster stays up in that case, which is a perfectly good still.
+          void el.play().catch(() => {});
+        } else {
+          el.pause();
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      el.pause();
+    };
   }, [reduceMotion]);
 
   return (

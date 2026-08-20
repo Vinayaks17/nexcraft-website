@@ -21,7 +21,7 @@ export const contactPage = {
   secondary: { label: "Get a quick estimate", href: "/estimate" },
   location: {
     label: "Studio",
-    value: "New Delhi, India",
+    value: "India",
     note: "Online across European and US hours.",
   },
 } as const;

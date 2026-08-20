@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { CountUp } from "@/components/ui/CountUp";
 import {
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelHeadline,
   fuelLabel,
   fuelNumeral,
@@ -44,19 +44,21 @@ export function FuelTestimonial() {
   }, [reduceMotion, paused, go]);
 
   const current = fuelTestimonials[index];
+  const section = sectionIndex.testimonial;
 
   return (
     <section
-      className="bg-ink-alt py-20 sm:py-24 lg:py-32"
+      id={section.id}
+      className="scroll-mt-28 bg-ink-alt py-20 sm:py-24 lg:py-32"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.testimonial} />
+        <FuelSectionHeader {...section} />
 
-        <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:gap-12">
           {/* Left rail — the standing flag that none of this is real yet. */}
           <motion.div {...enterProps("left")} className="lg:col-span-3">
             <p

@@ -4,41 +4,42 @@ import { useId, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import {
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelBody,
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelFaq, sectionIndex } from "@/lib/home-fuel-content";
+import { sectionIndex } from "@/lib/home-fuel-content";
 import { faqs } from "@/lib/home-content";
 import { EASE, enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (09) FAQ — our three existing questions in the reference's numbered
- * accordion: no card, no chrome, just a hairline per row, a mono index, and a
- * `+` that rotates into a `×`.
+ * (09) Questions, answered — our three existing questions in the reference's
+ * numbered accordion: no card, no chrome, just a hairline per row, a mono
+ * index, and a `+` that rotates into a `×`.
  */
 export function FuelFaqs() {
   // Single-open accordion. Nothing starts open here: the numbered rows read as
   // a deliberate list on their own, which the card-based version didn't.
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const baseId = useId();
+  const section = sectionIndex.faq;
 
   return (
-    <section id="faqs" className="bg-ink py-20 sm:py-24 lg:py-32">
+    <section
+      id={section.id}
+      className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-32"
+    >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.faq} />
+        {/* The nudge that used to sit in the left rail is the header's subline
+            now, which leaves the accordion the whole lower half of the band —
+            still offset to the reference's column, just no longer paying for a
+            rail that held one line. */}
+        <FuelSectionHeader {...section} />
 
-        <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
-          <motion.p
-            {...enterProps("left")}
-            className={cn(fuelLabel, "text-cream/55 lg:col-span-3")}
-          >
-            {fuelFaq.intro}
-          </motion.p>
-
-          <div className="border-t border-cream/12 lg:col-span-9">
+        <div className="mt-12 grid grid-cols-1 sm:mt-16 lg:grid-cols-12 lg:gap-12">
+          <div className="border-t border-cream/12 lg:col-span-9 lg:col-start-4">
             {faqs.items.map((item, i) => {
               const isOpen = openIndex === i;
               const panelId = `${baseId}-panel-${i}`;

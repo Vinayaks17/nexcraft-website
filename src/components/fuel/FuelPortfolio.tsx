@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { FuelCursorChip } from "@/components/fuel/FuelCursorChip";
 import {
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelHeadline,
   fuelLabel,
   fuelShell,
@@ -116,6 +116,7 @@ function Slide({
 ------------------------------------------------------------------------- */
 
 export function FuelPortfolio() {
+  const section = sectionIndex.portfolio;
   const trackRef = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
   const [edges, setEdges] = useState({ atStart: true, atEnd: false });
@@ -221,22 +222,25 @@ export function FuelPortfolio() {
   };
 
   return (
-    <section id="work" className="bg-ink py-20 sm:py-24 lg:py-32">
+    <section
+      id={section.id}
+      className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-32"
+    >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.portfolio} />
+        <FuelSectionHeader {...section} />
 
-        <div className="mt-14 grid grid-cols-1 gap-10 sm:mt-20 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:gap-12">
           {/* Left rail — title, arrows, "see all". Sticky from lg so it holds
               beside the track the way the reference's does. */}
           <motion.div
             {...enterProps("left")}
             className="lg:col-span-3 lg:sticky lg:top-32 lg:self-start"
           >
-            <h2 className={cn(fuelHeadline, "text-cream")}>
-              {fuelPortfolio.title}
-            </h2>
-            <p className="mt-4 max-w-[26ch] text-[0.9375rem] leading-[1.55] text-cream/60">
-              {fuelPortfolio.intro}
+            {/* The year code is decoration, not the section heading — "Our
+                work" is, in the header above. A `<p>` keeps the outline
+                honest while the rail keeps its Fuel signature. */}
+            <p className={cn(fuelHeadline, "text-cream")} aria-hidden>
+              {fuelPortfolio.code}
             </p>
 
             <div className="mt-8 flex items-center gap-3">

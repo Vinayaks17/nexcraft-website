@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { CountUp } from "@/components/ui/CountUp";
 import {
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelBody,
   fuelNumeral,
   fuelShell,
@@ -14,27 +14,33 @@ import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (07) Stats — four figures, all real, all taken from about-content.ts.
+ * (08) The numbers — four figures, all real, all taken from about-content.ts.
  *
- * CountUp handles the odd one out on its own: "New Delhi" has no digits, so it
+ * CountUp handles the odd one out on its own: "India" has no digits, so it
  * renders untouched rather than counting to nothing. The three numeric values
  * count up the first time the grid scrolls into view, and render at their final
  * value on the server and for reduced-motion users.
  */
 export function FuelStats() {
-  return (
-    <section className="bg-ink-alt py-20 sm:py-24 lg:py-32">
-      <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.stats} />
+  const section = sectionIndex.stats;
 
-        <dl className="mt-14 grid grid-cols-1 gap-x-12 gap-y-14 sm:mt-20 sm:grid-cols-2">
+  return (
+    <section
+      id={section.id}
+      className="scroll-mt-28 bg-ink-alt py-20 sm:py-24 lg:py-32"
+    >
+      <div className={fuelShell}>
+        <FuelSectionHeader {...section} />
+
+        <dl className="mt-12 grid grid-cols-1 gap-x-12 gap-y-14 sm:mt-16 sm:grid-cols-2">
           {fuelStats.map((stat, i) => (
             <motion.div key={stat.label} {...enterProps("up", i * 0.08)}>
               <dd
                 className={cn(
                   fuelNumeral,
-                  // "New Delhi" is twice the width of any figure beside it, so
-                  // the long values step down instead of overflowing the cell.
+                  // A word-valued figure ("India") is wider than any numeral
+                  // beside it, so long values step down instead of overflowing
+                  // the cell.
                   stat.value.length > 6
                     ? "text-[clamp(2rem,4vw,3.5rem)]"
                     : undefined,

@@ -5,11 +5,11 @@ import Image from "next/image";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 
 import {
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { fuelArchive, sectionIndex } from "@/lib/home-fuel-content";
+import { sectionIndex } from "@/lib/home-fuel-content";
 import { projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { EASE, enterProps } from "@/lib/motion";
@@ -111,18 +111,17 @@ export function FuelArchive() {
     () => archive.find((p) => p.id === hovered) ?? null,
     [hovered],
   );
+  const section = sectionIndex.archive;
 
   return (
-    <section className="bg-ink py-20 sm:py-24 lg:py-32">
+    <section
+      id={section.id}
+      className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-32"
+    >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.archive} />
-
-        <motion.p
-          {...enterProps("fade")}
-          className={cn(fuelLabel, "mt-6 text-cream/55")}
-        >
-          {fuelArchive.intro}
-        </motion.p>
+        {/* The one-line description this band used to carry separately is now
+            the header's subline, so there is one place it can be edited. */}
+        <FuelSectionHeader {...section} />
 
         <ul className="mt-12 border-t border-cream/12 sm:mt-16">
           {archive.map((project, i) => {

@@ -44,6 +44,16 @@ export const fuelHeadline =
 export const fuelNumeral =
   "font-display font-semibold leading-[0.88] tracking-[-0.035em] text-[clamp(2.5rem,6vw,5.5rem)]";
 
+/**
+ * Section title — the plain-language heading in every band's header block.
+ *
+ * Deliberately a long way below `fuelStatement`: in most bands a marketing
+ * statement follows it at 5.75rem, and the title has to read as the label on
+ * the section rather than compete with the line under it.
+ */
+export const fuelSectionTitle =
+  "font-display font-semibold leading-[1.05] tracking-[-0.03em] text-[clamp(1.75rem,3.2vw,2.75rem)]";
+
 /** Body copy inside a band. */
 export const fuelBody =
   "text-[0.9375rem] leading-[1.55] tracking-[-0.005em] sm:text-base";
@@ -113,6 +123,55 @@ export function FuelSectionMeta({
         </p>
         <p className={cn("sm:text-center", ink)}>({label})</p>
         <p className={cn("hidden sm:block sm:text-right", ink)}>© {YEAR}</p>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+   Section header block
+
+   Every numbered band on the homepage opens with this, and the consistency is
+   the point: the meta row alone told a visitor which number they had reached
+   and nothing about what it was for, which is exactly the note the client
+   raised. Number, then a plain-language title, then one mono line describing
+   what is below it.
+
+   The title is the band's `h2`. Bands that also carry an oversized marketing
+   statement (about, why, services) render that statement as a `<p>` underneath
+   — it is a claim, not a heading, and demoting it keeps one `h2` per section.
+------------------------------------------------------------------------- */
+
+export function FuelSectionHeader({
+  num,
+  label,
+  title,
+  subline,
+  tone = "dark",
+  className,
+  titleClassName,
+}: {
+  num?: string;
+  label: string;
+  title: string;
+  subline: string;
+  tone?: "dark" | "light";
+  className?: string;
+  titleClassName?: string;
+}) {
+  const ink = tone === "light" ? "text-ink" : "text-cream";
+  /* The contrast floor for 11px mono — see the note on fuelLabel. */
+  const faint = tone === "light" ? "text-ink/65" : "text-cream/60";
+
+  return (
+    <div className={className}>
+      <FuelSectionMeta num={num} label={label} tone={tone} />
+
+      <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-baseline sm:justify-between sm:gap-10">
+        <h2 className={cn(fuelSectionTitle, ink, titleClassName)}>{title}</h2>
+        <p className={cn(fuelLabel, "max-w-[46ch] leading-[1.5] sm:text-right", faint)}>
+          {subline}
+        </p>
       </div>
     </div>
   );

@@ -84,7 +84,7 @@ export const terms: LegalDocument = {
       num: "06",
       title: "Governing law",
       body: [
-        "TODO — PLACEHOLDER. Name the governing jurisdiction and the forum for disputes. NexCRAFT operates from New Delhi, India and serves clients in the EU and the US, so this needs deliberate legal input rather than a default — including whether consumer-protection rules in the client's country override the choice.",
+        "TODO — PLACEHOLDER. Name the governing jurisdiction and the forum for disputes. NexCRAFT operates from India and serves clients in the EU and the US, so this needs deliberate legal input rather than a default — including whether consumer-protection rules in the client's country override the choice.",
         "TODO — PLACEHOLDER. Set out the dispute process before litigation: notice, good-faith negotiation, and any agreed mediation or arbitration step.",
       ],
     },

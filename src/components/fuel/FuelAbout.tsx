@@ -7,7 +7,7 @@ import { RevealHeading } from "@/components/ui/RevealHeading";
 import { CountUp } from "@/components/ui/CountUp";
 import {
   FuelBracketLink,
-  FuelSectionMeta,
+  FuelSectionHeader,
   fuelBody,
   fuelLabel,
   fuelShell,
@@ -18,7 +18,7 @@ import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (01) About — the page's first inversion.
+ * (01) Who we are — the page's first inversion.
  *
  * The band is cream, which is why `--accent-ink` is overridden here: brand
  * orange is ~1.8:1 on cream and effectively invisible, so the accent word falls
@@ -26,17 +26,24 @@ import { cn } from "@/lib/utils";
  * uses, kept identical on purpose.
  */
 export function FuelAbout() {
+  const section = sectionIndex.about;
+
   return (
     <section
-      id="about"
-      className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
+      id={section.id}
+      className="scroll-mt-28 bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-32"
     >
       <div className={fuelShell}>
-        <FuelSectionMeta {...sectionIndex.about} tone="light" />
+        <FuelSectionHeader {...section} tone="light" />
 
-        {/* The oversized statement. The first line is indented, which is the
-            reference's one real typographic signature — it turns a block of
-            display type into something that reads as set rather than typed.
+        {/* The oversized statement, under the header's title. A `<p>`, not a
+            heading: "Who we are" is this band's h2 and this is the claim
+            beneath it, so a second heading here would only make the outline
+            say the same thing twice.
+
+            The first line is indented, which is the reference's one real
+            typographic signature — it turns a block of display type into
+            something that reads as set rather than typed.
 
             `text-indent` is inherited, and RevealHeading wraps every word in an
             `overflow-hidden` inline-block — each of which is a block container
@@ -46,10 +53,10 @@ export function FuelAbout() {
             which is the only place it was ever meant to apply. */}
         <RevealHeading
           text={fuelAbout.statement}
-          as="h2"
+          as="p"
           className={cn(
             fuelStatement,
-            "mt-14 text-ink sm:mt-20 lg:[text-indent:18%] lg:[&_span]:[text-indent:0]",
+            "mt-12 text-ink sm:mt-16 lg:[text-indent:18%] lg:[&_span]:[text-indent:0]",
           )}
         />
 

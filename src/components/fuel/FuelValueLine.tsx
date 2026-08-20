@@ -19,9 +19,17 @@ export function FuelValueLine() {
           {...enterProps("fade")}
           className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16"
         >
-          <p className="max-w-[30ch] text-[1.25rem] leading-[1.25] font-medium tracking-[-0.02em] text-cream sm:text-[1.5rem] lg:max-w-[38ch]">
-            {valueLine.statement}
-          </p>
+          <div className="max-w-[30ch] lg:max-w-[38ch]">
+            <p className="text-[1.25rem] leading-[1.25] font-medium tracking-[-0.02em] text-cream sm:text-[1.5rem]">
+              {valueLine.statement}
+            </p>
+            {/* The "zero templates" USP, stated once early. (02) Why NexCRAFT
+                makes the full argument; this is the qualifier a visitor needs
+                while they are still reading the offer. */}
+            <p className={cn(fuelLabel, "mt-4 text-cream/60")}>
+              {valueLine.note}
+            </p>
+          </div>
 
           <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
             {valueLine.items.map((item, i) => (
