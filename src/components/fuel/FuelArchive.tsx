@@ -9,8 +9,7 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { sectionIndex } from "@/lib/home-fuel-content";
-import { projects, type Project } from "@/lib/portfolio-content";
+import { archiveSection, projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { EASE, enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -111,12 +110,12 @@ export function FuelArchive() {
     () => archive.find((p) => p.id === hovered) ?? null,
     [hovered],
   );
-  const section = sectionIndex.archive;
+  const section = archiveSection;
 
   return (
     <section
-      id={section.id}
-      className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-32"
+      id="archive"
+      className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-28"
     >
       <div className={fuelShell}>
         {/* The one-line description this band used to carry separately is now
@@ -141,7 +140,9 @@ export function FuelArchive() {
                     makes the recession mean something. */}
                 <span
                   className={cn(
-                    "col-span-9 font-display leading-[1.05] font-semibold tracking-[-0.03em] transition-colors duration-300",
+                    // `[line-height:…]`, not `leading-[…]` — the size class
+                    // below would otherwise delete it through tailwind-merge.
+                    "col-span-9 font-display [line-height:1.06] font-semibold tracking-[-0.03em] transition-colors duration-300",
                     "text-[clamp(1.375rem,3vw,2.75rem)]",
                     floating && hovered !== null && !active
                       ? "text-cream/55"

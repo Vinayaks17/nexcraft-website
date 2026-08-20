@@ -11,8 +11,8 @@ import {
 } from "@/components/fuel/FuelPrimitives";
 import { FuelTierCard } from "@/components/fuel/FuelTierCard";
 import { renderAccent } from "@/components/ui/AccentWord";
-import { fuelPricing } from "@/lib/home-fuel-content";
 import {
+  fuelPricing,
   pricingCta,
   pricingHero,
   pricingTiers,
@@ -37,7 +37,7 @@ export default function PricingPage() {
   return (
     <>
       <FuelPageHeader
-        num="04"
+        num="03"
         label="Pricing"
         heading={pricingHero.heading}
         intro={pricingHero.intro}

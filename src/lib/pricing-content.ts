@@ -137,6 +137,17 @@ export const automationTier: PricingTier = {
  */
 export const pricingTiers: PricingTier[] = [...websiteTiers, automationTier];
 
+/**
+ * Chrome around the tier cards. It lived in home-fuel-content while pricing was
+ * a homepage band; that band is gone (the client asked for one place to talk
+ * about money, and /pricing is it), so it lives with the prices now.
+ */
+export const fuelPricing = {
+  includedLabel: "What's included",
+  addOnsLabel: "Add-ons",
+  note: "Free strategy call · SEO-first build · Clickable prototype before you commit · No hidden fees",
+} as const;
+
 export const reassurances = [
   "Free strategy call",
   "SEO-first build, from the first file",

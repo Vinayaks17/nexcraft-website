@@ -15,7 +15,7 @@ import { EASE, enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (09) Questions, answered — our three existing questions in the reference's
+ * (06) Questions, answered — our three existing questions in the reference's
  * numbered accordion: no card, no chrome, just a hairline per row, a mono
  * index, and a `+` that rotates into a `×`.
  */

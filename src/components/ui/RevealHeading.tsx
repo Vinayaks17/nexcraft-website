@@ -103,16 +103,28 @@ export function RevealHeading({
     >
       {words.map((word, i) => (
         <span key={`${word.text}-${i}`}>
-          {/* The clip. Padding on three sides gives descenders and the accent
-              italic's overhang somewhere to live; the matching negative margin
-              keeps the word's footprint — and so the line breaks — unchanged. */}
+          {/* The clip. Padding on all four sides gives ascenders, descenders
+              and the accent italic's overhang somewhere to live; the matching
+              negative margin cancels it, so the word's footprint — and so the
+              line breaks and the line pitch — are unchanged.
+
+              The vertical padding used to be bottom-only, which was fine while
+              every display line was (accidentally) rendering at a 1.5 root
+              line-height and had 0.15em of slack above it. At the real 1.03-1.08
+              leading the half-leading goes negative — Switzer's font box is
+              1.23em against a 1.04em line box — so the ink now sits ~0.1em
+              proud of the line box at BOTH ends and a bottom-only mask shaves
+              the ascenders and diacritics. 0.2em each way clears the measured
+              worst case (0.864em ink ascent against a 0.885em box) with room
+              to spare, and the word at rest is still parked a full 1.3x its own
+              height below the enlarged window, so nothing peeks out early. */}
           <span
             ref={(el) => {
               wordRefs.current[i] = el;
             }}
             className={cn(
               "inline-block overflow-hidden align-bottom",
-              "px-[0.08em] pb-[0.18em] -mx-[0.08em] -mb-[0.18em]",
+              "px-[0.08em] py-[0.2em] -mx-[0.08em] -my-[0.2em]",
             )}
           >
             <motion.span

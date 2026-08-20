@@ -26,25 +26,25 @@ export const YEAR = 2026;
    mono line saying what the visitor is looking at — so a section can never
    drift out of sequence with its own heading.
 
-   The numbers run 01..09 with no gaps. An earlier pass skipped (08) because
-   Fuel's articles band has no equivalent here; in review that read as a
-   numbering mistake rather than as an omission, so the register is now simply
-   contiguous and `sectionOrder` is the single source for both the page and the
-   scrollspy rail.
+   The order is show-first, talk-second: the work and what it costs to build
+   come before the studio's own story. Proof is front-loaded (the hero preview
+   and (02) Our work), the argument follows in (03), and (04) Who we are is a
+   compact band rather than the page's second-biggest section — the long
+   version of it lives on /about, which is where someone who wants it goes.
 
-   `id` is the scroll target. The three that already had anchors — about, work,
-   services, pricing, faqs — keep the ids they shipped with.
+   Pricing is no longer a homepage band at all; /pricing carries it and the
+   navbar now numbers it 03.
+
+   `id` is the scroll target. The ids that already had anchors — work,
+   services, faqs — keep the ones they shipped with.
 ------------------------------------------------------------------------- */
 
 export type SectionId =
-  | "about"
-  | "why"
-  | "portfolio"
   | "services"
-  | "pricing"
-  | "testimonial"
-  | "archive"
-  | "stats"
+  | "portfolio"
+  | "why"
+  | "about"
+  | "proof"
   | "faq";
 
 export type SectionEntry = {
@@ -61,65 +61,44 @@ export type SectionEntry = {
 };
 
 export const sectionIndex: Record<SectionId, SectionEntry> = {
-  about: {
-    id: "about",
-    num: "01",
-    label: "About us",
-    title: "Who we are",
-    subline: "A studio in India building websites and the systems behind them",
-  },
-  why: {
-    id: "why-nexcraft",
-    num: "02",
-    label: "Why us",
-    title: "Why NexCRAFT",
-    subline: "Four reasons clients pick us over a template shop",
-  },
-  portfolio: {
-    id: "work",
-    num: "03",
-    label: "Portfolio",
-    title: "Our work",
-    subline: "Four builds we'd show a stranger first",
-  },
   services: {
     id: "services",
-    num: "04",
+    num: "01",
     label: "Services",
     title: "What we build",
     subline: "Three ways we take work off your plate",
   },
-  pricing: {
-    id: "pricing",
+  portfolio: {
+    id: "work",
+    num: "02",
+    label: "Portfolio",
+    title: "Our work",
+    subline: `Four builds we'd show a stranger first — ${projects.length} in the full index`,
+  },
+  why: {
+    id: "why-nexcraft",
+    num: "03",
+    label: "Why us",
+    title: "Why NexCRAFT",
+    subline: "Five reasons clients pick us over a template shop",
+  },
+  about: {
+    id: "about",
+    num: "04",
+    label: "About us",
+    title: "Who we are",
+    subline: "A studio in India building websites and the systems behind them",
+  },
+  proof: {
+    id: "proof",
     num: "05",
-    label: "Pricing",
-    title: "Pricing",
-    subline: "Four fixed-scope plans — pick one and we start",
-  },
-  testimonial: {
-    id: "clients",
-    num: "06",
-    label: "Testimonial",
+    label: "Proof",
     title: "What clients say",
-    subline: "In their words, after launch",
-  },
-  archive: {
-    id: "archive",
-    num: "07",
-    label: "Archive",
-    title: "Every project so far",
-    subline: `${projects.length} projects, live and private, newest first`,
-  },
-  stats: {
-    id: "numbers",
-    num: "08",
-    label: "Stats",
-    title: "The numbers",
-    subline: "The studio in four figures",
+    subline: "In their words, and the numbers behind them",
   },
   faq: {
     id: "faqs",
-    num: "09",
+    num: "06",
     label: "FAQ",
     title: "Questions, answered",
     subline: "Still deciding? Start here",
@@ -132,14 +111,11 @@ export const sectionIndex: Record<SectionId, SectionEntry> = {
  * renumber the page.
  */
 export const sectionOrder: SectionId[] = [
-  "about",
-  "why",
-  "portfolio",
   "services",
-  "pricing",
-  "testimonial",
-  "archive",
-  "stats",
+  "portfolio",
+  "why",
+  "about",
+  "proof",
   "faq",
 ];
 
@@ -159,11 +135,12 @@ export const fuelHero = {
   disciplineIndex: "01/",
   disciplines: ["Websites", "Automations", "E-commerce"],
   /**
-   * Mono chip sitting directly over the primary CTA. The speed claim is the
-   * single most persuasive thing we say, and it belongs where the decision is
-   * being made rather than only in the USP band nine screens down.
+   * Mono chip sitting directly over the primary CTA — the sharpest hook we
+   * have, on the decision. Two hours is a smaller promise than two days and a
+   * far more surprising one, so it is the line that goes here; the two-day
+   * launch claim keeps its place as (03) Why NexCRAFT's second USP.
    */
-  highlight: "Delivered in as little as 2 days",
+  highlight: "First mockup in 2 hours",
   primaryCta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondaryCta: { label: "Get a quick estimate", href: "/estimate" },
   /**
@@ -234,132 +211,18 @@ export const valueLine = {
   /** Mono qualifier under the statement — the "zero templates" USP, early. */
   note: "No templates — every build from scratch",
   items: ["Websites", "Automations", "E-commerce"],
-} as const;
-
-/* -------------------------------------------------------------------------
-   (01) ABOUT
-------------------------------------------------------------------------- */
-
-export const fuelAbout = {
   /**
-   * The oversized two-line statement. It sits *under* the section header's
-   * title, so it is a lead line rather than the heading — rendered as a `<p>`
-   * for exactly that reason.
+   * The strip carries a real ask now. It sits directly under the hero and the
+   * build preview, which is the first point on the page where a visitor has
+   * seen enough to act — and with pricing off the homepage, it is also the
+   * only signpost to /pricing above the footer.
    */
-  statement:
-    "A studio that treats craft and automation as one job — built in *India,* shipping to the world.",
-  /** Fuel's (Pre) / (+Post) / (=Results) label column, in our language. */
-  blocks: [
-    {
-      label: "(Craft)",
-      body: "Senior-grade design and engineering, priced like we want the relationship to last. Every build is structured, fast, and yours to own — no rented page builders, no template underneath.",
-    },
-    {
-      label: "(+Automation)",
-      body: "The half most studios skip. We wire the CRM, the follow-ups, the invoicing and the reporting so the site you just paid for keeps working after launch instead of sitting there.",
-    },
-  ],
-  /**
-   * Fills the reference's portrait slot beside the body copy. Ours is a real
-   * candid from the studio rather than stock — same photo the /about page uses,
-   * carried here with its literal filename (the space included: next/image
-   * URL-encodes `src` itself, so pre-encoding would double-escape and 404).
-   */
-  photo: {
-    src: "/team/nexcraft-team-pic-one-meeting.jpeg",
-    alt: "The NexCRAFT team gathered around a table in a working meeting",
-    width: 1008,
-    height: 912,
-  },
-  /** Compact metrics row — mirrors `stats` in about-content.ts. */
-  metrics: [
-    { value: "10+", label: "Team" },
-    { value: "15+", label: "Projects shipped" },
-    { value: "2024", label: "Founded" },
-  ],
-  cta: { label: "Read our story", href: "/about" },
+  primaryCta: { label: "Get a quick estimate", href: "/estimate" },
+  secondaryCta: { label: "See what it costs", href: "/pricing" },
 } as const;
 
 /* -------------------------------------------------------------------------
-   (02) WHY NEXCRAFT — the page's thesis
-
-   Four claims, each one a sentence a prospect could repeat to a colleague.
-   These are commitments, not features: the two-day figure and the
-   built-from-scratch promise are both echoed higher up the page (the hero chip
-   and the value line), so anything edited here has to be edited there too.
-------------------------------------------------------------------------- */
-
-export type FuelUsp = {
-  num: string;
-  /** Big Switzer statement — the claim itself. */
-  title: string;
-  /** Mono supporting line, one clause. */
-  kicker: string;
-  /** The claim in plain language. */
-  body: string;
-};
-
-export const fuelUsps: FuelUsp[] = [
-  {
-    num: "01",
-    title: "Launch-ready in days, not months",
-    kicker: "From brief to first version",
-    body: "The first version of your website lands in as little as two days — a real, clickable build you can react to, not a mockup and a timeline.",
-  },
-  {
-    num: "02",
-    title: "Built to rank",
-    kicker: "SEO-first structure and speed",
-    body: "Search structure and performance are designed in from the first file, not retrofitted. The point is to move you up the results, not just onto the web.",
-  },
-  {
-    num: "03",
-    title: "Automations from scratch",
-    kicker: "Workflows, not plugins",
-    body: "Custom-built workflows wired into the tools you already run, so the repetitive work comes off your team's plate instead of moving around on it.",
-  },
-  {
-    num: "04",
-    title: "Zero templates",
-    kicker: "Designed and built from nothing",
-    body: "Every site is drawn and coded from scratch. No themes, no page-builder scaffolding, no copy-paste — the build is original and it is yours to own.",
-  },
-];
-
-export const fuelWhy = {
-  /** The oversized lead statement under the section header. */
-  statement:
-    "Four things we won't compromise on — and the reason clients stay past the *first build.*",
-} as const;
-
-/* -------------------------------------------------------------------------
-   LOGO MARQUEE — tool logos, monochrome
-   Drawn from lib/tech-graph so the marquee and the stack section can never
-   drift apart.
-------------------------------------------------------------------------- */
-
-export const marqueeCaption = "The stack we build on";
-
-/* -------------------------------------------------------------------------
-   (03) PORTFOLIO — featured carousel
-   Which projects appear is decided by the `featured` flag in
-   portfolio-content.ts, so the carousel and the /portfolio grid can never
-   disagree about what a project is called or what it links to.
-------------------------------------------------------------------------- */
-
-export const fuelPortfolio = {
-  /**
-   * The short coded title in the sticky rail — decoration, not the section
-   * heading. "Our work" is the heading now, and it lives in the register.
-   */
-  code: "NX-26'",
-  seeAll: { label: `See all (${projects.length})`, href: "/portfolio" },
-  prevLabel: "Previous project",
-  nextLabel: "Next project",
-} as const;
-
-/* -------------------------------------------------------------------------
-   (04) SERVICES
+   (01) SERVICES
 ------------------------------------------------------------------------- */
 
 export type FuelService = {
@@ -425,26 +288,136 @@ export const fuelServices = {
 } as const;
 
 /* -------------------------------------------------------------------------
-   (05) PRICING
-   Prices and feature lists come straight from pricing-content.ts — this file
-   only carries the surrounding chrome.
+   (02) PORTFOLIO — featured carousel
+   Which projects appear is decided by the `featured` flag in
+   portfolio-content.ts, so the carousel and the /portfolio grid can never
+   disagree about what a project is called or what it links to.
 ------------------------------------------------------------------------- */
 
-export const fuelPricing = {
-  includedLabel: "What's included",
-  addOnsLabel: "Add-ons",
-  note: "Free strategy call · SEO-first build · Clickable prototype before you commit · No hidden fees",
+export const fuelPortfolio = {
+  /**
+   * The short coded title in the sticky rail — decoration, not the section
+   * heading. "Our work" is the heading now, and it lives in the register.
+   */
+  code: "NX-26'",
+  seeAll: { label: `See all (${projects.length})`, href: "/portfolio" },
+  prevLabel: "Previous project",
+  nextLabel: "Next project",
+} as const;
+
+/* -------------------------------------------------------------------------
+   (03) WHY NEXCRAFT — the page's thesis
+
+   Five claims, each one a sentence a prospect could repeat to a colleague.
+   These are commitments, not features. Two of them are echoed higher up the
+   page — the two-hour mockup as the hero chip, the built-from-scratch promise
+   in the value line — so anything edited here has to be edited there too.
+------------------------------------------------------------------------- */
+
+export type FuelUsp = {
+  num: string;
+  /** Big Switzer statement — the claim itself. */
+  title: string;
+  /** Mono supporting line, one clause. */
+  kicker: string;
+  /** The claim in plain language. */
+  body: string;
+};
+
+export const fuelUsps: FuelUsp[] = [
+  {
+    num: "01",
+    title: "First mockup in 2 hours",
+    kicker: "Same call, same afternoon",
+    body: "You see a first design mockup within two hours of your first call — something real to react to while the conversation is still warm.",
+  },
+  {
+    num: "02",
+    title: "Launch-ready in days",
+    kicker: "Fast delivery, automated workflow",
+    body: "An automated build pipeline behind a senior team: the first version goes live in as little as two days, not after a quarter of status meetings.",
+  },
+  {
+    num: "03",
+    title: "Built to rank",
+    kicker: "SEO-first structure and speed",
+    body: "Search structure and performance are designed in from the first file, not retrofitted. The point is to move you up the results, not just onto the web.",
+  },
+  {
+    num: "04",
+    title: "Automations from scratch",
+    kicker: "Workflows, not plugins",
+    body: "Custom-built workflows wired into the tools you already run, so the repetitive work comes off your team's plate instead of moving around on it.",
+  },
+  {
+    num: "05",
+    title: "Zero templates",
+    kicker: "Designed and built from nothing",
+    body: "Every site is drawn and coded from scratch. No themes, no page-builder scaffolding, no copy-paste — the build is original and it is yours to own.",
+  },
+];
+
+export const fuelWhy = {
+  /** The oversized lead statement under the section header. */
+  statement:
+    "Five things we won't compromise on — and the reason clients stay past the *first build.*",
+} as const;
+
+/* -------------------------------------------------------------------------
+   LOGO MARQUEE — tool logos, monochrome
+   Drawn from lib/tech-graph so the marquee and the stack section can never
+   drift apart.
+------------------------------------------------------------------------- */
+
+export const marqueeCaption = "The stack we build on";
+
+/* -------------------------------------------------------------------------
+   (04) WHO WE ARE — compact
+------------------------------------------------------------------------- */
+
+export const fuelAbout = {
+  /**
+   * The whole band, near enough. It is capped at two lines on purpose — the
+   * statement, the metrics and one link out, and nothing else.
+   *
+   * The portrait, the (Craft) / (+Automation) prose blocks and the "Read our
+   * story" bracket link that used to sit here are gone rather than moved:
+   * every one of them already exists on /about, in longer and better form, and
+   * carrying a second copy on the homepage was most of what made this the
+   * page's second-tallest band. What is left is the smallest thing that still
+   * answers "who are these people" before handing the question to /about.
+   */
+  /**
+   * Two lines, and the measure is what enforces it: at `fuelStatement`'s
+   * 76px a column of this width takes about 18 characters, so anything past
+   * ~36 wraps to a third line and the band stops being compact. The India
+   * claim moved to the section subline, which is where the geography reads
+   * better anyway.
+   */
+  statement: "Craft and automation, *one job.*",
+  /** Compact metrics row — mirrors `stats` in about-content.ts. */
+  metrics: [
+    { value: "10+", label: "Team" },
+    { value: "15+", label: "Projects shipped" },
+    { value: "2024", label: "Founded" },
+  ],
+  cta: { label: "More about us", href: "/about" },
 } as const;
 
 /* -------------------------------------------------------------------------
    CTA BANDS
 
-   Two asks placed so nothing on the page runs more than three sections without
-   one: band A after (03) Portfolio, band B after (06) Testimonial, and the
-   footer's own CTA closing the last three. Same pair of actions in all three —
-   a visitor who has decided shouldn't have to learn a new control — but the
-   headline is written fresh each time so the repeat doesn't read as a
-   duplicated component.
+   The page now opens its asking with the value strip, directly under the
+   preview, so these two are the second and third of four. Band A lands after
+   (02) Our work — the visitor has just seen the proof — and band B after
+   (05) Proof, with the footer closing (06). That puts an ask after at most
+   three numbered sections anywhere on the page, which is the whole rule:
+   dropping band A, as the reorder first suggested, would have left a
+   five-section run between the value strip and band B.
+
+   Same pair of actions every time — a visitor who has decided shouldn't have
+   to learn a new control — but the headline is written fresh each time so the
+   repeat doesn't read as a duplicated component.
 ------------------------------------------------------------------------- */
 
 export type FuelCtaBandContent = {
@@ -461,14 +434,14 @@ const bandActions = {
 };
 
 export const fuelCtaBands: Record<"work" | "clients", FuelCtaBandContent> = {
-  /** After (03) Portfolio — the visitor has just seen the proof. */
+  /** After (02) Our work — the visitor has just seen the proof. */
   work: {
     eyebrow: "Next step",
     heading: "Like what you see?",
     body: "Thirty minutes, no deck. We'll scope what you need and tell you what it costs.",
     ...bandActions,
   },
-  /** After (06) Testimonial — the visitor has just heard from someone else. */
+  /** After (05) Proof — the visitor has just heard from someone else. */
   clients: {
     eyebrow: "Next step",
     heading: "Your project could be next.",
@@ -478,7 +451,14 @@ export const fuelCtaBands: Record<"work" | "clients", FuelCtaBandContent> = {
 };
 
 /* -------------------------------------------------------------------------
-   (06) TESTIMONIAL
+   (05) PROOF — one social-proof band
+
+   The rotating quote and the studio's four figures used to be two sections
+   with two headers and two meta rows between them, arguing the same point
+   twice over. They are one band now: the quote carries it, the numerals sit
+   under it as the evidence, and the page loses a header, a hairline and about
+   a screen of height without losing a word of content.
+
    TODO — every quote, name, company and role below is a PLACEHOLDER. The
    names are deliberately obviously fake ("Client Name") so none of this can
    reach production mistaken for a real endorsement. Replace with signed-off
@@ -515,62 +495,25 @@ export const fuelTestimonials: FuelTestimonial[] = [
   },
 ];
 
-export const fuelTestimonialSection = {
-  /** TODO: these two figures are placeholders — confirm or remove. */
-  stats: [
-    { value: "24h", label: "Kickoff", sub: "From signed brief" },
-    { value: "15+", label: "Projects shipped", sub: "Since 2024" },
-  ],
+export const fuelProof = {
   prevLabel: "Previous testimonial",
   nextLabel: "Next testimonial",
+  /**
+   * The four figures under the quote. Real, and the same set /about carries in
+   * its own numbers grid — CountUp animates the three with digits and leaves
+   * "India" alone.
+   *
+   * These are the descriptions the deleted stats band used to spell out at
+   * paragraph length; at this size the label carries them, so only the short
+   * qualifier survives.
+   */
+  stats: [
+    { value: "15+", label: "Projects shipped", sub: "Since 2024" },
+    { value: "10+", label: "Team", sub: "One room, no account managers" },
+    { value: "24h", label: "Kickoff", sub: "From signed brief" },
+    { value: "India", label: "Headquarters", sub: "Across EU and US hours" },
+  ],
 } as const;
-
-/* -------------------------------------------------------------------------
-   (07) ARCHIVE — chronological, most recent first
-
-   The years themselves live on `Project.year` in portfolio-content.ts, so the
-   archive and the /portfolio grid can't disagree about when something shipped.
-   They are still placeholders — see the TODO on that field.
-
-   The one-line description of this band lives on `sectionIndex.archive.subline`
-   with every other section's, so it can't drift from the heading above it.
-------------------------------------------------------------------------- */
-
-/* -------------------------------------------------------------------------
-   (08) STATS — real figures, straight from about-content.ts
-------------------------------------------------------------------------- */
-
-export const fuelStats = [
-  {
-    value: "15+",
-    label: "Projects shipped",
-    description:
-      "Websites, stores, booking systems and automations delivered for clients across Europe, the US and India.",
-  },
-  {
-    value: "10+",
-    label: "Team",
-    description:
-      "A small senior core plus a bench of engineers we're training on production work, all in one room.",
-  },
-  {
-    value: "2024",
-    label: "Founded",
-    description:
-      "Started in January 2024 in India and building for clients abroad from the first month.",
-  },
-  {
-    value: "India",
-    label: "Headquarters",
-    description:
-      "One studio, no account managers in between, online across European and US time zones.",
-  },
-] as const;
-
-/* -------------------------------------------------------------------------
-   (09) FAQ — the three from home-content.ts, in Fuel's numbered accordion
-   Its intro line is `sectionIndex.faq.subline`.
-------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------
    CTA + FOOTER

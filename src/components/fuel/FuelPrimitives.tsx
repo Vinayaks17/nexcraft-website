@@ -26,23 +26,47 @@ export const fuelShell = "mx-auto w-full max-w-[1720px] px-5 sm:px-8 lg:px-10";
    sits at 600-700 rather than the reference's 1000: Switzer is a normal-width
    grotesque and goes muddy at black weight in these sizes, where the previous
    face did not.
+
+   LEADING IS WRITTEN AS `[line-height:x]`, NOT `leading-[x]`, AND THAT IS
+   LOAD-BEARING.
+
+   Every one of these tokens is composed through `cn()`, which runs
+   tailwind-merge, whose default config lists `leading` as a group that a later
+   `font-size` conflicts with and removes. Because each token carries its own
+   `text-[clamp(...)]` *after* its leading, tailwind-merge was deleting the
+   leading from all five of them before it ever reached the DOM — every display
+   line on the site was falling back to the 1.5 root line-height, which is what
+   made the multi-line statements read as separate stacked lines rather than as
+   one block. Measured on the About statement: `leading-[0.95]` on a 76.7px
+   heading was rendering at a 115px line pitch.
+
+   The arbitrary-property form is grouped by tailwind-merge under its property
+   name instead, so it survives both the token's own `text-[…]` and any size
+   override a call site adds afterwards (FuelTierCard and FuelStats both do
+   exactly that). Reordering the classes would fix today's string and break
+   again the next time someone appends a size — this form cannot.
+
+   The values themselves are the ~1.03–1.08 band: tight enough that a
+   three-line statement reads as one block, loose enough that ascenders clear
+   the line above. The single-line numerals stay tighter; nothing stacks under
+   them.
 ------------------------------------------------------------------------- */
 
 /** Hero statement. 195px at 1470 ≈ 13vw. */
 export const fuelDisplay =
-  "font-display font-semibold leading-[0.9] tracking-[-0.04em] text-[clamp(2.75rem,9vw,8rem)]";
+  "font-display font-semibold [line-height:1.03] tracking-[-0.04em] text-[clamp(2.75rem,9vw,8rem)]";
 
 /** Section statement — the oversized two-liner that opens a band. */
 export const fuelStatement =
-  "font-display font-semibold leading-[0.95] tracking-[-0.035em] text-[clamp(2rem,6vw,5.75rem)]";
+  "font-display font-semibold [line-height:1.04] tracking-[-0.035em] text-[clamp(2rem,6vw,5.75rem)]";
 
 /** Headline — quotes, footer lead, archive rows. */
 export const fuelHeadline =
-  "font-display font-semibold leading-[1.02] tracking-[-0.03em] text-[clamp(1.625rem,3.8vw,3.375rem)]";
+  "font-display font-semibold [line-height:1.06] tracking-[-0.03em] text-[clamp(1.625rem,3.8vw,3.375rem)]";
 
-/** Big numerals — pricing figures and the stats grid. */
+/** Big numerals — pricing figures and the stats row. Single line, so tighter. */
 export const fuelNumeral =
-  "font-display font-semibold leading-[0.88] tracking-[-0.035em] text-[clamp(2.5rem,6vw,5.5rem)]";
+  "font-display font-semibold [line-height:0.92] tracking-[-0.035em] text-[clamp(2.5rem,6vw,5.5rem)]";
 
 /**
  * Section title — the plain-language heading in every band's header block.
@@ -52,7 +76,7 @@ export const fuelNumeral =
  * the section rather than compete with the line under it.
  */
 export const fuelSectionTitle =
-  "font-display font-semibold leading-[1.05] tracking-[-0.03em] text-[clamp(1.75rem,3.2vw,2.75rem)]";
+  "font-display font-semibold [line-height:1.06] tracking-[-0.03em] text-[clamp(1.75rem,3.2vw,2.75rem)]";
 
 /** Body copy inside a band. */
 export const fuelBody =

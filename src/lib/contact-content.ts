@@ -10,7 +10,7 @@ import { routes } from "@/lib/site";
 
 
 export const contactPage = {
-  num: "04",
+  num: "05",
   label: "Contact",
   heading: "Let's work *together.*",
   intro:

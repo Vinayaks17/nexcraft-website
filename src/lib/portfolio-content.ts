@@ -267,6 +267,21 @@ export const flows: Flow[] = [
   },
 ];
 
+/**
+ * The chronological index at the foot of /portfolio.
+ *
+ * It was a homepage band until F6. It never belonged there — it is the full
+ * list, and the homepage already shows four of these in a carousel two
+ * sections earlier — but at the foot of the portfolio page, after the featured
+ * grid and the automation flows, it reads as what it is: the complete index.
+ */
+export const archiveSection = {
+  num: "03",
+  label: "Archive",
+  title: "Every project so far",
+  subline: `All ${projects.length} projects, live and private, newest first`,
+} as const;
+
 export const portfolioCta = {
   heading: "Want *yours* on this page?",
   description:

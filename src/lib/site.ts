@@ -31,13 +31,20 @@ export type NumberedNavLink = NavLink & { num: string };
 export const navLinks: NumberedNavLink[] = [
   { label: "Home", num: "01", href: "/" },
   { label: "Portfolio", num: "02", href: "/portfolio" },
-  { label: "About", num: "03", href: "/about" },
-  { label: "Contact", num: "04", href: "/contact" },
+  { label: "Pricing", num: "03", href: "/pricing" },
+  { label: "About", num: "04", href: "/about" },
+  { label: "Contact", num: "05", href: "/contact" },
 ];
 
-/** Secondary routes — reachable from the footer rather than the nav. */
+/**
+ * Secondary routes — reachable from the footer rather than the nav.
+ *
+ * Pricing was here until the homepage stopped carrying a pricing band. With
+ * that band gone /pricing is the only place the numbers exist, so it moved up
+ * into the primary nav; the footer still lists it because the footer renders
+ * navLinks above this row.
+ */
 export const footerPages: NavLink[] = [
-  { label: "Pricing", href: "/pricing" },
   { label: "Get an estimate", href: "/estimate" },
 ];
 

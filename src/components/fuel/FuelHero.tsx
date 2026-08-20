@@ -103,12 +103,12 @@ export function FuelHero() {
           <div className="h-px w-full bg-cream/15" aria-hidden />
           <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
             <div className="flex flex-col items-start gap-4">
-              {/* The speed claim, sitting on the decision. It repeats (02)
-                  Why NexCRAFT's first USP on purpose — that band is nine
+              {/* The speed claim, sitting on the decision. It repeats (03)
+                  Why NexCRAFT's first USP on purpose — that band is several
                   screens down, and this is where the promise is worth
                   something. Bordered rather than filled so it reads as a note
                   on the CTA rather than as a second button competing with it.
-                  cream/75 on the scrim's foot clears AA at this size. */}
+                  cream/85 on the scrim's foot clears AA at this size. */}
               <p
                 className={cn(
                   fuelLabel,

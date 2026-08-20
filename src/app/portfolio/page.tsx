@@ -9,6 +9,7 @@ import {
   fuelShell,
   fuelStatement,
 } from "@/components/fuel/FuelPrimitives";
+import { FuelArchive } from "@/components/fuel/FuelArchive";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { FlowCard } from "@/components/portfolio/FlowCard";
 import { renderAccent } from "@/components/ui/AccentWord";
@@ -30,8 +31,10 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   return (
     <>
+      {/* No number on the header: the bands below run (01)-(03), and a
+          fourth number above them would read as a numbering mistake rather
+          than as a second scope. Same rule /about follows. */}
       <FuelPageHeader
-        num="02"
         label="Portfolio"
         heading={portfolioHero.heading}
         intro={portfolioHero.intro}
@@ -51,7 +54,7 @@ export default function PortfolioPage() {
       {/* Automations — capability flows, not client projects. */}
       <section id="automations" className="scroll-mt-28 bg-ink-alt py-20 sm:py-24 lg:py-28">
         <div className={fuelShell}>
-          <FuelSectionMeta num="03" label="Automation flows" />
+          <FuelSectionMeta num="02" label="Automation flows" />
 
           <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:items-end lg:gap-12">
             <h2 className={cn(fuelStatement, "text-cream lg:col-span-9")}>
@@ -76,6 +79,12 @@ export default function PortfolioPage() {
           </FuelBracketLink>
         </div>
       </section>
+
+      {/* (03) The full index, newest first — moved here from the homepage,
+          where it sat two sections below a carousel showing four of the same
+          projects. After the featured grid and the flows it reads as the
+          complete list rather than as a repeat. */}
+      <FuelArchive />
 
       {/* Closing CTA — cream inversion, the page's one change of ground. */}
       <section className="bg-cream py-20 text-ink [--accent-ink:var(--color-primary-darker)] sm:py-24 lg:py-28">

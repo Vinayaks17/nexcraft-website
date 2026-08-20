@@ -15,20 +15,19 @@ import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (02) Why NexCRAFT — the page's thesis.
+ * (03) Why NexCRAFT — the page's thesis.
  *
- * Four full-width rows on hairlines rather than a card grid: cards would make
- * these read as a feature list, and they are the four commitments the whole
- * offer rests on. The Fuel row treatment is the same one the archive uses one
- * band down, at a much larger scale — an oversized mono index in the left
- * column, the claim set big in the middle, the supporting sentence right.
+ * Five full-width rows on hairlines rather than a card grid: cards would make
+ * these read as a feature list, and they are the five commitments the whole
+ * offer rests on. An oversized mono index in the left column, the claim set
+ * big in the middle, the supporting sentence right.
  *
  * Hover warms the whole row and turns its index orange. That is a
  * colour/background transition rather than a transform, so it survives the
  * reduced-motion pass intact — which is what we want, since it is the only
  * thing telling a pointer user the rows are a set.
  *
- * `bg-ink-alt` puts a step of tone between the cream About band above and the
+ * `bg-ink-alt` puts a step of tone between the orange CTA band above and the
  * logo belt below, so the thesis reads as its own plane rather than as the top
  * of the dark run that follows it.
  */

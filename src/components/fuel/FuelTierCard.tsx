@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 
 import { FuelBracketLink, fuelLabel } from "@/components/fuel/FuelPrimitives";
-import { fuelPricing } from "@/lib/home-fuel-content";
-import type { PricingTier } from "@/lib/pricing-content";
+import { fuelPricing, type PricingTier } from "@/lib/pricing-content";
 import { enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -26,10 +25,10 @@ function splitPrice(price: string) {
 /**
  * One pricing tier.
  *
- * Shared by the homepage's (04) band and the /pricing page so the two can't
- * drift — a visitor who scrolls the homepage and then opens /pricing is looking
- * at the same offer, and any difference in how it's drawn reads as a different
- * offer.
+ * Used by /pricing, which is the only place the numbers live now that the
+ * homepage's pricing band is gone. It stays a component rather than page-local
+ * markup because /estimate and any future plan picker have to draw a tier the
+ * same way — a difference in how the offer is drawn reads as a different offer.
  */
 export function FuelTierCard({
   tier,
@@ -88,7 +87,11 @@ export function FuelTierCard({
         {qualifier && <p className={cn(fuelLabel, faint)}>{qualifier}</p>}
         <p
           className={cn(
-            "mt-2 font-display leading-[0.95] font-semibold tracking-[-0.035em]",
+            // `[line-height:…]` rather than `leading-[…]`: the size classes
+            // below are appended after it, and tailwind-merge drops a
+            // `leading` group when a later `font-size` follows it. See the
+            // note on the type scale in FuelPrimitives.
+            "mt-2 font-display [line-height:0.95] font-semibold tracking-[-0.035em]",
             // Ranges run three times the length of a single figure, so the
             // long ones step down rather than wrapping mid-number.
             figure.length > 10

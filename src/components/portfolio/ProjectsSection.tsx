@@ -30,7 +30,7 @@ export function ProjectsSection() {
 
   return (
     <>
-      <FuelSectionMeta num="02" label="Selected projects" />
+      <FuelSectionMeta num="01" label="Selected projects" />
 
       {/* Header row: display heading left, mono link-style filters right. */}
       <div className="mt-12 flex flex-col gap-8 sm:mt-16 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
