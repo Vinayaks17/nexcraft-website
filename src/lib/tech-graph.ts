@@ -26,13 +26,14 @@ import {
 } from "simple-icons";
 
 /**
- * The stack, drawn as a field of floating logos orbiting a centred heading.
+ * The stack, as a flat list of tools.
  *
- * Tiles are placed on three concentric ellipses. Only the ring fraction and the
- * angle live here — the component resolves them to pixels against the measured
- * field and pushes any tile outward until it clears the heading box, so the
- * exclusion zone is guaranteed by construction rather than by hand-tuned
- * coordinates that only hold at one viewport.
+ * This was the data behind an orbiting-logo section; that section is gone and
+ * the homepage's monochrome logo belt (FuelLogoMarquee) is the only consumer
+ * left. `ring` and `angle` survive because they encode a deliberate ordering —
+ * the tools we lead with first — which the belt renders in sequence. The ring
+ * geometry, edge routing and section copy that went with the old layout have
+ * been removed.
  */
 
 export type Tile = {
@@ -110,51 +111,3 @@ export const tiles: Tile[] = [
     ["hubspot", "HubSpot", siHubspot.path, siHubspot.hex, "white"],
   ]),
 ];
-
-/** Per-ring geometry. `s` is the base fraction of the field's half-extents. */
-export const RINGS = [
-  { s: 0.62, px: 72, drift: 7, opacity: 1 },
-  { s: 0.78, px: 56, drift: 10, opacity: 0.92 },
-  { s: 0.93, px: 44, drift: 14, opacity: 0.78 },
-] as const;
-
-/**
- * Ring cycles for the two inner rings plus a few spokes outward — enough to
- * read as one connected system without turning into a cobweb.
- */
-export const edges: [string, string][] = (() => {
-  const byRing = [0, 1, 2].map((r) => tiles.filter((t) => t.ring === r));
-  const out: [string, string][] = [];
-
-  for (const r of [0, 1]) {
-    const list = byRing[r];
-    list.forEach((t, i) => out.push([t.id, list[(i + 1) % list.length].id]));
-  }
-  // Spokes: every inner tile reaches to the nearest middle tile by angle, and
-  // every other middle tile reaches on out to the nearest outer one.
-  const nearest = (angle: number, list: Tile[]) =>
-    list.reduce((best, t) => {
-      const d = (x: Tile) => Math.abs(((x.angle - angle + 540) % 360) - 180);
-      return d(t) > d(best) ? t : best;
-    }, list[0]);
-
-  byRing[0].forEach((t) => out.push([t.id, nearest(t.angle, byRing[1]).id]));
-  byRing[1].forEach((t, i) => {
-    if (i % 2 === 0) out.push([t.id, nearest(t.angle, byRing[2]).id]);
-  });
-
-  return out;
-})();
-
-/** Mono micro-labels dropped between tiles, as fractions of the field. */
-export const statusChips = [
-  { id: "automated", text: "automated", fx: 0.2, fy: 0.24 },
-  { id: "deployed", text: "deployed", fx: 0.81, fy: 0.72 },
-  { id: "shipped", text: "shipped", fx: 0.28, fy: 0.79 },
-] as const;
-
-export const techGraph = {
-  eyebrow: "Our stack",
-  heading: "The tools we *use.*",
-  sub: "And the ones we build on top of them.",
-} as const;

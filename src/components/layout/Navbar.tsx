@@ -24,6 +24,14 @@ export function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/**
+ * Site navigation — one bar on every route.
+ *
+ * Links carry their index as a superscript, the convention the rest of the site
+ * numbers by. The floating-pill behaviour is kept: it is ours, it works on both
+ * the dark and cream bands, and the glass panel is what keeps the bar legible
+ * over the cream sections the numbered links now sit above.
+ */
 export function Navbar() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -37,10 +45,19 @@ export function Navbar() {
 
   return (
     <>
+      {/* Two animations, two elements. The outer one is the load fade — the
+          first beat of the hero sequence, run once per page load. The inner one
+          owns the scroll-driven float and has to keep `initial={false}` so it
+          doesn't animate the padding from zero on arrival. */}
       <motion.header
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        className="fixed inset-x-0 top-0 z-50 w-full"
+      >
+      <motion.div
         initial={false}
         animate={scrolled ? "floating" : "top"}
-        className="fixed inset-x-0 top-0 z-50 w-full"
       >
         <motion.div
           variants={{
@@ -66,7 +83,6 @@ export function Navbar() {
             >
               <Logo />
 
-              {/* Desktop links */}
               <div className="hidden items-center lg:flex">
                 {navLinks.map((link) => {
                   const active = isActivePath(pathname, link.href);
@@ -76,11 +92,19 @@ export function Navbar() {
                       href={link.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "group/link relative rounded-full px-3.5 py-2 font-mono text-[0.8125rem] font-normal tracking-[0.01em]",
+                        "group/link relative rounded-full py-2 pr-5 pl-3.5 font-mono text-[0.8125rem] font-normal tracking-[0.01em]",
                         active ? "text-cream" : "text-cream/70",
                       )}
                     >
                       <SlideLabel className="relative z-10">{link.label}</SlideLabel>
+                      {/* The index. Decorative — the label is the accessible
+                          name, and reading "Portfolio 02" aloud helps nobody. */}
+                      <sup
+                        aria-hidden
+                        className="relative z-10 ml-1 align-super text-[0.5625rem] tracking-[0.08em] text-cream/55"
+                      >
+                        {link.num}
+                      </sup>
                       {active && (
                         <motion.span
                           layoutId="navbar-active-indicator"
@@ -118,6 +142,7 @@ export function Navbar() {
             </motion.nav>
           </div>
         </motion.div>
+      </motion.div>
       </motion.header>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} pathname={pathname} />

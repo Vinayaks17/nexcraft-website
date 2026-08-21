@@ -3,6 +3,9 @@
  * ranges, and per-month suffixes without any formatting logic in components.
  */
 
+import { routes } from "@/lib/site";
+
+
 export type AddOn = {
   label: string;
   price: string;
@@ -124,8 +127,30 @@ export const automationTier: PricingTier = {
   cta: { label: "Customise this plan", href: "/estimate?plan=automation" },
 };
 
+/**
+ * All four tiers in one list, websites first.
+ *
+ * Both the homepage band and /pricing render from this, so the set and its
+ * order can't drift between the two. `websiteTiers` and `automationTier` stay
+ * exported separately because the automation tier is a different kind of offer
+ * and some layouts still want to treat it that way.
+ */
+export const pricingTiers: PricingTier[] = [...websiteTiers, automationTier];
+
+/**
+ * Chrome around the tier cards. It lived in home-fuel-content while pricing was
+ * a homepage band; that band is gone (the client asked for one place to talk
+ * about money, and /pricing is it), so it lives with the prices now.
+ */
+export const fuelPricing = {
+  includedLabel: "What's included",
+  addOnsLabel: "Add-ons",
+  note: "Free strategy call · SEO-first build · Clickable prototype before you commit · No hidden fees",
+} as const;
+
 export const reassurances = [
   "Free strategy call",
+  "SEO-first build, from the first file",
   "Clickable prototype before you commit",
   "No hidden fees",
 ] as const;
@@ -134,5 +159,5 @@ export const pricingCta = {
   heading: "Not sure which plan *fits?*",
   description:
     "Walk us through the project on a free call — we'll point you at the right tier, even if it's the smaller one.",
-  cta: { label: "Book Your Free Strategy Call", href: "#" },
+  cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
 } as const;

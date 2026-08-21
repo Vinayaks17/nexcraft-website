@@ -7,6 +7,9 @@
  * falls back to a branded gradient panel rather than a broken image.
  */
 
+import { routes } from "@/lib/site";
+
+
 export type Project = {
   id: string;
   name: string;
@@ -23,6 +26,23 @@ export type Project = {
   domain: string | null;
   /** 1-3 mono chips laid over the image, bottom-right. */
   tags: string[];
+  /**
+   * Surfaced in the homepage's featured carousel. Purely additive — the
+   * /portfolio grid still renders every project regardless.
+   */
+  featured?: boolean;
+  /**
+   * TODO — PLACEHOLDER. Ship year. No real dates were recorded for these
+   * builds, so every value below is a plausible guess against a Jan-2024
+   * founding.
+   *
+   * As of the Stage 5 launch pass it is NOT displayed anywhere — it only sorts
+   * the archive on /portfolio, where being approximately right is harmless.
+   * Confirm the real dates and the archive rows and the /portfolio grid can
+   * both show it again (FuelArchive and ProjectShowcase each carry a note
+   * where it was removed).
+   */
+  year: string;
 };
 
 export const portfolioHero = {
@@ -48,6 +68,8 @@ export type ProjectFilterId = (typeof projectFilters)[number]["id"];
 export const projects: Project[] = [
   {
     id: "aidify",
+    year: "2026",
+    featured: true,
     tags: ["Web design", "AI voice"],
     name: "Aidify",
     industry: "AI Voice Services",
@@ -60,6 +82,7 @@ export const projects: Project[] = [
   },
   {
     id: "ans-rpo",
+    year: "2026",
     tags: ["Web design", "Recruitment"],
     name: "ANS RPO",
     industry: "Recruitment (RPO)",
@@ -73,6 +96,8 @@ export const projects: Project[] = [
   },
   {
     id: "the-big-media",
+    year: "2025",
+    featured: true,
     tags: ["Web design", "Showcase"],
     name: "The Big Media Studios",
     industry: "Video Editing Studio",
@@ -86,6 +111,7 @@ export const projects: Project[] = [
   },
   {
     id: "ovalon",
+    year: "2025",
     tags: ["Web design", "Corporate"],
     name: "Ovalon",
     industry: "Tech Company",
@@ -98,6 +124,7 @@ export const projects: Project[] = [
   },
   {
     id: "visual-view-media",
+    year: "2025",
     tags: ["Web design", "Agency"],
     name: "Visual View Media",
     industry: "Digital Agency",
@@ -110,6 +137,7 @@ export const projects: Project[] = [
   },
   {
     id: "sony-video-vision",
+    year: "2025",
     tags: ["Web design", "Retail"],
     name: "Sony Video Vision",
     industry: "Retail",
@@ -123,6 +151,7 @@ export const projects: Project[] = [
   },
   {
     id: "vinayak-singh",
+    year: "2025",
     tags: ["Web design", "Portfolio"],
     name: "Vinayak Singh",
     industry: "Personal Portfolio",
@@ -136,6 +165,8 @@ export const projects: Project[] = [
   },
   {
     id: "qadira",
+    year: "2024",
+    featured: true,
     tags: ["E-commerce", "Checkout"],
     name: "Qadira",
     industry: "E-commerce, Women's Health",
@@ -149,6 +180,7 @@ export const projects: Project[] = [
   },
   {
     id: "jvb-testing",
+    year: "2024",
     tags: ["Web design", "Corporate"],
     name: "JVB Testing",
     industry: "Hardware Testing (US)",
@@ -161,6 +193,8 @@ export const projects: Project[] = [
   },
   {
     id: "sportikon",
+    year: "2024",
+    featured: true,
     tags: ["Booking system", "Web design"],
     name: "Sportikon",
     industry: "University Sports Fest",
@@ -174,6 +208,7 @@ export const projects: Project[] = [
   },
   {
     id: "reality-sphere",
+    year: "2024",
     tags: ["Real estate", "Booking system"],
     name: "Reality Sphere",
     industry: "Real Estate (US)",
@@ -203,7 +238,7 @@ export const automationsSection = {
   eyebrow: "AI & Automation",
   heading: "We don't just use tools. We *build the ones* that do the work.",
   note: "Built in-house for our clients. Ask us for a walkthrough on your strategy call.",
-  cta: { label: "Book Your Free Strategy Call", href: "#" },
+  cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
 } as const;
 
 export const flows: Flow[] = [
@@ -236,6 +271,21 @@ export const flows: Flow[] = [
     steps: ["Request", "Approve", "Assign", "Update", "Report"],
   },
 ];
+
+/**
+ * The chronological index at the foot of /portfolio.
+ *
+ * It was a homepage band until F6. It never belonged there — it is the full
+ * list, and the homepage already shows four of these in a carousel two
+ * sections earlier — but at the foot of the portfolio page, after the featured
+ * grid and the automation flows, it reads as what it is: the complete index.
+ */
+export const archiveSection = {
+  num: "03",
+  label: "Archive",
+  title: "Every project so far",
+  subline: `All ${projects.length} projects, live and private, newest first`,
+} as const;
 
 export const portfolioCta = {
   heading: "Want *yours* on this page?",

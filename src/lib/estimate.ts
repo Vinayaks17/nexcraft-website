@@ -90,19 +90,114 @@ export function validateStep(step: number, data: EstimateData): Errors {
 
 export type SubmitResult = { ok: true } | { ok: false; message: string };
 
+const ENDPOINT = "https://api.web3forms.com/submit";
+
+/**
+ * Every failure path ends with the same instruction, because there is only one
+ * thing a visitor who has just typed out a brief can usefully do: send it
+ * somewhere that works. The address is inlined rather than imported from
+ * site.ts to keep this module free of UI imports — if it changes there, it
+ * changes here, and the test in the QA sweep catches the drift.
+ */
+const FALLBACK = "Please email it to info@thenexcraft.com and we'll pick it up from there.";
+
+/** Human labels, so the email reads in the words the visitor actually saw. */
+const NEED_LABELS: Record<NeedId, string> = {
+  website: "Website",
+  automation: "Automation",
+  both: "Both — website and automation",
+};
+
+const BUDGET_LABELS: Record<BudgetId, string> = {
+  "under-800": "Under EUR 800",
+  "800-2500": "EUR 800 - 2,500",
+  "2500-5000": "EUR 2,500 - 5,000",
+  "5000-plus": "EUR 5,000+",
+  unsure: "Not sure yet",
+};
+
+const TIMELINE_LABELS: Record<TimelineId, string> = {
+  asap: "ASAP",
+  "1-2-months": "1-2 months",
+  flexible: "Flexible",
+};
+
 /**
  * Single entry point for sending an estimate request.
  *
- * TODO(stage 5): wire this to the real backend — POST to an API route that
- * emails the team and pushes the lead into the CRM. Until then it resolves
- * successfully after a short delay so the success state can be exercised.
+ * Web3Forms takes the POST and emails it on; there is no server of ours in the
+ * path, which is why the access key is a `NEXT_PUBLIC_` variable and is
+ * expected to be visible in the bundle. That is the service's design — the key
+ * only authorises delivery to the address it was registered with, so the worst
+ * a scraper can do with it is send us mail. The honeypot below is what keeps
+ * that from being worth doing.
+ *
+ * Keys in the payload are the labels that appear in the email, so they are
+ * written for a person reading it on a phone rather than for a parser.
+ *
+ * @param botcheck Value of the hidden honeypot field. A human leaves it empty;
+ *   anything else and Web3Forms drops the submission server-side. It is sent
+ *   rather than checked here on purpose — a client-side check is trivially
+ *   skipped by the same bots the field exists to catch.
  */
-export async function submitEstimate(data: EstimateData): Promise<SubmitResult> {
-  await new Promise((resolve) => setTimeout(resolve, 900));
+export async function submitEstimate(
+  data: EstimateData,
+  botcheck = "",
+): Promise<SubmitResult> {
+  const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[estimate] payload ready for backend:", data);
+  if (!accessKey) {
+    /* A misconfigured deploy must never look like a delivered brief: the form
+       reports the failure and points at email rather than showing the success
+       state on a submission that went nowhere. */
+    console.warn(
+      "[estimate] NEXT_PUBLIC_WEB3FORMS_KEY is not set — the form cannot deliver. " +
+        "Add it to .env.local (see .env.example) and restart the dev server.",
+    );
+    return { ok: false, message: `We couldn't send that from here. ${FALLBACK}` };
   }
 
-  return { ok: true };
+  const payload = {
+    access_key: accessKey,
+    subject: "New estimate request — NexCRAFT",
+    from_name: data.name.trim() || "NexCRAFT website",
+    replyto: data.email.trim(),
+    botcheck,
+
+    Name: data.name.trim(),
+    Email: data.email.trim(),
+    Company: data.company.trim() || "—",
+    Phone: data.phone.trim() || "—",
+    "What they need": data.need ? NEED_LABELS[data.need] : "—",
+    Budget: data.budget ? BUDGET_LABELS[data.budget] : "—",
+    Timeline: data.timeline ? TIMELINE_LABELS[data.timeline] : "—",
+    "Plan they came from": data.plan ? planLabels[data.plan] : "None (came direct)",
+    "Project details": data.details.trim(),
+  };
+
+  try {
+    const response = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    /* Web3Forms answers 200 with `{ success: false }` for a rejected key or a
+       tripped honeypot, so the status code alone is not the answer. */
+    const result = (await response.json().catch(() => null)) as
+      | { success?: boolean; message?: string }
+      | null;
+
+    if (response.ok && result?.success) return { ok: true };
+
+    console.error("[estimate] delivery failed:", response.status, result);
+    return { ok: false, message: `That didn't send. ${FALLBACK}` };
+  } catch (error) {
+    // Offline, DNS, blocked by an extension — all indistinguishable from here.
+    console.error("[estimate] network error:", error);
+    return {
+      ok: false,
+      message: `We couldn't reach the server. Check your connection, or ${FALLBACK[0].toLowerCase()}${FALLBACK.slice(1)}`,
+    };
+  }
 }

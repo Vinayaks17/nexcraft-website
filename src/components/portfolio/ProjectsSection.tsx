@@ -3,13 +3,18 @@
 import { useMemo, useState } from "react";
 
 import { ProjectShowcase } from "@/components/portfolio/ProjectShowcase";
-import { RevealHeading } from "@/components/ui/RevealHeading";
+import {
+  FuelSectionMeta,
+  fuelHeadline,
+  fuelLabel,
+} from "@/components/fuel/FuelPrimitives";
 import {
   projectFilters,
   projects,
   projectsSection,
   type ProjectFilterId,
 } from "@/lib/portfolio-content";
+import { stripAccent } from "@/components/ui/AccentWord";
 import { cn } from "@/lib/utils";
 
 const matches = (filter: ProjectFilterId, hasUrl: boolean) =>
@@ -25,13 +30,13 @@ export function ProjectsSection() {
 
   return (
     <>
+      <FuelSectionMeta num="01" label="Selected projects" />
+
       {/* Header row: display heading left, mono link-style filters right. */}
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
-        <RevealHeading
-          text={projectsSection.heading}
-          as="h2"
-          className="text-[2.5rem] sm:text-6xl lg:text-[4rem]"
-        />
+      <div className="mt-12 flex flex-col gap-8 sm:mt-16 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+        <h2 className={cn(fuelHeadline, "text-cream")}>
+          {stripAccent(projectsSection.heading)}
+        </h2>
 
         <div
           role="group"
@@ -47,10 +52,11 @@ export function ProjectsSection() {
                 onClick={() => setFilter(f.id)}
                 aria-pressed={active}
                 className={cn(
-                  "font-mono text-[0.6875rem] tracking-[0.18em] uppercase underline-offset-[6px] transition-colors duration-200",
+                  fuelLabel,
+                  "underline-offset-[6px] transition-colors duration-200",
                   active
                     ? "text-cream underline decoration-primary decoration-1"
-                    : "text-cream/55 hover:text-cream hover:underline hover:decoration-cream/40",
+                    : "text-cream/50 hover:text-cream hover:underline hover:decoration-cream/40",
                 )}
               >
                 {f.label}

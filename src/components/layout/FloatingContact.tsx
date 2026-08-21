@@ -88,6 +88,9 @@ export function FloatingContact() {
         <Magnetic key={label} strength={7} range={110}>
           <motion.a
             href={href}
+            {...(href.startsWith("http")
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
             aria-label={label}
             title={label}
             initial={{ opacity: 0, scale: 0.6, y: 12 }}

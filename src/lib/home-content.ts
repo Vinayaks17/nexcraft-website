@@ -4,6 +4,9 @@
  * a plain data module, importable from server components).
  */
 
+import { routes } from "@/lib/site";
+
+
 export const hero = {
   /** Small letter-spaced orange eyebrow above the headline. */
   eyebrow: "AI & Automation",
@@ -19,7 +22,7 @@ export const hero = {
   ],
   subheadline:
     "Your digital foundation, built right. We craft high-converting websites and invisible business automations so you can focus on what you do best.",
-  primaryCta: { label: "Book Your Free Strategy Call", href: "#" },
+  primaryCta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondaryCta: { label: "Get a quick estimate", href: "/estimate" },
   scrollHint: "Scroll to explore",
 } as const;

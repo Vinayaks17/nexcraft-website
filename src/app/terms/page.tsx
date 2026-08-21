@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
 
-import { PagePlaceholder } from "@/components/ui/PagePlaceholder";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Terms of Service" };
+import { LegalDocument } from "@/components/legal/LegalDocument";
+import { terms } from "@/lib/legal-content";
+
+export const metadata: Metadata = pageMeta({
+  title: "Terms of Service",
+  description:
+    "The agreement between NexCRAFT and its clients — scope, payments, ownership, liability and governing law.",
+  path: "/terms",
+});
+
+/* Draft documents stay out of the index. A search result that leads
+   straight to an outline of unwritten terms is worse than no result,
+   and the sitemap keeps them at the lowest priority for the same
+   reason. Remove this once counsel signs the real wording off. */
+metadata.robots = { index: false, follow: true };
 
 export default function TermsPage() {
-  return (
-    <PagePlaceholder
-      eyebrow="Legal"
-      title="Terms of *service.*"
-      description="Full terms copy lands in a later stage."
-    />
-  );
+  return <LegalDocument doc={terms} />;
 }

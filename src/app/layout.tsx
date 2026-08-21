@@ -6,21 +6,54 @@ import { site } from "@/lib/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { FuelFooter } from "@/components/fuel/FuelFooter";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 
+const HOME_TITLE = `${site.name} — Websites & Business Automation`;
+
 export const metadata: Metadata = {
+  /**
+   * `metadataBase` is what lets every page hand Next a bare path for its
+   * canonical and its card image and get an absolute URL back. Set once, here.
+   */
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Websites & Business Automations`,
-    template: `%s | ${site.name}`,
+    default: HOME_TITLE,
+    template: `%s — ${site.name}`,
   },
   description: site.description,
-  metadataBase: new URL(site.url),
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  /* The icon set is picked up from the app directory by file convention —
+     icon.svg, apple-icon.png and favicon.ico all sit next to this file. */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   openGraph: {
-    title: `${site.name} — Websites & Business Automations`,
+    title: HOME_TITLE,
     description: site.description,
+    url: "/",
     siteName: site.name,
     type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: site.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${site.name} — websites, automations, built from scratch`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: HOME_TITLE,
+    description: site.description,
+    images: [site.ogImage],
   },
 };
 
@@ -43,7 +76,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             <main className="flex-1">{children}</main>
-            <Footer />
+            <FuelFooter />
             <FloatingContact />
           </SmoothScrollProvider>
         </MotionProvider>
