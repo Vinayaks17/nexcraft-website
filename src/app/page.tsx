@@ -10,6 +10,7 @@ import { FuelAbout } from "@/components/fuel/FuelAbout";
 import { FuelProof } from "@/components/fuel/FuelProof";
 import { FuelFaqs } from "@/components/fuel/FuelFaqs";
 import { FuelScrollspy } from "@/components/fuel/FuelScrollspy";
+import { SectionRollover } from "@/components/fuel/SectionRollover";
 import { fuelCtaBands } from "@/lib/home-fuel-content";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
 import { pageMeta } from "@/lib/seo";
@@ -31,6 +32,11 @@ import { site } from "@/lib/site";
  * The register is declared once in `sectionOrder` (lib/home-fuel-content), not
  * here: the page, every band's own header and the scrollspy rail all read from
  * that one list, so a section can't end up numbered differently in two places.
+ *
+ * (04) and (05) are stacked rather than stacked end to end: (04) pins and
+ * (05) rides up over it. That run is the page's one piece of scroll theatre
+ * and it is deliberately small — SectionRollover documents the height rule
+ * that picked those two sections and disqualified every other pair.
  *
  * Four bands carry no number. The preview and the value strip sit above (01),
  * and the register counts down the page, so anything above its first entry
@@ -75,8 +81,11 @@ export default function HomePage() {
 
       <FuelUsps />
       <FuelLogoMarquee />
-      <FuelAbout />
-      <FuelProof />
+
+      {/* The one stacked run on the page. (04) pins and (05) is laid over it
+          like a card on a deck — see SectionRollover for why this pair and no
+          other, and for what pinning costs the scrollspy. */}
+      <SectionRollover base={<FuelAbout />} over={<FuelProof />} />
 
       {/* Ask 3 of 4 — the cream inversion, so the two never read as one
           component pasted twice. */}

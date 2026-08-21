@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import { Logo } from "@/components/ui/Logo";
 import { Wordmark } from "@/components/ui/Wordmark";
 import {
   FuelBracketLink,
@@ -33,7 +34,12 @@ export function FuelFooter() {
         <div className="mt-14 grid grid-cols-1 gap-12 sm:mt-20 lg:grid-cols-12 lg:gap-12">
           {/* Lead + email + actions */}
           <motion.div {...enterProps("up")} className="lg:col-span-7">
-            <p className={cn(fuelHeadline, "text-cream/55")}>
+            {/* The lockup opens the closing band. The giant outlined wordmark
+                further down is a signature, not identification — it is clipped
+                by the viewport edge and set at 7% opacity, so this is the only
+                place in the footer the mark is actually legible. */}
+            <Logo href={null} size={34} />
+            <p className={cn(fuelHeadline, "mt-8 text-cream/55")}>
               {fuelFooter.lead}
             </p>
             <a

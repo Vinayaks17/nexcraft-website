@@ -16,10 +16,15 @@ export const site = {
   /** Canonical origin. `metadataBase` in the root layout resolves against it. */
   url: "https://thenexcraft.com",
   /**
-   * Drop a logo at /public/logo.png and set this to "/logo.png" — the Logo
-   * component swaps the wordmark for the image automatically.
+   * The origami fox mark, trimmed to its alpha bounding box and rasterised at
+   * 256px tall (15KB). The Logo component pairs it with the wordmark and puts
+   * a cream plate behind it on dark grounds — see the note there for why.
+   *
+   * The 5120x3840 master is deliberately NOT here: /public is served, and a
+   * 2MB print-resolution file has no business being fetchable. It lives at
+   * design/logo-nexcraft.png, in the repo but outside the served tree.
    */
-  logoSrc: null as string | null,
+  logoSrc: "/logo-mark.png" as string | null,
   /** Shared OG/Twitter card. 1200x630, generated in Stage 5. */
   ogImage: "/og.png",
 } as const;

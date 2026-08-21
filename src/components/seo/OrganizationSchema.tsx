@@ -20,7 +20,10 @@ export function OrganizationSchema() {
     "@id": `${site.url}/#organization`,
     name: site.name,
     url: site.url,
-    logo: new URL(site.ogImage, site.url).toString(),
+    /* `logo` is the mark; `image` is the social card. Google reads the first
+       for knowledge-panel branding and wants something square and legible on
+       its own, which the 1200x630 card is not — hence the plated 512 square. */
+    logo: new URL("/logo-plated.png", site.url).toString(),
     image: new URL(site.ogImage, site.url).toString(),
     description: site.description,
     slogan: "Websites. Automations. Built from scratch.",

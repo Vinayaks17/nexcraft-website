@@ -16,6 +16,29 @@ import { cn } from "@/lib/utils";
 const JUMP_OFFSET = -96;
 
 /**
+ * An element's distance from the top of the document, walking the offset chain.
+ *
+ * NOT `getBoundingClientRect().top + scrollY`, which is what this used to do.
+ * A `position: sticky` element reports where it is currently *painted*: while
+ * (04) Who we are is pinned under the rollover its rect top is 0 at every
+ * scroll position, so a jump to it computed that way lands 96px above wherever
+ * the reader already was. `offsetTop` is layout, not paint, and is unmoved by
+ * sticky.
+ */
+function documentTop(el: HTMLElement) {
+  let y = 0;
+  let node: HTMLElement | null = el;
+  while (node) {
+    y += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return y;
+}
+
+/** Where the active-section hit test is taken, as a fraction of the viewport. */
+const PROBE = 0.4;
+
+/**
  * A thin band across the viewport, at ~40% from the top. Whichever section
  * crosses it is the one being read — a better answer than "whichever is most
  * visible" on a page whose bands run several screens and where two of them
@@ -63,28 +86,62 @@ export function FuelScrollspy() {
       return;
     }
 
-    /* Which sections currently cross the band. A Set rather than a single id:
-       a short section can sit wholly inside the band while the next one is
-       entering it, and the topmost of those is the one to show. */
-    const crossing = new Set<string>();
+    const ids = new Set(sectionList.map((s) => s.id));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) crossing.add(entry.target.id);
-          else crossing.delete(entry.target.id);
-        }
+    /**
+     * Which section is actually on screen at the probe line — by hit test,
+     * not by page order.
+     *
+     * Page order was enough while every band was in normal flow, where the
+     * topmost crossing section is also the visible one. It stops being true
+     * the moment a section pins: (04) Who we are is held at the top of the
+     * viewport for the whole of (05) Proof's travel over it, so it keeps
+     * intersecting the band long after it has been completely covered, and
+     * `find` kept returning it. `elementFromPoint` answers the question the
+     * rail is actually asking — what am I looking at — and gets stacking,
+     * pinning and z-index right for free.
+     */
+    const resolve = () => {
+      const el = document.elementFromPoint(
+        Math.round(window.innerWidth / 2),
+        Math.round(window.innerHeight * PROBE),
+      );
+      const section = el?.closest("section[id]");
+      const id = section?.id;
+      // A gap between bands (a CTA band, the logo belt) resolves to nothing,
+      // and the last entry holds — which is what a reader passing one expects.
+      if (id && ids.has(id)) setActiveId(id);
+    };
 
-        // sectionList is in page order, so `find` gives the topmost crossing
-        // section. No match means a gap between bands — hold the last one.
-        const next = sectionList.find((s) => crossing.has(s.id));
-        if (next) setActiveId(next.id);
-      },
-      { rootMargin: ACTIVE_BAND, threshold: 0 },
-    );
+    /* The observer is the cheap trigger, not the answer: it fires only when a
+       band boundary is crossed, and `resolve` then does one hit test. */
+    const observer = new IntersectionObserver(resolve, {
+      rootMargin: ACTIVE_BAND,
+      threshold: 0,
+    });
 
     elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+
+    /* A pinned card changes what is under the probe without any section
+       boundary crossing it, so the observer alone would miss the hand-off.
+       A passive scroll listener, throttled to one hit test per frame, covers
+       the stacked run. */
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        resolve();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    resolve();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   const jump = useCallback(
@@ -96,7 +153,9 @@ export function FuelScrollspy() {
          fought by its rAF loop. Outside Lenis — touch, or anyone who asked for
          reduced motion — the same call falls back to window.scrollTo with
          `behavior: auto`, so the jump lands instantly instead of animating. */
-      scrollTo(el, JUMP_OFFSET);
+      /* A document offset rather than the element: Lenis measures an element
+         with getBoundingClientRect, which lies about a pinned card. */
+      scrollTo(documentTop(el) + JUMP_OFFSET);
       setActiveId(id);
     },
     [scrollTo],

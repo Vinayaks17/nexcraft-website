@@ -96,12 +96,12 @@ export const team: TeamMember[] = [
     name: "Vinayak Singh",
     role: "Founder & CEO",
     blurb: "Leading strategy, client relations, and overall business operations.",
-    photo: "/team/vinayak.jpeg",
-    /* 992x1103, so wider than 4:5 — the full height shows and only the sides
-       crop. That fixes his eye-line at 20% of the frame with nothing to tune,
-       which is why this card is the reference the other two are matched to;
-       the 59% only slides him sideways onto the centre line. */
-    framing: { position: "59% 50%" },
+    photo: "/team/vinayak-c.jpg",
+    /* 950x1057, so wider than 4:5 — the full height shows and only the sides
+       crop. That fixes his eye-line at 20.5% of the frame with nothing to
+       tune, which is why this card is again the reference the other two are
+       matched to; the 49% only slides him onto the centre line. */
+    framing: { position: "49% 50%" },
     initials: "VS",
     linkedin: "https://www.linkedin.com/in/vinayak08/",
     linkedinLabel: "Connect with me on LinkedIn",
@@ -112,15 +112,19 @@ export const team: TeamMember[] = [
     name: "Manish Mishra",
     role: "Growth & Lead Generation",
     blurb: "Driving scalable acquisition and managing the sales pipeline.",
-    photo: "/team/manish.png",
-    /* 768x1365 — far taller than 4:5, so the frame shows the full width and
-       crops 30% of the height. Measured on the raw file his eyes sit at 39% of
-       the image; sliding the crop down to 85% lifts them to 20% of the frame
-       and leaves the same 5% of headroom above his hair that Vinayak's card
-       has. His face is already within half a percent of the centre line, which
-       is as close as this crop can get — the frame uses the photo's full width,
-       so the horizontal value is inert here. */
-    framing: { position: "50% 85%" },
+    photo: "/team/manish-c.jpg",
+    /* 941x1672 — far taller than 4:5, so the frame shows the full width and
+       crops 30% of the height. Measured on the new crop his eyes sit at 41% of
+       the image; sliding to 90% lifts them onto the same 20.5% line as
+       Vinayak's.
+
+       His face sits about 4% of the frame width right of centre and stays
+       there: the photo is taller than the frame, so cover uses its full width
+       and the horizontal value is inert. A zoom would buy the centring back
+       but would also blow his face up to 35% of the frame against the others'
+       27%, and a head visibly larger than its neighbours is a worse break in
+       the row than a head slightly off-centre. */
+    framing: { position: "50% 90%" },
     initials: "MM",
     linkedin: "https://www.linkedin.com/in/manish-mishra-a39476249/",
   },
@@ -130,18 +134,14 @@ export const team: TeamMember[] = [
     role: "Technical Lead",
     blurb:
       "Architecting the tech, managing website development, and leading the intern engineering team.",
-    photo: "/team/namit.jpeg",
-    /* 1086x1448, and a wide festival shot rather than a portrait: his face is
-       a fifth of the frame and sits at 38% of the width. At 4:5 this overflows
-       by only 6% of its height and not at all in width, so `position` alone
-       reaches neither the centre line nor the 20% eye-line — hence the zoom,
-       which re-crops to roughly the subject distance of the other two (face at
-       ~28% of the frame) and gives the slide the overflow it needs. The
-       delivered file is kept whole rather than cropped, so a future re-crop is
-       a number here, not a lost original. */
-    framing: { position: "5% 84%", zoom: 1.35 },
-    /* Kept for the next teammate who joins before a headshot does — TeamCard
-       still falls back to the monogram whenever `photo` is null. */
+    photo: "/team/namit-c.jpg",
+    /* 950x1187 — which is exactly 4:5, the frame's own aspect. That is the
+       awkward case: cover crops nothing in either direction, so object-position
+       has no overflow to move him through and is completely inert on its own.
+       His eyes sit 9 points below the reference line and his face is a fifth
+       of the frame rather than a quarter, so the correction has to come from
+       the zoom, which scales about the same point the position names. */
+    framing: { position: "35% 76%", zoom: 1.2 },
     initials: "NJ",
     linkedin: "https://www.linkedin.com/in/namit-joshi-b39487270/",
   },
