@@ -11,6 +11,9 @@ import { FuelProof } from "@/components/fuel/FuelProof";
 import { FuelFaqs } from "@/components/fuel/FuelFaqs";
 import { FuelScrollspy } from "@/components/fuel/FuelScrollspy";
 import { fuelCtaBands } from "@/lib/home-fuel-content";
+import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
+import { pageMeta } from "@/lib/seo";
+import { site } from "@/lib/site";
 
 /**
  * Homepage — fuel-redesign.
@@ -44,9 +47,20 @@ import { fuelCtaBands } from "@/lib/home-fuel-content";
  * carries alone now (and which the navbar numbers 03), and the project
  * archive, which moved to the foot of /portfolio where the full index belongs.
  */
+export const metadata = pageMeta({
+  title: `${site.name} — Websites & Business Automation`,
+  description: site.description,
+  path: "/",
+});
+
 export default function HomePage() {
   return (
     <>
+      {/* Structured data, homepage only — the Organization is the site, not a
+          page, so repeating it per route would only give a crawler the same
+          entity eight times. */}
+      <OrganizationSchema />
+
       <FuelScrollspy />
 
       <FuelHero />

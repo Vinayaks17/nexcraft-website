@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 
 import { FuelVideo } from "@/components/fuel/FuelVideo";
+import { Parallax } from "@/components/ui/Parallax";
 import { fuelLabel, fuelShell } from "@/components/fuel/FuelPrimitives";
 import { YEAR, fuelPreview } from "@/lib/home-fuel-content";
 import { mediaReveal } from "@/lib/motion";
@@ -36,12 +37,18 @@ export function FuelPreview() {
               "aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9]",
             )}
           >
-            <FuelVideo
-              src={video.src}
-              poster={video.poster}
-              alt={video.alt}
-              className="scale-[1.02]"
-            />
+            {/* The frame is the page's largest media block, which makes it
+                the one place a drift is worth having — it reads as the band
+                having depth rather than as an image sliding. Parallax
+                oversizes itself past the frame's edges, so the 5% never
+                exposes a gap and the rounded clip does the rest. */}
+            <Parallax amount={5}>
+              <FuelVideo
+                src={video.src}
+                poster={video.poster}
+                alt={video.alt}
+              />
+            </Parallax>
             {/* Settles the recording into the band instead of letting it sit on
                 top as a bright rectangle, and keeps the caption's ground dark. */}
             <div

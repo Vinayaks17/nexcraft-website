@@ -18,6 +18,21 @@ import { routes } from "@/lib/site";
 /** Rendered as `© 2026` in every section meta row and in the footer. */
 export const YEAR = 2026;
 
+/**
+ * Whether (05) Proof shows the quote carousel.
+ *
+ * OFF for launch. Every quote in `fuelTestimonials` is written copy attributed
+ * to "Client Name" — a stand-in that was safe while the site was unpublished
+ * and is not safe on a live page, whatever badge sits next to it. The four
+ * figures beside them are real, so the band keeps those and drops the words.
+ *
+ * Flip this to `true` the day signed-off quotes replace the placeholders, and
+ * the carousel, its heading and its subline all come back together — the
+ * register below reads from this constant so the section can't end up
+ * promising words it isn't showing.
+ */
+export const showTestimonials = false;
+
 /* -------------------------------------------------------------------------
    Section register
 
@@ -93,8 +108,10 @@ export const sectionIndex: Record<SectionId, SectionEntry> = {
     id: "proof",
     num: "05",
     label: "Proof",
-    title: "What clients say",
-    subline: "In their words, and the numbers behind them",
+    title: showTestimonials ? "What clients say" : "The numbers",
+    subline: showTestimonials
+      ? "In their words, and the numbers behind them"
+      : "The studio in four figures",
   },
   faq: {
     id: "faqs",
@@ -500,6 +517,8 @@ export const fuelTestimonials: FuelTestimonial[] = [
 ];
 
 export const fuelProof = {
+  /** Re-exported so the component reads one name rather than two modules. */
+  showTestimonials,
   prevLabel: "Previous testimonial",
   nextLabel: "Next testimonial",
   /**

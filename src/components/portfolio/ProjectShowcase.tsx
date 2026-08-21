@@ -124,9 +124,17 @@ function ProjectItem({
             rel="noopener noreferrer"
             onFocus={onEnter}
             onBlur={onLeave}
-            className="mt-1.5 shrink-0 font-mono text-[0.625rem] tracking-[0.16em] text-cream/70 uppercase underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            className="group/view mt-1.5 shrink-0 font-mono text-[0.625rem] tracking-[0.16em] text-cream/70 uppercase underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
           >
-            → View project
+            {/* The arrow leads rather than trails here, so it steps *back* out
+                of the label's way on hover instead of forward into it. */}
+            <span
+              aria-hidden
+              className="mr-1 inline-block transition-transform duration-300 ease-out group-hover/view:-translate-x-0.5"
+            >
+              →
+            </span>
+            View project
           </a>
         ) : (
           <span className="mt-1.5 shrink-0 rounded-[2px] border border-cream/20 px-2 py-1 font-mono text-[0.5625rem] tracking-[0.16em] text-cream/70 uppercase">
@@ -135,12 +143,11 @@ function ProjectItem({
         )}
       </div>
 
-      {/* Meta row: year and industry in the mono register, then the blurb.
-          The year is the one fact the archive shows that the grid didn't, and
-          without it the two views of the same project disagree. */}
+      {/* Industry in the mono register, then the blurb. The year that used to
+          lead this row is gone for the same reason it left the archive: the
+          values are guesses, and a date next to a client's name reads as a
+          recorded fact. Both views drop it together so they still agree. */}
       <p className="mono-caption mt-3 flex flex-wrap items-center gap-x-3 text-cream/50">
-        <span className="text-primary">{project.year}</span>
-        <span aria-hidden>/</span>
         <span>{project.industry}</span>
       </p>
       <p className="mono-caption mt-2 max-w-md text-cream/60">

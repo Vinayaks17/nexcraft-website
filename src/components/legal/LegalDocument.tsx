@@ -19,7 +19,17 @@ import { cn } from "@/lib/utils";
  *
  * The draft banner is not decoration: the body text is placeholder wording, and
  * a document that looks finished but isn't is worse than one that says so.
+ *
+ * The `TODO — PLACEHOLDER.` marker each paragraph is written with is stripped
+ * here rather than in the data. It is there for whoever picks the drafting up —
+ * it makes every unwritten clause greppable — but it is developer scaffolding,
+ * and scaffolding on a public page reads as a site that was shipped unfinished
+ * rather than as a document that is honestly still in draft. What is left is
+ * the plain-English outline of what each clause will cover, which is true, and
+ * the banner above says exactly what that is.
  */
+const DRAFT_MARKER = /^TODO\s*—\s*PLACEHOLDER\.\s*/;
+
 export function LegalDocument({ doc }: { doc: LegalDocumentType }) {
   return (
     <>
@@ -35,11 +45,17 @@ export function LegalDocument({ doc }: { doc: LegalDocumentType }) {
             <p
               role="note"
               className={cn(
-                fuelLabel,
-                "border border-primary/40 bg-primary/10 px-4 py-3 leading-[1.6] text-primary",
+                fuelBody,
+                "border border-primary/40 bg-primary/10 px-5 py-4 text-primary",
               )}
             >
-              Draft — placeholder wording, pending legal review. Not binding.
+              <strong className="font-semibold">
+                Draft — not binding.
+              </strong>{" "}
+              What follows is an outline of what each clause will cover, not the
+              clauses themselves. The finished document is with counsel; until it
+              is published here, nothing on this page forms part of an agreement.
+              Questions in the meantime: info@thenexcraft.com.
             </p>
           )}
 
@@ -57,14 +73,22 @@ export function LegalDocument({ doc }: { doc: LegalDocumentType }) {
                     <h2 className="font-display text-[clamp(1.375rem,2.2vw,1.875rem)] leading-[1.1] font-semibold tracking-[-0.03em] text-cream">
                       {section.title}
                     </h2>
-                    {section.body.map((paragraph) => (
-                      <p
-                        key={paragraph}
-                        className={cn(fuelBody, "mt-5 text-cream/65")}
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
+                    {section.body.map((paragraph, i) => {
+                      /* Strip first, then use the stripped text. The key was
+                         the raw paragraph, which put the marker back into the
+                         RSC flight payload embedded in the page even though
+                         the rendered <p> never showed it — invisible on screen,
+                         plainly there in view-source. */
+                      const text = paragraph.replace(DRAFT_MARKER, "");
+                      return (
+                        <p
+                          key={`${section.num}-${i}`}
+                          className={cn(fuelBody, "mt-5 text-cream/65")}
+                        >
+                          {text}
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               </section>

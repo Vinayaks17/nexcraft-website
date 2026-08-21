@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import {
   FuelBracketLink,
   FuelPageHeader,
@@ -20,11 +22,12 @@ import {
 } from "@/lib/pricing-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Pricing",
   description:
     "Transparent website and business automation pricing — three website tiers plus custom automation, with every add-on priced up front.",
-};
+  path: "/pricing",
+});
 
 /**
  * /pricing — the homepage's (04) band, given room to breathe.

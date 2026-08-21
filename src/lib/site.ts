@@ -1,6 +1,11 @@
 /**
  * Single source of truth for site-wide copy, navigation and contact details.
- * Placeholder values are marked — swap them once the real details land.
+ *
+ * Every contact detail below is real as of the Stage 5 launch pass. Nothing
+ * here is a placeholder any more, and nothing should become one: the footer,
+ * the floating buttons, the contact page, the estimate sidebar and every
+ * "Book a Call" CTA on the site read from this file, so a channel changes in
+ * exactly one place.
  */
 
 export const site = {
@@ -8,12 +13,15 @@ export const site = {
   tagline: "We craft high-converting websites and invisible business automations.",
   description:
     "NexCRAFT designs and builds high-converting websites and custom business automations that quietly run your operations.",
-  url: "https://nexcraft.com", // placeholder
+  /** Canonical origin. `metadataBase` in the root layout resolves against it. */
+  url: "https://thenexcraft.com",
   /**
    * Drop a logo at /public/logo.png and set this to "/logo.png" — the Logo
    * component swaps the wordmark for the image automatically.
    */
   logoSrc: null as string | null,
+  /** Shared OG/Twitter card. 1200x630, generated in Stage 5. */
+  ogImage: "/og.png",
 } as const;
 
 export type NavLink = {
@@ -54,16 +62,25 @@ export const footerLegal: NavLink[] = [
 ];
 
 /**
- * TODO — every value here is a placeholder. This is the single place they are
- * defined; the contact page, the footer and the floating buttons all read from
- * it, so filling these in once updates the whole site.
+ * The real channels.
+ *
+ * `whatsapp` carries a prefilled message so the thread opens with context
+ * rather than an empty box — wa.me wants it percent-encoded, hence the
+ * pre-encoded literal rather than the readable string.
+ *
+ * NOTE: `phone` is the same line as WhatsApp. It is the only voice number we
+ * have, and a contact page that lists a WhatsApp number but no phone reads as
+ * an omission; if it should stay WhatsApp-only, delete the `phone` entry from
+ * `contactChannels` below and this constant with it.
  */
 export const contact = {
-  email: "hello@nexcraft.com",
-  phone: "+31 6 00 00 00 00",
-  linkedin: "#",
-  whatsapp: "#",
-  calendly: "#",
+  email: "info@thenexcraft.com",
+  phone: "+91 63786 39929",
+  /** Company page, not a personal profile — the three personal ones live on /about. */
+  linkedin: "https://www.linkedin.com/company/105422395/",
+  whatsapp:
+    "https://wa.me/916378639929?text=Hi%20NexCRAFT%20%E2%80%94%20I%27d%20like%20to%20talk%20about%20a%20project.",
+  calendly: "https://calendly.com/vinayakvsj/meenting-with-nexcraft",
 } as const;
 
 /**
@@ -106,5 +123,12 @@ export const contactChannels = [
 export const routes = {
   estimate: "/estimate",
   contact: "/contact",
-  bookCall: "#", // TODO: Calendly link lands here
+  /**
+   * Every "Book Your Free Strategy Call" / "Book a Call" button on the site
+   * points here. It is an absolute URL, which is what makes Button and
+   * FuelBracketLink treat it as external and open it in a new tab — leaving
+   * the site itself in the background tab, which is the point of a booking
+   * link.
+   */
+  bookCall: contact.calendly,
 } as const;

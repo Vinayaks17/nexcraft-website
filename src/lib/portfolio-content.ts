@@ -32,10 +32,15 @@ export type Project = {
    */
   featured?: boolean;
   /**
-   * TODO — PLACEHOLDER. Ship year, shown in the portfolio grid and used to
-   * order the homepage archive. No real dates were recorded for these builds,
-   * so every value below is a plausible guess against a Jan-2024 founding.
-   * Confirm each one before launch.
+   * TODO — PLACEHOLDER. Ship year. No real dates were recorded for these
+   * builds, so every value below is a plausible guess against a Jan-2024
+   * founding.
+   *
+   * As of the Stage 5 launch pass it is NOT displayed anywhere — it only sorts
+   * the archive on /portfolio, where being approximately right is harmless.
+   * Confirm the real dates and the archive rows and the /portfolio grid can
+   * both show it again (FuelArchive and ProjectShowcase each carry a note
+   * where it was removed).
    */
   year: string;
 };

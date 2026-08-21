@@ -70,7 +70,13 @@ export function FuelVideo({
       muted
       loop
       playsInline
-      preload="metadata"
+      /* `none`, not `metadata`: there are two of these on the homepage and
+         neither is above the fold. Metadata alone is a request and a range
+         read per video on first paint, spent on a band most visitors have not
+         reached. The poster is a real still, so the frame is never empty, and
+         the IntersectionObserver below starts playback — which fetches — only
+         once the band is actually on screen. */
+      preload="none"
       aria-label={alt}
       className={cn("h-full w-full object-cover", className)}
     />

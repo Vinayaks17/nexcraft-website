@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import {
   FuelBracketLink,
   FuelPageHeader,
@@ -24,11 +26,12 @@ import {
 } from "@/lib/about-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "About Us",
   description:
-    "Founded in India in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of Indian engineers while doing it.",
-};
+    "Founded in India in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of engineers doing it.",
+  path: "/about",
+});
 
 /**
  * /about — four numbered bands.

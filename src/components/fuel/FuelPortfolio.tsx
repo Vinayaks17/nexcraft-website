@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { FuelCursorChip } from "@/components/fuel/FuelCursorChip";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
+import { Parallax } from "@/components/ui/Parallax";
 import {
   FuelSectionHeader,
   fuelHeadline,
@@ -46,13 +47,20 @@ function Slide({
   const media = (
     <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[3px] bg-surface">
       {project.screenshot ? (
-        <Image
-          src={project.screenshot}
-          alt={`${project.name} — ${project.industry} website`}
-          fill
-          sizes={SIZES}
-          className="object-cover object-top transition-transform duration-[900ms] ease-out group-hover/slide:scale-[1.03]"
-        />
+        /* The hover lift lives on an inner wrapper rather than on the image:
+           the parallax owns the image's own transform, and two `transform`
+           declarations on one element is one too many. */
+        <Parallax amount={4}>
+          <div className="h-full w-full transition-transform duration-[900ms] ease-out group-hover/slide:scale-[1.03]">
+            <Image
+              src={project.screenshot}
+              alt={`${project.name} — ${project.industry} website`}
+              fill
+              sizes={SIZES}
+              className="object-cover object-top"
+            />
+          </div>
+        </Parallax>
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(140deg,#1d1409_0%,#151515_60%)]">
           <span className="font-display text-2xl font-medium text-cream/25">
@@ -265,31 +273,30 @@ export function FuelPortfolio() {
               </span>
             </div>
 
-            <Link
-              href={fuelPortfolio.seeAll.href}
-              className={cn(
-                fuelLabel,
-                "mt-8 inline-flex items-center gap-2 text-cream underline decoration-cream/25 underline-offset-[6px]",
-                "transition-colors duration-200 hover:text-primary hover:decoration-primary",
-              )}
-            >
+            <MonoArrowLink href={fuelPortfolio.seeAll.href} className="mt-8">
               {fuelPortfolio.seeAll.label}
-              <span aria-hidden>→</span>
-            </Link>
+            </MonoArrowLink>
           </motion.div>
 
           {/* The track. Native overflow + scroll-snap: touch swipe, trackpad
               and keyboard all work without reimplementing any of them, and the
               snap lands on hardware-accelerated scrolling rather than a JS
               tween. `data-lenis-prevent` keeps Lenis's wheel handler off it. */}
-          <div className="lg:col-span-9">
+          {/* The carousel role sits on this wrapper rather than on the <ul>.
+              Putting `role="group"` on the list overrode its implicit
+              `role="list"`, which orphaned every <li> inside it — a real
+              failure, not a lint nit: the slides stopped being announced as a
+              list of anything. */}
+          <div
+            className="lg:col-span-9"
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Featured projects"
+          >
             <ul
               ref={trackRef}
               data-lenis-prevent
               tabIndex={0}
-              role="group"
-              aria-roledescription="carousel"
-              aria-label="Featured projects"
               onKeyDown={onKeyDown}
               className={cn(
                 "flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4",

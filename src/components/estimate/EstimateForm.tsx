@@ -63,6 +63,12 @@ export function EstimateForm() {
   const [direction, setDirection] = useState(1);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  /* Delivery failures are separate from field errors: the brief is valid, it
+     just didn't arrive, and the visitor needs a different instruction. */
+  const [sendError, setSendError] = useState<string | null>(null);
+  /* Web3Forms' honeypot. Real people never see this field, so anything in it
+     came from something filling inputs by name. */
+  const [botcheck, setBotcheck] = useState("");
 
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -106,8 +112,16 @@ export function EstimateForm() {
     if (Object.keys(found).length > 0) return;
 
     setStatus("submitting");
-    const result = await submitEstimate(data);
-    setStatus(result.ok ? "success" : "idle");
+    setSendError(null);
+    const result = await submitEstimate(data, botcheck);
+
+    if (result.ok) {
+      setStatus("success");
+      return;
+    }
+
+    setStatus("idle");
+    setSendError(result.message);
   };
 
   if (status === "success") {
@@ -346,6 +360,37 @@ export function EstimateForm() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        {/* Honeypot. Hidden from sight and from assistive tech, and taken out
+            of the tab order — anything that fills it is not a visitor. */}
+        <input
+          type="text"
+          name="botcheck"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden
+          value={botcheck}
+          onChange={(e) => setBotcheck(e.target.value)}
+          className="absolute top-0 left-0 h-0 w-0 overflow-hidden border-0 p-0 opacity-0"
+        />
+
+        {/* Delivery failure. `role="alert"` so it is announced the moment it
+            appears — the visitor has just pressed send and is not looking for
+            new text further up the form. */}
+        {sendError && (
+          <motion.p
+            role="alert"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className={cn(
+              fuelBody,
+              "mt-8 rounded-[3px] border border-primary/40 bg-primary/10 px-4 py-3 text-cream",
+            )}
+          >
+            {sendError}
+          </motion.p>
+        )}
 
         {/* Controls */}
         <div className="mt-9 flex items-center justify-between gap-4">

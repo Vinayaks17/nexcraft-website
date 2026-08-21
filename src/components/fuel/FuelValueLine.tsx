@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { fuelLabel, fuelShell } from "@/components/fuel/FuelPrimitives";
 import { valueLine } from "@/lib/home-fuel-content";
 import { enterProps } from "@/lib/motion";
@@ -55,16 +55,9 @@ export function FuelValueLine() {
             <Button href={valueLine.primaryCta.href} magnetic>
               {valueLine.primaryCta.label}
             </Button>
-            <Link
-              href={valueLine.secondaryCta.href}
-              className={cn(
-                fuelLabel,
-                "text-cream/60 underline decoration-cream/25 underline-offset-[6px]",
-                "transition-colors duration-200 hover:text-primary hover:decoration-primary",
-              )}
-            >
-              {valueLine.secondaryCta.label} →
-            </Link>
+            <MonoArrowLink href={valueLine.secondaryCta.href}>
+              {valueLine.secondaryCta.label}
+            </MonoArrowLink>
           </div>
         </motion.div>
       </div>

@@ -62,9 +62,12 @@ type CommonProps = {
   size?: ButtonSize;
   className?: string;
   children: React.ReactNode;
-  /** Renders a next/link (internal) or an anchor (external / "#"). */
+  /** Renders a next/link (internal) or a plain anchor (off-site). */
   href?: string;
-  /** Force an external anchor + target="_blank". */
+  /**
+   * Force the anchor form. Rarely needed: any `https:`, `mailto:` or `tel:`
+   * href is detected as off-site on its own.
+   */
   external?: boolean;
   /**
    * Cursor-proximity pull. Opt-in rather than automatic: it belongs on the few
@@ -107,16 +110,19 @@ export function Button({
     magnetic ? <Magnetic>{node}</Magnetic> : node;
 
   if (href) {
-    const isExternal = external ?? (/^(https?:|mailto:|tel:)/.test(href) || href === "#");
+    const isExternal = external ?? /^(https?:|mailto:|tel:)/.test(href);
+    /* A new tab for real web destinations only. Every booking CTA on the site
+       is a Calendly URL, and sending the visitor away from the page they were
+       reading to fill in a scheduling form is how you lose both. mailto: and
+       tel: hand off to another app and would only leave a blank tab behind. */
+    const newTab = isExternal && /^https?:/.test(href);
 
     if (isExternal) {
       return wrap(
         <motion.a
           href={href}
           className={classes}
-          {...(href !== "#" && external
-            ? { target: "_blank", rel: "noopener noreferrer" }
-            : {})}
+          {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           {...interaction}
         >
           {content}

@@ -260,16 +260,16 @@ export function FuelBracketLink({
     className,
   );
 
-  // "#" is the not-yet-wired Calendly placeholder in site.ts — it has to stay
-  // an anchor, since next/link would try to route to it.
-  const isExternal = external ?? (/^(https?:|mailto:|tel:)/.test(href) || href === "#");
+  const isExternal = external ?? /^(https?:|mailto:|tel:)/.test(href);
+  /* New tab for web destinations only — see the same rule in Button. */
+  const newTab = isExternal && /^https?:/.test(href);
 
   if (isExternal) {
     return (
       <a
         href={href}
         className={classes}
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {inner}
       </a>

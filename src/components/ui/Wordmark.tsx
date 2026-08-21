@@ -51,6 +51,13 @@ export function Wordmark({
      normal-width face and so runs wider than the condensed one this replaced.
      The vw value holds at every width because text and viewport both scale
      in vw. */
+  /* A 14.5vw watermark at 7% opacity — about 1.1:1 on the footer's black.
+     axe flags it and will keep flagging it: its contrast rule measures any
+     visually-rendered text, and `aria-hidden` on the wrapper (below) does not
+     exempt it. WCAG itself does — 1.4.3 exempts pure decoration, which this is;
+     it carries no information the legible navbar wordmark doesn't. Raising the
+     opacity to pass a checker would turn a texture into a headline. Left as
+     designed, deliberately, and noted here so the next person doesn't "fix" it. */
   const base =
     "font-display text-[14.5vw] leading-[0.8] font-bold tracking-[-0.03em] whitespace-nowrap uppercase select-none";
 

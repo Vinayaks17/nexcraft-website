@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { RevealHeading } from "@/components/ui/RevealHeading";
 import { CountUp } from "@/components/ui/CountUp";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import {
   FuelSectionHeader,
   fuelLabel,
@@ -62,36 +62,34 @@ export function FuelAbout() {
               {...enterProps("up", 0.08)}
               className="grid grid-cols-3 gap-6 lg:gap-8"
             >
+              {/* Term before definition, figure pulled above it with `order` —
+                  see the same note in FuelProof. */}
               {fuelAbout.metrics.map((metric) => (
-                <div key={metric.label}>
+                <div key={metric.label} className="flex flex-col">
+                  <dt className={cn(fuelLabel, "order-2 mt-3 text-ink/65")}>
+                    {metric.label}
+                  </dt>
                   <dd
                     className={cn(
                       fuelNumeral,
-                      "text-[clamp(1.75rem,3vw,2.75rem)] text-ink",
+                      "order-1 m-0 text-[clamp(1.75rem,3vw,2.75rem)] text-ink",
                     )}
                   >
                     <CountUp value={metric.value} />
                   </dd>
-                  <dt className={cn(fuelLabel, "mt-3 text-ink/65")}>
-                    {metric.label}
-                  </dt>
                 </div>
               ))}
             </motion.dl>
 
             <motion.div {...enterProps("fade", 0.12)} className="mt-8">
               <div className="h-px w-full bg-ink/15" aria-hidden />
-              <Link
+              <MonoArrowLink
                 href={fuelAbout.cta.href}
-                className={cn(
-                  fuelLabel,
-                  "mt-5 inline-flex items-center gap-2 text-ink underline decoration-ink/30 underline-offset-[6px]",
-                  "transition-colors duration-200 hover:text-primary-darker hover:decoration-primary-darker",
-                )}
+                tone="light"
+                className="mt-5"
               >
                 {fuelAbout.cta.label}
-                <span aria-hidden>→</span>
-              </Link>
+              </MonoArrowLink>
             </motion.div>
           </div>
         </div>

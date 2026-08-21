@@ -29,6 +29,12 @@ const ROTATE_MS = 7000;
  * claim, the numerals are the evidence, and a reader who wants the second
  * without the first can take it in at a glance directly underneath.
  *
+ * The quote half is switched off for launch (`showTestimonials` in
+ * home-fuel-content) because the quotes are still placeholders. With it off the
+ * band is the header and the numerals, and the row loses the hairline that
+ * separated it from the carousel — that rule exists to divide two things, and
+ * with one of them gone it would only sit under the header's own.
+ *
  * The four figures are the ones the deleted stats band carried, minus its
  * paragraph of description per figure: at this size the label and one mono
  * qualifier say the same thing in a fifth of the height.
@@ -50,12 +56,13 @@ export function FuelProof() {
      content change on a timer is exactly what that setting is asking us not to
      do — and pauses while the section is hovered or focused. */
   useEffect(() => {
-    if (reduceMotion || paused) return;
+    if (!fuelProof.showTestimonials || reduceMotion || paused) return;
     const id = setInterval(() => go(1), ROTATE_MS);
     return () => clearInterval(id);
   }, [reduceMotion, paused, go]);
 
   const current = fuelTestimonials[index];
+  const { showTestimonials } = fuelProof;
 
   return (
     <section
@@ -69,6 +76,7 @@ export function FuelProof() {
       <div className={fuelShell}>
         <FuelSectionHeader {...section} />
 
+        {showTestimonials && (
         <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:gap-12">
           {/* Left rail — the standing flag that none of this is real yet. */}
           <motion.div {...enterProps("left")} className="lg:col-span-3">
@@ -129,17 +137,42 @@ export function FuelProof() {
             </p>
           </div>
         </div>
+        )}
 
         {/* The numbers, full width under the quote. CountUp handles the odd one
             out on its own: "India" has no digits, so it renders untouched
             rather than counting to nothing, and the numeric three count up the
             first time the row scrolls into view. */}
-        <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-cream/12 pt-12 sm:mt-16 lg:grid-cols-4">
+        <dl
+          className={cn(
+            "grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4",
+            showTestimonials
+              ? "mt-14 border-t border-cream/12 pt-12 sm:mt-16"
+              : "mt-12 sm:mt-16",
+          )}
+        >
           {fuelProof.stats.map((stat, i) => (
-            <motion.div key={stat.label} {...enterProps("up", i * 0.07)}>
+            /* `dt` precedes its `dd` in the DOM and the figure is pulled above
+               it with `order` — a definition list whose term follows its
+               definition is malformed, and the qualifier has to live inside the
+               `dt` rather than beside it as a loose `<p>`, which is not a child
+               a `<dl>` is allowed. Flex order buys the value-over-label look
+               back at no semantic cost. */
+            <motion.div
+              key={stat.label}
+              {...enterProps("up", i * 0.07)}
+              className="flex flex-col"
+            >
+              <dt className="order-2 mt-4 text-[1.0625rem] font-semibold tracking-[-0.02em] text-cream">
+                {stat.label}
+                <span className={cn(fuelLabel, "mt-2 block text-cream/60")}>
+                  {stat.sub}
+                </span>
+              </dt>
               <dd
                 className={cn(
                   fuelNumeral,
+                  "order-1 m-0",
                   // A word-valued figure ("India") is wider than any numeral
                   // beside it, so long values step down rather than overflow.
                   stat.value.length > 4
@@ -150,10 +183,6 @@ export function FuelProof() {
               >
                 <CountUp value={stat.value} />
               </dd>
-              <dt className="mt-4 text-[1.0625rem] font-semibold tracking-[-0.02em] text-cream">
-                {stat.label}
-              </dt>
-              <p className={cn(fuelLabel, "mt-2 text-cream/60")}>{stat.sub}</p>
             </motion.div>
           ))}
         </dl>

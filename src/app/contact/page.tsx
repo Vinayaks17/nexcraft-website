@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import {
   FuelBracketLink,
   FuelPageHeader,
@@ -11,11 +13,12 @@ import { contactPage } from "@/lib/contact-content";
 import { contactChannels } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Contact",
   description:
-    "Talk to NexCRAFT about a website, an automation, or both. We reply within 24 hours.",
-};
+    "Talk to NexCRAFT about a website, an automation, or both. WhatsApp, email or a free strategy call — we reply within 24 hours.",
+  path: "/contact",
+});
 
 /**
  * Contact — deliberately the plainest page on the site.

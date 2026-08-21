@@ -159,8 +159,13 @@ export function FuelServices() {
               </p>
 
               <div className="mt-7">
+                {/* Three "Learn more"s on one page are three links a screen
+                    reader announces identically. The service name is appended
+                    for assistive tech only, so the visible label stays as short
+                    as the layout wants it. */}
                 <FuelBracketLink href={service.href} tone="light">
                   Learn more
+                  <span className="sr-only"> about {service.title}</span>
                 </FuelBracketLink>
               </div>
             </motion.li>

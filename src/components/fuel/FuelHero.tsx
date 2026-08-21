@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { RevealHeading } from "@/components/ui/RevealHeading";
 import { HeroRipple } from "@/components/fuel/HeroRipple";
 import {
@@ -14,7 +15,19 @@ import { fuelHero } from "@/lib/home-fuel-content";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-/** Blocks under the headline settle in after it, not with it. */
+/**
+ * The hero's load sequence, once per page load.
+ *
+ * The order is nav (0.05s, in Navbar) → headline (0.15s, word-staggered) →
+ * the foot of the hero, and the foot is itself staggered rather than arriving
+ * as one block: the chip carries the sharpest claim on the site and lands
+ * first, then the CTA it belongs to, then the discipline index opposite. The
+ * whole thing is done by ~1.05s, which is about as long as an entrance can run
+ * before it stops being an entrance and starts being a wait.
+ *
+ * Every offset here is a transform, so MotionConfig's reduced-motion pass
+ * leaves the opacity fade and drops the movement without this file branching.
+ */
 const rise = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -84,6 +97,7 @@ export function FuelHero() {
           as="h1"
           className={cn(fuelDisplay, "max-w-[22ch] text-cream")}
           stagger={0.09}
+          delay={0.15}
         />
 
         {/* 4 — the foot of the hero, pushed down so the image owns everything
@@ -96,11 +110,8 @@ export function FuelHero() {
             hero has no media block either, only the image, the statement and
             one link. Keeping both would also have put a video card under the
             fixed contact buttons, which sit bottom-right on every route. */}
-        <motion.div
-          {...rise(0.35)}
-          className="mt-auto pt-12 pb-8 lg:pt-16"
-        >
-          <div className="h-px w-full bg-cream/15" aria-hidden />
+        <div className="mt-auto pt-12 pb-8 lg:pt-16">
+          <motion.div {...rise(0.45)} className="h-px w-full bg-cream/15" aria-hidden />
           <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
             <div className="flex flex-col items-start gap-4">
               {/* The speed claim, sitting on the decision. It repeats (03)
@@ -109,7 +120,8 @@ export function FuelHero() {
                   something. Bordered rather than filled so it reads as a note
                   on the CTA rather than as a second button competing with it.
                   cream/85 on the scrim's foot clears AA at this size. */}
-              <p
+              <motion.p
+                {...rise(0.55)}
                 className={cn(
                   fuelLabel,
                   "inline-flex items-center gap-2 rounded-full border border-primary/50 bg-ink/40 px-3 py-2 text-cream/85 backdrop-blur-sm",
@@ -119,24 +131,25 @@ export function FuelHero() {
                   ◆
                 </span>
                 {fuelHero.highlight}
-              </p>
+              </motion.p>
 
-              <Button href={fuelHero.primaryCta.href} size="lg" magnetic>
-                {fuelHero.primaryCta.label}
-              </Button>
-              <a
-                href={fuelHero.secondaryCta.href}
-                className={cn(
-                  fuelLabel,
-                  "text-cream/60 underline decoration-cream/25 underline-offset-[6px]",
-                  "transition-colors duration-200 hover:text-primary hover:decoration-primary",
-                )}
-              >
-                {fuelHero.secondaryCta.label} →
-              </a>
+              <motion.div {...rise(0.7)}>
+                <Button href={fuelHero.primaryCta.href} size="lg" magnetic>
+                  {fuelHero.primaryCta.label}
+                </Button>
+              </motion.div>
+
+              <motion.div {...rise(0.8)}>
+                <MonoArrowLink href={fuelHero.secondaryCta.href}>
+                  {fuelHero.secondaryCta.label}
+                </MonoArrowLink>
+              </motion.div>
             </div>
 
-            <ul className="flex flex-wrap items-baseline gap-x-8 gap-y-2 sm:justify-end">
+            <motion.ul
+              {...rise(0.9)}
+              className="flex flex-wrap items-baseline gap-x-8 gap-y-2 sm:justify-end"
+            >
               <li className={cn(fuelLabel, "text-primary")}>
                 {fuelHero.disciplineIndex}
               </li>
@@ -151,16 +164,16 @@ export function FuelHero() {
               <li className={cn(fuelLabel, "text-cream/60")}>
                 {fuelHero.locationTag}
               </li>
-            </ul>
+            </motion.ul>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* 5 — the wordmark, bleeding off the bottom edge. Full-bleed rather than
           gutter-bound, and clipped by the section so it can never widen the
           page. */}
       <motion.div
-        {...rise(0.5)}
+        {...rise(1.0)}
         aria-hidden
         className="relative z-20 h-[9.5vw] w-full overflow-hidden select-none"
       >

@@ -106,22 +106,30 @@ export function FuelFaqs() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
+                        /* The box opens a touch slower than it closes, and the
+                           answer inside is a beat behind the box rather than
+                           arriving with it — the panel reads as making room
+                           first and filling it second, which is what stops a
+                           tall answer looking like it was shoved in. */
                         transition={{
-                          height: { duration: 0.38, ease: EASE },
-                          opacity: { duration: 0.25, ease: EASE },
+                          height: { duration: 0.45, ease: EASE },
+                          opacity: { duration: 0.3, ease: EASE },
                         }}
                         className="overflow-hidden"
                       >
                         {/* Indented to clear the index column, so the answer
                             hangs off the question rather than the number. */}
-                        <p
+                        <motion.p
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, ease: EASE, delay: 0.12 }}
                           className={cn(
                             fuelBody,
                             "max-w-[62ch] pb-7 pl-[3.25rem] text-cream/65 sm:pl-[4.5rem]",
                           )}
                         >
                           {item.answer}
-                        </p>
+                        </motion.p>
                       </motion.div>
                     )}
                   </AnimatePresence>

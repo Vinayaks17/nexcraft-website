@@ -45,10 +45,19 @@ export function Navbar() {
 
   return (
     <>
+      {/* Two animations, two elements. The outer one is the load fade — the
+          first beat of the hero sequence, run once per page load. The inner one
+          owns the scroll-driven float and has to keep `initial={false}` so it
+          doesn't animate the padding from zero on arrival. */}
       <motion.header
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        className="fixed inset-x-0 top-0 z-50 w-full"
+      >
+      <motion.div
         initial={false}
         animate={scrolled ? "floating" : "top"}
-        className="fixed inset-x-0 top-0 z-50 w-full"
       >
         <motion.div
           variants={{
@@ -133,6 +142,7 @@ export function Navbar() {
             </motion.nav>
           </div>
         </motion.div>
+      </motion.div>
       </motion.header>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} pathname={pathname} />

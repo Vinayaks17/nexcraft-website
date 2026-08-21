@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-import { usePrefersReducedMotion } from "@/lib/hooks";
+import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------
@@ -163,7 +163,15 @@ function webglAvailable() {
  *
  *   - no WebGL, or ogl fails to load  → the canvas never appears
  *   - `prefers-reduced-motion: reduce` → no canvas is ever created
+ *   - no pointer to follow (touch)     → no canvas is ever created
  *   - JavaScript off entirely         → the image is still there
+ *
+ * That touch gate is not a nicety. This is a cursor effect: with no cursor
+ * there is nothing for the flowmap to chase, so on a phone it was compiling
+ * shaders and running a rAF loop to display an image the `<img>` underneath
+ * was already showing. It cost 4.3 seconds of main-thread time in a throttled
+ * mobile Lighthouse run — more than every other script on the page combined —
+ * for no visible difference.
  *
  * The texture is taken from that `<img>` element rather than fetched again, so
  * the ripple costs one image download, at whatever size the browser picked for
@@ -182,9 +190,10 @@ export function HeroRipple({
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const reduceMotion = usePrefersReducedMotion();
+  const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || !finePointer) return;
 
     const host = hostRef.current;
     if (!host || !webglAvailable()) return;
@@ -439,7 +448,7 @@ export function HeroRipple({
       disposed = true;
       teardown?.();
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, finePointer]);
 
   return (
     <div

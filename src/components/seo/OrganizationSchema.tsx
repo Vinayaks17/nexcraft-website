@@ -1,0 +1,61 @@
+import { contact, site } from "@/lib/site";
+
+/**
+ * Organization JSON-LD for the homepage.
+ *
+ * A server component with no client bundle: this is markup Google reads, not
+ * anything a visitor interacts with. `dangerouslySetInnerHTML` is how a
+ * `<script type="application/ld+json">` gets its body in React — the content
+ * is our own object serialised here, never user input, so there is nothing to
+ * inject.
+ *
+ * The type is ProfessionalService rather than plain Organization: it inherits
+ * everything Organization has and adds the fields that make a studio legible
+ * to search — what it does, where it does it from, and what it costs.
+ */
+export function OrganizationSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": `${site.url}/#organization`,
+    name: site.name,
+    url: site.url,
+    logo: new URL(site.ogImage, site.url).toString(),
+    image: new URL(site.ogImage, site.url).toString(),
+    description: site.description,
+    slogan: "Websites. Automations. Built from scratch.",
+    foundingDate: "2024-01",
+    email: contact.email,
+    telephone: contact.phone,
+    address: { "@type": "PostalAddress", addressCountry: "IN" },
+    areaServed: ["Europe", "United States", "India"],
+    sameAs: [contact.linkedin],
+    priceRange: "€€",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: contact.email,
+        telephone: contact.phone,
+        availableLanguage: ["English"],
+        areaServed: "Worldwide",
+      },
+    ],
+    knowsAbout: [
+      "Web design",
+      "Web development",
+      "Business process automation",
+      "Search engine optimisation",
+      "E-commerce",
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export default OrganizationSchema;

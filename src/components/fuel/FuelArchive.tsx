@@ -129,9 +129,12 @@ export function FuelArchive() {
 
             const row = (
               <span className="grid w-full grid-cols-12 items-center gap-4 py-5 sm:py-7">
-                <span className={cn(fuelLabel, "col-span-3 text-cream/50 sm:col-span-2")}>
-                  {project.year}
-                </span>
+                {/* No year column. `Project.year` is still what sorts this
+                    list, but the values are guesses against a Jan-2024
+                    founding rather than recorded ship dates, and a date
+                    printed beside a client's name reads as fact. It comes back
+                    the day the real ones are confirmed — see the TODO on the
+                    field in portfolio-content. */}
 
                 {/* Resting state stays fully legible — this list *is* the
                     section's content, and eleven rows held at low opacity by
@@ -142,12 +145,12 @@ export function FuelArchive() {
                   className={cn(
                     // `[line-height:…]`, not `leading-[…]` — the size class
                     // below would otherwise delete it through tailwind-merge.
-                    "col-span-9 font-display [line-height:1.06] font-semibold tracking-[-0.03em] transition-colors duration-300",
+                    "col-span-12 font-display [line-height:1.06] font-semibold tracking-[-0.03em] transition-colors duration-300",
                     "text-[clamp(1.375rem,3vw,2.75rem)]",
                     floating && hovered !== null && !active
                       ? "text-cream/55"
                       : "text-cream",
-                    "sm:col-span-6",
+                    "sm:col-span-8",
                   )}
                 >
                   {project.name}

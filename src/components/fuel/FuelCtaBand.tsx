@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { renderAccent } from "@/components/ui/AccentWord";
 import {
   FuelTicks,
@@ -94,17 +94,11 @@ export function FuelCtaBand({
                 {content.primary.label}
               </Button>
 
-              <Link
-                href={content.secondary.href}
-                className={cn(
-                  fuelLabel,
-                  faint,
-                  "underline underline-offset-[6px] transition-opacity duration-200 hover:opacity-70",
-                  brand ? "decoration-on-brand/40" : "decoration-ink/30",
-                )}
-              >
-                {content.secondary.label} →
-              </Link>
+              {/* `light` on both grounds: the cream band and the orange one
+                  both want ink-coloured type and an ink rule. */}
+              <MonoArrowLink href={content.secondary.href} tone="light">
+                {content.secondary.label}
+              </MonoArrowLink>
             </div>
           </div>
         </motion.div>

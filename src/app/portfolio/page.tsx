@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import {
   FuelBracketLink,
   FuelPageHeader,
@@ -22,11 +24,12 @@ import {
 } from "@/lib/portfolio-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Portfolio",
   description:
     "Eleven websites shipped across recruitment, retail, real estate, media and AI — plus the in-house automation flows we build for clients.",
-};
+  path: "/portfolio",
+});
 
 export default function PortfolioPage() {
   return (
