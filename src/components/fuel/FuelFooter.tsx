@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import Image from "next/image";
-
 import { Logo } from "@/components/ui/Logo";
 import { Wordmark } from "@/components/ui/Wordmark";
 import {
@@ -116,36 +114,7 @@ export function FuelFooter() {
           </motion.nav>
         </div>
 
-        {/* The mark at size, centred directly over the NEXCRAFT signature so
-            the two read as one closing lockup — mark above wordmark — rather
-            than as two brand objects in the same room. 200px at desktop, half
-            that on a phone where it would otherwise own the whole width.
-
-            Centred rather than right-aligned, which is where it started: the
-            floating WhatsApp and email buttons are fixed to the bottom-right
-            corner on every route, and a 200px mark anchored there sat directly
-            under them. It is the same collision the hero hit in F3 — anything
-            parked bottom-right meets those buttons eventually.
-
-            The signature underneath is a 14.5vw watermark at 7% opacity, a
-            texture the eye reads as ground, so a solid object at a fifteenth of
-            its width sits over it without either losing. The signature yields
-            the spacing rather than the mark shrinking — its top margin opens up
-            to give the fox air. */}
-        <motion.div
-          {...enterProps("up", 0.16)}
-          className="mt-16 flex justify-center sm:mt-20"
-        >
-          <Image
-            src="/logo-mark.png"
-            alt=""
-            width={200}
-            height={240}
-            className="h-[100px] w-auto sm:h-[150px] lg:h-[200px]"
-          />
-        </motion.div>
-
-        <FuelTicks className="mt-12 px-[12%] sm:mt-16" />
+        <FuelTicks className="mt-16 px-[12%] sm:mt-20" />
 
         <div className="mt-14 h-px w-full bg-cream/12" aria-hidden />
       </div>
@@ -153,7 +122,7 @@ export function FuelFooter() {
       {/* The signature, full-bleed rather than gutter-bound. Solid rather than
           outlined here: the closing band is the heaviest moment on the page and
           an outline reads as tentative at this scale. */}
-      <Wordmark fill="solid" className="mt-16" />
+      <Wordmark fill="solid" className="mt-10" />
 
       <div className={cn(fuelShell, "pb-8")}>
         <div className={cn("flex flex-col gap-2 sm:flex-row sm:justify-between", fuelLabel)}>
