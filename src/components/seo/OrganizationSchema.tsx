@@ -22,8 +22,10 @@ export function OrganizationSchema() {
     url: site.url,
     /* `logo` is the mark; `image` is the social card. Google reads the first
        for knowledge-panel branding and wants something square and legible on
-       its own, which the 1200x630 card is not — hence the plated 512 square. */
-    logo: new URL("/logo-plated.png", site.url).toString(),
+       its own, which the 1200x630 card is not — hence the 512 square. It is
+       transparent, which is correct here: consumers of this field composite it
+       onto their own ground, usually white, where the mark reads properly. */
+    logo: new URL("/logo-square.png", site.url).toString(),
     image: new URL(site.ogImage, site.url).toString(),
     description: site.description,
     slogan: "Websites. Automations. Built from scratch.",

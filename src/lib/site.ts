@@ -17,12 +17,19 @@ export const site = {
   url: "https://thenexcraft.com",
   /**
    * The origami fox mark, trimmed to its alpha bounding box and rasterised at
-   * 256px tall (15KB). The Logo component pairs it with the wordmark and puts
-   * a cream plate behind it on dark grounds — see the note there for why.
+   * 640px tall — sized for the footer's 200px rendering on a 2x display, with
+   * next/image deriving every smaller variant from it, so the navbar does not
+   * pay for the footer's resolution.
    *
-   * The 5120x3840 master is deliberately NOT here: /public is served, and a
-   * 2MB print-resolution file has no business being fetchable. It lives at
-   * design/logo-nexcraft.png, in the repo but outside the served tree.
+   * Rendered plain on every ground as of 6.1: no plate, no filter, no
+   * recolouring. What that means on the dark bands is measured in the note on
+   * the Logo component and pictured in design/logo-contrast-on-dark.png.
+   *
+   * No master lives in /public — it is served, and print-resolution files have
+   * no business being fetchable. design/ holds all three: the 5120x3840
+   * original, the 577x433 re-export delivered as "the version that works
+   * without a plate" (same artwork, 3.76/255 mean channel difference), and the
+   * plated square this replaced.
    */
   logoSrc: "/logo-mark.png" as string | null,
   /** Shared OG/Twitter card. 1200x630, generated in Stage 5. */

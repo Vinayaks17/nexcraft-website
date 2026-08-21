@@ -21,17 +21,24 @@ type LogoProps = {
  * and not a wordmark — it carries no letterforms, so on its own it would
  * leave the navbar with nothing that says the studio's name.
  *
- * THE PLATE IS NOT DECORATION. The delivered artwork is charcoal facets with
- * orange accents on transparency, drawn for a light ground: measured against
- * this site's #0a0a0a it is 1.82:1 for the body and 0.93:1 for the darkest
- * facets, so on a dark band the fox reads as a floating orange zigzag with no
- * animal attached. Cream behind it hands back the ground it was designed for
- * and leaves every colour in the mark exactly as drawn — which recolouring or
- * brightening the artwork, the two other ways out, would not.
+ * NO PLATE. The previous pass put the mark on a cream chip because the artwork
+ * is charcoal-on-transparent and disappears into a dark band. The client asked
+ * for it plain, so plain is what this renders — on every ground, including the
+ * near-black ones.
  *
- * On the cream bands the plate would be a square of the same colour as the
- * band, so there it drops away and the mark sits directly on the ground it
- * already suits.
+ * What that costs is measured rather than guessed, and it is on the record so
+ * nobody has to re-derive it. Sampling the mark's own pixels: the body facet is
+ * rgb(72,72,72) and 52% of the drawing, which is 2.16:1 against #0a0a0a and
+ * 2.30:1 against the footer's #000; a further 11% is pure black, at 1.06:1 and
+ * 1.00:1 — that part of the fox is not dim on the footer, it is absent. Just
+ * under 70% of the mark sits below 3:1 on the page's own background. Only the
+ * orange accents, about a tenth of it, carry.
+ *
+ * So on dark the fox reads as its orange edges with the body implied. That is a
+ * deliberate, sighted choice by the client, not an oversight — see the
+ * comparison sheet committed with this change. If it is ever revisited, the
+ * options are a plate (what this replaced), a lighter export of the artwork, or
+ * accepting it; recolouring a delivered mark in CSS is the one to avoid.
  */
 export function Logo({
   className,
@@ -39,26 +46,19 @@ export function Logo({
   href = "/",
   size = 30,
 }: LogoProps) {
+  // Only the wordmark changes with the ground now; the mark is the mark.
   const onLight = tone === "onLight";
 
   const mark = site.logoSrc ? (
-    <span
-      className={cn(
-        "relative inline-flex shrink-0 items-center justify-center overflow-hidden",
-        // The plate, and only where it is needed.
-        onLight ? "bg-transparent" : "rounded-[7px] bg-cream",
-      )}
-      style={{ width: size, height: size }}
-    >
-      <Image
-        src={site.logoSrc}
-        alt=""
-        width={size}
-        height={size}
-        priority
-        className="h-[72%] w-auto object-contain"
-      />
-    </span>
+    <Image
+      src={site.logoSrc}
+      alt=""
+      width={size}
+      height={size}
+      priority
+      className="w-auto shrink-0 object-contain"
+      style={{ height: size }}
+    />
   ) : null;
 
   const lockup = (
