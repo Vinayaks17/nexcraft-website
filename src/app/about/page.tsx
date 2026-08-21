@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 import {
   FuelBracketLink,
@@ -15,23 +17,20 @@ import {
 import { TeamCard } from "@/components/about/TeamCard";
 import { LifeAtNexcraft } from "@/components/about/LifeAtNexcraft";
 import { CountUp } from "@/components/ui/CountUp";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { renderAccent } from "@/components/ui/AccentWord";
 import {
   aboutCta,
   aboutHero,
   stats,
   story,
+  storyLink,
   team,
   teamSection,
 } from "@/lib/about-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = pageMeta({
-  title: "About Us",
-  description:
-    "Founded in India in January 2024, NexCRAFT builds websites and automations for clients worldwide — and trains the next generation of engineers doing it.",
-  path: "/about",
-});
+export const metadata: Metadata = pageMeta(seoPages.about);
 
 /**
  * /about — four numbered bands.
@@ -43,6 +42,8 @@ export const metadata: Metadata = pageMeta({
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbSchema name="About" path="/about" />
+
       <FuelPageHeader
         label="About us"
         heading={aboutHero.heading}
@@ -75,6 +76,14 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+
+          <MonoArrowLink
+            href={storyLink.href}
+            tone="light"
+            className="mt-14 sm:mt-16"
+          >
+            {storyLink.label}
+          </MonoArrowLink>
         </div>
       </section>
 

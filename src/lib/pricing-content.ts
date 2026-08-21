@@ -160,4 +160,10 @@ export const pricingCta = {
   description:
     "Walk us through the project on a free call — we'll point you at the right tier, even if it's the smaller one.",
   cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
+  /**
+   * A price means nothing without the work behind it, and this page had no
+   * route to that work except the navbar. Somebody weighing four numbers wants
+   * to see what the numbers bought.
+   */
+  secondary: { label: "See what these plans have built", href: "/portfolio" },
 } as const;

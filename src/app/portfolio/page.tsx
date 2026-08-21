@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 import {
   FuelBracketLink,
@@ -14,6 +16,7 @@ import {
 import { FuelArchive } from "@/components/fuel/FuelArchive";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { FlowCard } from "@/components/portfolio/FlowCard";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { renderAccent } from "@/components/ui/AccentWord";
 import {
   automationsSection,
@@ -24,16 +27,13 @@ import {
 } from "@/lib/portfolio-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = pageMeta({
-  title: "Portfolio",
-  description:
-    "Eleven websites shipped across recruitment, retail, real estate, media and AI — plus the in-house automation flows we build for clients.",
-  path: "/portfolio",
-});
+export const metadata: Metadata = pageMeta(seoPages.portfolio);
 
 export default function PortfolioPage() {
   return (
     <>
+      <BreadcrumbSchema name="Portfolio" path="/portfolio" />
+
       {/* No number on the header: the bands below run (01)-(03), and a
           fourth number above them would read as a numbering mistake rather
           than as a second scope. Same rule /about follows. */}
@@ -107,6 +107,14 @@ export default function PortfolioPage() {
               >
                 {portfolioCta.cta.label}
               </FuelBracketLink>
+
+              <MonoArrowLink
+                href={portfolioCta.secondary.href}
+                tone="light"
+                className="mt-8"
+              >
+                {portfolioCta.secondary.label}
+              </MonoArrowLink>
             </div>
           </div>
         </div>

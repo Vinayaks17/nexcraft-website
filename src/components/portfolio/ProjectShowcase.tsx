@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-import type { Project } from "@/lib/portfolio-content";
+import { projectAlt, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
@@ -52,7 +52,7 @@ function ProjectItem({
       {project.screenshot ? (
         <Image
           src={project.screenshot}
-          alt={`${project.name} — ${project.industry} website`}
+          alt={projectAlt(project)}
           fill
           sizes={large ? SIZES_LARGE : SIZES_SMALL}
           className="object-cover object-top transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"

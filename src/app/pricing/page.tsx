@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 import {
   FuelBracketLink,
@@ -12,6 +14,7 @@ import {
   fuelStatement,
 } from "@/components/fuel/FuelPrimitives";
 import { FuelTierCard } from "@/components/fuel/FuelTierCard";
+import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { renderAccent } from "@/components/ui/AccentWord";
 import {
   fuelPricing,
@@ -22,12 +25,7 @@ import {
 } from "@/lib/pricing-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = pageMeta({
-  title: "Pricing",
-  description:
-    "Transparent website and business automation pricing — three website tiers plus custom automation, with every add-on priced up front.",
-  path: "/pricing",
-});
+export const metadata: Metadata = pageMeta(seoPages.pricing);
 
 /**
  * /pricing — the homepage's (04) band, given room to breathe.
@@ -39,6 +37,8 @@ export const metadata: Metadata = pageMeta({
 export default function PricingPage() {
   return (
     <>
+      <BreadcrumbSchema name="Pricing" path="/pricing" />
+
       <FuelPageHeader
         num="03"
         label="Pricing"
@@ -47,6 +47,13 @@ export default function PricingPage() {
       />
 
       <section className={cn(fuelShell, "pt-14 pb-20 sm:pt-16 lg:pt-20")}>
+        {/* The tier names are h3s, and with no h2 between them and the page
+            title the outline jumped h1 -> h3. Visually this section is labelled
+            by the page header directly above it, so the heading it was missing
+            is one only assistive tech and crawlers need — hence sr-only rather
+            than a new line of design. */}
+        <h2 className="sr-only">Website design and automation packages</h2>
+
         <ul className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {pricingTiers.map((tier, i) => (
             <FuelTierCard key={tier.id} tier={tier} index={i} />
@@ -96,6 +103,14 @@ export default function PricingPage() {
               >
                 {pricingCta.cta.label}
               </FuelBracketLink>
+
+              <MonoArrowLink
+                href={pricingCta.secondary.href}
+                tone="light"
+                className="mt-8"
+              >
+                {pricingCta.secondary.label}
+              </MonoArrowLink>
             </div>
           </div>
         </div>

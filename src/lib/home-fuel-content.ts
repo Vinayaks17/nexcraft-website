@@ -215,7 +215,7 @@ export const fuelPreview = {
      * video, so a pre-cropped poster would jump when playback starts.
      */
     poster: "/video-posters/nex-one.jpg",
-    alt: "A website we shipped, scrolling",
+    alt: "Screen recording of a NexCRAFT-built website scrolling from top to bottom",
   },
 } as const;
 
@@ -278,7 +278,7 @@ export const fuelServices = {
           "/portfolio-screenshots/thebigmedia.png",
           "/portfolio-screenshots/Ovalon.png",
         ],
-        alt: "Three websites we designed and built",
+        alt: "Homepages of three websites designed and built by NexCRAFT — Aidify, The Big Media Studios and Ovalon",
       },
       href: "/pricing",
     },
@@ -301,7 +301,7 @@ export const fuelServices = {
         kind: "video",
         src: "/video-nex-two.mp4",
         poster: "/video-posters/nex-two.jpg",
-        alt: "A website we shipped, scrolling",
+        alt: "Screen recording of a NexCRAFT client website scrolling, showing its page structure",
       },
       href: "/estimate",
     },

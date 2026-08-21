@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 import { FuelPageHeader, fuelShell } from "@/components/fuel/FuelPrimitives";
 import { EstimateForm } from "@/components/estimate/EstimateForm";
@@ -9,12 +11,7 @@ import { EstimateSidebar } from "@/components/estimate/EstimateSidebar";
 import { estimateHero } from "@/lib/estimate-content";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = pageMeta({
-  title: "Get a Quick Estimate",
-  description:
-    "Tell us what you need and we'll reply within 24 hours with a tailored quote for your website or business automation.",
-  path: "/estimate",
-});
+export const metadata: Metadata = pageMeta(seoPages.estimate);
 
 /** Matches the real form's footprint so the swap-in costs no layout shift. */
 function FormSkeleton() {
@@ -51,6 +48,8 @@ function FormSkeleton() {
 export default function EstimatePage() {
   return (
     <>
+      <BreadcrumbSchema name="Get an Estimate" path="/estimate" />
+
       <FuelPageHeader
         label="Quick estimate"
         heading={estimateHero.heading}

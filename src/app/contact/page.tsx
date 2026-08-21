@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 import {
   FuelBracketLink,
@@ -13,12 +15,7 @@ import { contactPage } from "@/lib/contact-content";
 import { contactChannels } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = pageMeta({
-  title: "Contact",
-  description:
-    "Talk to NexCRAFT about a website, an automation, or both. WhatsApp, email or a free strategy call — we reply within 24 hours.",
-  path: "/contact",
-});
+export const metadata: Metadata = pageMeta(seoPages.contact);
 
 /**
  * Contact — deliberately the plainest page on the site.
@@ -31,6 +28,8 @@ export const metadata: Metadata = pageMeta({
 export default function ContactPage() {
   return (
     <>
+      <BreadcrumbSchema name="Contact" path="/contact" />
+
       <FuelPageHeader
         num={contactPage.num}
         label={contactPage.label}

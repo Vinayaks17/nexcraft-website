@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
 
 import { LegalDocument } from "@/components/legal/LegalDocument";
 import { privacy } from "@/lib/legal-content";
 
-export const metadata: Metadata = pageMeta({
-  title: "Privacy Policy",
-  description:
-    "What NexCRAFT collects, why we hold it, who else sees it, and how to get it back or get it deleted.",
-  path: "/privacy",
-});
+export const metadata: Metadata = pageMeta(seoPages.privacy);
 
 /* Draft documents stay out of the index. A search result that leads
    straight to an outline of unwritten terms is worse than no result,

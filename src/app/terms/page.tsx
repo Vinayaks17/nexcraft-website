@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
 
 import { pageMeta } from "@/lib/seo";
+import { seoPages } from "@/lib/seo-content";
 
 import { LegalDocument } from "@/components/legal/LegalDocument";
 import { terms } from "@/lib/legal-content";
 
-export const metadata: Metadata = pageMeta({
-  title: "Terms of Service",
-  description:
-    "The agreement between NexCRAFT and its clients — scope, payments, ownership, liability and governing law.",
-  path: "/terms",
-});
+export const metadata: Metadata = pageMeta(seoPages.terms);
 
 /* Draft documents stay out of the index. A search result that leads
    straight to an outline of unwritten terms is worse than no result,

@@ -17,6 +17,19 @@ export const aboutHero = {
     "Founded in January 2024 in India, we're a team of 10+ designers, engineers, and automation builders shipping for clients across Europe and beyond.",
 } as const;
 
+/**
+ * The one contextual route from the story out to the work.
+ *
+ * /about talked about what the studio believes and never once pointed at the
+ * thing it had made — the navbar was the only way across. This closes the
+ * story section rather than the page, so a reader who is convinced can go
+ * looking without scrolling past the team and the office photos first.
+ */
+export const storyLink = {
+  label: "See the work it produced",
+  href: "/portfolio",
+} as const;
+
 export const story = {
   eyebrow: "Our story",
   heading: "One mission, *two* beneficiaries.",

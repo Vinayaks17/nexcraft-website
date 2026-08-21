@@ -45,6 +45,25 @@ export type Project = {
   year: string;
 };
 
+/**
+ * Alt text for a project screenshot.
+ *
+ * Every one of these images is a capture of the project's homepage, so the alt
+ * says that rather than saying "screenshot" — which describes the file, not the
+ * picture. Name and sector are both in it because that is what someone who
+ * cannot see the image would want: which client, and what kind of business.
+ *
+ * One builder rather than three template literals: the archive, the homepage
+ * carousel and the /portfolio grid all show the same images, and alt text that
+ * disagrees between them is alt text nobody is maintaining.
+ */
+export function projectAlt(project: Pick<Project, "name" | "industry">) {
+  /* The industry is NOT lowercased: these strings carry acronyms — "AI Voice
+     Services", "Recruitment (RPO)" — and folding the case turns them into "ai
+     voice services", which a screen reader then reads letter-blurred. */
+  return `${project.name} homepage — ${project.industry} website designed and built by NexCRAFT`;
+}
+
 export const portfolioHero = {
   eyebrow: "Portfolio",
   heading: "Work that *works.*",
@@ -292,4 +311,10 @@ export const portfolioCta = {
   description:
     "Tell us what you're building. We'll come back within 24 hours with scope and a number.",
   cta: { label: "Get a quick estimate", href: "/estimate" },
+  /**
+   * The one contextual route out of this page other than the estimate form.
+   * Somebody who has just scrolled eleven builds is asking what one costs, and
+   * before this the only way from here to /pricing was the navbar.
+   */
+  secondary: { label: "See what a build costs", href: "/pricing" },
 } as const;

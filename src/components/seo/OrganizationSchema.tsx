@@ -29,11 +29,19 @@ export function OrganizationSchema() {
     image: new URL(site.ogImage, site.url).toString(),
     description: site.description,
     slogan: "Websites. Automations. Built from scratch.",
-    foundingDate: "2024-01",
+    foundingDate: "2024-01-15",
     email: contact.email,
     telephone: contact.phone,
     address: { "@type": "PostalAddress", addressCountry: "IN" },
-    areaServed: ["Europe", "United States", "India"],
+    /* Typed places rather than bare strings: a crawler can resolve
+       `{"@type":"Country","name":"India"}` to an entity, where "India" in a
+       string array is just a word that happens to be a country. */
+    areaServed: [
+      { "@type": "Country", name: "India" },
+      { "@type": "Place", name: "Europe" },
+      { "@type": "Country", name: "United States" },
+      { "@type": "Place", name: "Worldwide" },
+    ],
     sameAs: [contact.linkedin],
     priceRange: "€€",
     contactPoint: [
@@ -44,6 +52,7 @@ export function OrganizationSchema() {
         telephone: contact.phone,
         availableLanguage: ["English"],
         areaServed: "Worldwide",
+        url: new URL("/contact", site.url).toString(),
       },
     ],
     knowsAbout: [

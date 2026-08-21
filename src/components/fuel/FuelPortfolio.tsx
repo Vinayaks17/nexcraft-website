@@ -15,7 +15,7 @@ import {
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
 import { fuelPortfolio, sectionIndex } from "@/lib/home-fuel-content";
-import { projects, type Project } from "@/lib/portfolio-content";
+import { projectAlt, projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { enterProps, springSnappy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -54,7 +54,7 @@ function Slide({
           <div className="h-full w-full transition-transform duration-[900ms] ease-out group-hover/slide:scale-[1.03]">
             <Image
               src={project.screenshot}
-              alt={`${project.name} — ${project.industry} website`}
+              alt={projectAlt(project)}
               fill
               sizes={SIZES}
               className="object-cover object-top"

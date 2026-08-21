@@ -12,9 +12,11 @@ import { FuelFaqs } from "@/components/fuel/FuelFaqs";
 import { FuelScrollspy } from "@/components/fuel/FuelScrollspy";
 import { SectionRollover } from "@/components/fuel/SectionRollover";
 import { fuelCtaBands } from "@/lib/home-fuel-content";
+import { FaqSchema } from "@/components/seo/FaqSchema";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
+import { ServicesSchema } from "@/components/seo/ServicesSchema";
 import { pageMeta } from "@/lib/seo";
-import { site } from "@/lib/site";
+import { seoPages } from "@/lib/seo-content";
 
 /**
  * Homepage — fuel-redesign.
@@ -53,19 +55,18 @@ import { site } from "@/lib/site";
  * carries alone now (and which the navbar numbers 03), and the project
  * archive, which moved to the foot of /portfolio where the full index belongs.
  */
-export const metadata = pageMeta({
-  title: `${site.name} — Websites & Business Automation`,
-  description: site.description,
-  path: "/",
-});
+export const metadata = pageMeta(seoPages.home);
 
 export default function HomePage() {
   return (
     <>
-      {/* Structured data, homepage only — the Organization is the site, not a
-          page, so repeating it per route would only give a crawler the same
-          entity eight times. */}
+      {/* Structured data. The Organization is the site rather than a page, so
+          it is declared here once instead of on every route; the services and
+          the FAQ are both rendered on this page, and Google requires marked-up
+          FAQ text to be text the visitor can actually see. */}
       <OrganizationSchema />
+      <ServicesSchema />
+      <FaqSchema />
 
       <FuelScrollspy />
 

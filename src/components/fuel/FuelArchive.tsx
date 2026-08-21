@@ -9,7 +9,7 @@ import {
   fuelLabel,
   fuelShell,
 } from "@/components/fuel/FuelPrimitives";
-import { archiveSection, projects, type Project } from "@/lib/portfolio-content";
+import { archiveSection, projectAlt, projects, type Project } from "@/lib/portfolio-content";
 import { useMediaQuery, usePrefersReducedMotion } from "@/lib/hooks";
 import { EASE, enterProps } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -163,7 +163,7 @@ export function FuelArchive() {
                     <span className="relative block aspect-[16/10] w-full max-w-[9rem] overflow-hidden rounded-[3px] ring-1 ring-cream/12 sm:w-[9rem]">
                       <Image
                         src={project.screenshot}
-                        alt={`${project.name} — ${project.industry} website`}
+                        alt={projectAlt(project)}
                         fill
                         sizes="144px"
                         className="object-cover object-top"
