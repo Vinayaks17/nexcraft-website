@@ -87,7 +87,7 @@ export const footerLegal: NavLink[] = [
 export const contact = {
   email: "info@thenexcraft.com",
   phone: "+91 63786 39929",
-  /** Company page, not a personal profile — the three personal ones live on /about. */
+  /** The company page — the only LinkedIn profile the site links to. */
   linkedin: "https://www.linkedin.com/company/105422395/",
   whatsapp:
     "https://wa.me/916378639929?text=Hi%20NexCRAFT%20%E2%80%94%20I%27d%20like%20to%20talk%20about%20a%20project.",

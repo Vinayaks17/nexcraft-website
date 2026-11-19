@@ -14,7 +14,6 @@ import {
   fuelShell,
   fuelStatement,
 } from "@/components/fuel/FuelPrimitives";
-import { TeamCard } from "@/components/about/TeamCard";
 import { LifeAtNexcraft } from "@/components/about/LifeAtNexcraft";
 import { CountUp } from "@/components/ui/CountUp";
 import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
@@ -25,18 +24,16 @@ import {
   stats,
   story,
   storyLink,
-  team,
-  teamSection,
 } from "@/lib/about-content";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMeta(seoPages.about);
 
 /**
- * /about — four numbered bands.
+ * /about — three numbered bands.
  *
- * The page header carries no number of its own: the bands below run (01)–(04),
- * and a fifth number above them would read as a numbering mistake rather than
+ * The page header carries no number of its own: the bands below run (01)–(03),
+ * and a fourth number above them would read as a numbering mistake rather than
  * as a second scope.
  */
 export default function AboutPage() {
@@ -87,35 +84,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* (02) The team */}
-      <section id="team" className="scroll-mt-28 bg-ink py-20 sm:py-24 lg:py-28">
-        <div className={fuelShell}>
-          <FuelSectionMeta num="02" label="The team" />
-
-          <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 lg:grid-cols-12 lg:items-end lg:gap-12">
-            <h2 className={cn(fuelStatement, "text-cream lg:col-span-8")}>
-              {renderAccent(teamSection.heading)}
-            </h2>
-            <p className={cn(fuelBody, "text-cream/60 lg:col-span-4")}>
-              {teamSection.intro}
-            </p>
-          </div>
-
-          <ul className="mt-16 grid grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {team.map((member, i) => (
-              <TeamCard key={member.id} member={member} index={i} />
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* (03) Life at NexCRAFT */}
+      {/* (02) Life at NexCRAFT — the team as a group. It follows the cream
+          story band directly, on ink-alt, so the page still alternates ground
+          on every band: cream, ink-alt, ink, ink-alt. */}
       <LifeAtNexcraft />
 
-      {/* (04) Stats */}
+      {/* (03) Stats */}
       <section className="bg-ink py-20 sm:py-24 lg:py-28">
         <div className={fuelShell}>
-          <FuelSectionMeta num="04" label="By the numbers" />
+          <FuelSectionMeta num="03" label="By the numbers" />
 
           <dl className="mt-14 grid grid-cols-1 gap-x-12 gap-y-12 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (

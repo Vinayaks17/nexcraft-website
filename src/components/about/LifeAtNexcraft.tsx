@@ -15,7 +15,7 @@ import { enterProps, mediaReveal } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * (03) Life at NexCRAFT — the candid band.
+ * (02) Life at NexCRAFT — the candid band.
  *
  * The polaroid tilt and cream mounts that used to frame these are gone: on a
  * page ruled with hairlines and set in a Swiss ramp, a pair of rotated snapshots
@@ -33,7 +33,7 @@ export function LifeAtNexcraft() {
   return (
     <section className="bg-ink-alt py-20 sm:py-24 lg:py-28">
       <div className={fuelShell}>
-        <FuelSectionMeta num="03" label="Life at NexCRAFT" />
+        <FuelSectionMeta num="02" label="Life at NexCRAFT" />
 
         <div className="mt-12 grid grid-cols-1 gap-12 sm:mt-16 lg:grid-cols-12 lg:gap-12">
           <motion.div {...enterProps("left")} className="lg:col-span-5">
