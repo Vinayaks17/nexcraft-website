@@ -44,10 +44,10 @@ export const needOptions: {
 ];
 
 export const budgetOptions: { id: BudgetId; label: string }[] = [
-  { id: "under-800", label: "< €800" },
-  { id: "800-2500", label: "€800 – €2.5k" },
-  { id: "2500-5000", label: "€2.5k – €5k" },
-  { id: "5000-plus", label: "€5k+" },
+  { id: "under-1000", label: "< $1k" },
+  { id: "1000-3000", label: "$1k – $3k" },
+  { id: "3000-6000", label: "$3k – $6k" },
+  { id: "6000-plus", label: "$6k+" },
   { id: "unsure", label: "Not sure" },
 ];
 
@@ -73,7 +73,7 @@ export const whatHappensNext = {
     {
       number: "03",
       title: "Free strategy call",
-      description: "We walk through it together and finalise the details.",
+      description: "We walk through it together and finalize the details.",
     },
   ],
 } as const;

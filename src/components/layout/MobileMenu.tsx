@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { isActivePath } from "@/components/layout/Navbar";
 import { navLinks, routes } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -122,17 +121,13 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
               );
             })}
 
-            <motion.div variants={item} className="mt-6 flex flex-col gap-3">
+            <motion.div variants={item} className="mt-6 mb-10 flex flex-col gap-3">
               <Button href={routes.estimate} variant="highlight" size="lg" className="w-full">
                 Get a quick estimate
               </Button>
               <Button href={routes.bookCall} variant="primary" size="lg" className="w-full">
                 Book a Call
               </Button>
-            </motion.div>
-
-            <motion.div variants={item} className="mt-8 mb-10 flex justify-center">
-              <LanguageSwitcher className="text-base" />
             </motion.div>
           </nav>
         </motion.div>

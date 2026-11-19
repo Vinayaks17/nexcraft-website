@@ -3,7 +3,7 @@
  */
 
 export type NeedId = "website" | "automation" | "both";
-export type BudgetId = "under-800" | "800-2500" | "2500-5000" | "5000-plus" | "unsure";
+export type BudgetId = "under-1000" | "1000-3000" | "3000-6000" | "6000-plus" | "unsure";
 export type TimelineId = "asap" | "1-2-months" | "flexible";
 
 export type EstimateData = {
@@ -88,10 +88,10 @@ const NEED_LABELS: Record<NeedId, string> = {
 };
 
 const BUDGET_LABELS: Record<BudgetId, string> = {
-  "under-800": "Under EUR 800",
-  "800-2500": "EUR 800 - 2,500",
-  "2500-5000": "EUR 2,500 - 5,000",
-  "5000-plus": "EUR 5,000+",
+  "under-1000": "Under USD 1,000",
+  "1000-3000": "USD 1,000 - 3,000",
+  "3000-6000": "USD 3,000 - 6,000",
+  "6000-plus": "USD 6,000+",
   unsure: "Not sure yet",
 };
 

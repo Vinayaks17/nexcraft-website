@@ -498,7 +498,7 @@ export const fuelTestimonials: FuelTestimonial[] = [
   {
     // TODO: placeholder quote — replace with a real, approved client quote.
     quote:
-      "We came for a redesign and left with a system. Enquiries land in the CRM, get qualified, and reach us already sorted.",
+      "We came for a redesign and left with a system. Inquiries land in the CRM, get qualified, and reach us already sorted.",
     name: "Client Name",
     role: "Company — Role",
   },
@@ -529,7 +529,7 @@ export const fuelProof = {
     { value: "15+", label: "Projects shipped", sub: "Since 2024" },
     { value: "10+", label: "Team", sub: "One room, no account managers" },
     { value: "24h", label: "Kickoff", sub: "From signed brief" },
-    { value: "India", label: "Headquarters", sub: "Across EU and US hours" },
+    { value: "India", label: "Headquarters", sub: "Across US and UK hours" },
   ],
 } as const;
 
@@ -542,5 +542,5 @@ export const fuelFooter = {
   cta: { label: "Book Your Free Strategy Call", href: routes.bookCall },
   secondary: { label: "Get a quick estimate", href: "/estimate" },
   wordmark: "NEXCRAFT",
-  location: "Crafted in India, shipped worldwide",
+  location: "Crafted in India, shipped to the US and UK",
 } as const;

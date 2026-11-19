@@ -46,7 +46,7 @@ export const seoPages = {
       "Custom website design, development and business automation, built from scratch — no templates. First mockup in 2 hours, live in as little as 2 days.",
     ogTitle: "NexCRAFT — websites and automations, built from scratch",
     ogDescription:
-      "A design-led studio in India building custom websites and the systems behind them for clients across Europe and the US.",
+      "A design-led studio in India building custom websites and the systems behind them for clients across the US and UK.",
   },
 
   portfolio: {
@@ -65,10 +65,10 @@ export const seoPages = {
     keyword: "web design agency in India",
     title: "About Our Web Design Agency in India",
     description:
-      "A web design and automation agency in India, founded 2024, building for clients across Europe and the US — and training the next generation of engineers.",
+      "A web design and automation agency in India, founded 2024, building for clients across the US and UK — and training the next generation of engineers.",
     ogTitle: "The people behind the work",
     ogDescription:
-      "Ten-plus designers, engineers and automation builders in one room in India, shipping for clients across Europe and the US.",
+      "Ten-plus designers, engineers and automation builders in one room in India, shipping for clients across the US and UK.",
   },
 
   estimate: {

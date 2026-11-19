@@ -9,7 +9,6 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { SlideLabel } from "@/components/ui/SlideLabel";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { navLinks, routes } from "@/lib/site";
 import { springSoft } from "@/lib/motion";
@@ -125,7 +124,6 @@ export function Navbar() {
                 <Button href={routes.bookCall} variant="primary" size="sm" magnetic>
                   Book a Call
                 </Button>
-                <LanguageSwitcher className="ml-1.5" />
               </div>
 
               {/* Mobile trigger */}

@@ -1,4 +1,4 @@
-import { contact, site } from "@/lib/site";
+import { contact, marketsServed, site } from "@/lib/site";
 
 /**
  * Organization JSON-LD for the homepage.
@@ -33,15 +33,7 @@ export function OrganizationSchema() {
     email: contact.email,
     telephone: contact.phone,
     address: { "@type": "PostalAddress", addressCountry: "IN" },
-    /* Typed places rather than bare strings: a crawler can resolve
-       `{"@type":"Country","name":"India"}` to an entity, where "India" in a
-       string array is just a word that happens to be a country. */
-    areaServed: [
-      { "@type": "Country", name: "India" },
-      { "@type": "Place", name: "Europe" },
-      { "@type": "Country", name: "United States" },
-      { "@type": "Place", name: "Worldwide" },
-    ],
+    areaServed: marketsServed,
     sameAs: [contact.linkedin],
     contactPoint: [
       {
@@ -50,7 +42,7 @@ export function OrganizationSchema() {
         email: contact.email,
         telephone: contact.phone,
         availableLanguage: ["English"],
-        areaServed: "Worldwide",
+        areaServed: marketsServed,
         url: new URL("/contact", site.url).toString(),
       },
     ],
@@ -58,7 +50,7 @@ export function OrganizationSchema() {
       "Web design",
       "Web development",
       "Business process automation",
-      "Search engine optimisation",
+      "Search engine optimization",
       "E-commerce",
     ],
   };

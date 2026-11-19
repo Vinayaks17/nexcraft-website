@@ -35,7 +35,7 @@ export const industries = {
   items: [
     {
       icon: "Wrench",
-      title: "Tradies & Home Services",
+      title: "Trades & Home Services",
       description:
         "Plumbers, electricians, and contractors needing reliable lead-gen portfolios.",
     },
@@ -191,7 +191,7 @@ export const ctaMinimal = {
   heading: "Don't see what you're *looking for?*",
   description:
     "Every business is shaped a little differently. Tell us yours and we'll build the plan around it.",
-  cta: { label: "Customise your plan", href: "/estimate" },
+  cta: { label: "Customize your plan", href: "/estimate" },
 } as const;
 
 export const faqs = {

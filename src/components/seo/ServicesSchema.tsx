@@ -1,6 +1,6 @@
 import { JsonLd } from "@/components/seo/JsonLd";
 import { fuelServices } from "@/lib/home-fuel-content";
-import { site } from "@/lib/site";
+import { marketsServed, site } from "@/lib/site";
 
 /**
  * One `Service` per offering, each pointing back at the Organization.
@@ -27,11 +27,7 @@ export function ServicesSchema() {
           serviceType: service.title,
           description: service.description,
           provider: { "@id": `${site.url}/#organization` },
-          areaServed: [
-            { "@type": "Country", name: "India" },
-            { "@type": "Place", name: "Europe" },
-            { "@type": "Country", name: "United States" },
-          ],
+          areaServed: marketsServed,
           url: new URL(service.href, site.url).toString(),
         })),
       }}

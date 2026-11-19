@@ -68,7 +68,7 @@ export const portfolioHero = {
   eyebrow: "Portfolio",
   heading: "Work that *works.*",
   intro:
-    "Websites and automations built to bring our clients real business — enquiries, bookings, orders, and hours given back. Not just pixels.",
+    "Websites and automations built to bring our clients real business — inquiries, bookings, orders, and hours given back. Not just pixels.",
 } as const;
 
 export const projectsSection = {

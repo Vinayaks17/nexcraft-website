@@ -23,6 +23,6 @@ export const contactPage = {
   location: {
     label: "Studio",
     value: "India",
-    note: "Online across European and US hours.",
+    note: "Online across US and UK hours.",
   },
 } as const;

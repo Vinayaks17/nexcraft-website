@@ -10,9 +10,9 @@ import { routes } from "@/lib/site";
 
 export const aboutHero = {
   eyebrow: "About NexCRAFT",
-  heading: "Built in India. *Crafted* for the world.",
+  heading: "Built in India. *Crafted* for the US and UK.",
   intro:
-    "Founded in January 2024 in India, we're a team of 10+ designers, engineers, and automation builders shipping for clients across Europe and beyond.",
+    "Founded in January 2024 in India, we're a team of 10+ designers, engineers, and automation builders shipping for clients in the US and UK.",
 } as const;
 
 /**
@@ -69,7 +69,7 @@ export const lifeAt: {
   heading: "Builders, *not vendors.*",
   paragraphs: [
     "We work out of one room in India, which means decisions happen in conversation rather than in ticket queues. Most days that room is a mix of senior engineers shipping client work and interns two months into their first real codebase, arguing about the same problem.",
-    "We're online across time zones for clients in Europe and the US, and we run an intern engineering program that puts young talent on production work from week one — supervised, reviewed, and held to the standard our clients pay for.",
+    "We're online across time zones for clients in the US and UK, and we run an intern engineering program that puts young talent on production work from week one — supervised, reviewed, and held to the standard our clients pay for.",
   ],
   photos: [
     {

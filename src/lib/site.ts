@@ -36,6 +36,23 @@ export const site = {
   ogImage: "/og.png",
 } as const;
 
+/**
+ * The markets the studio sells into, as schema.org places.
+ *
+ * Declared once because two JSON-LD blocks state it — the Organization and
+ * each Service — and a crawler reading two different lists for one business
+ * has no way to tell which is current. Typed places rather than bare strings:
+ * `{"@type":"Country","name":"United States"}` resolves to an entity, where
+ * the same words in a string array are just words.
+ *
+ * India is where the studio is, not a market it targets, so it is carried by
+ * the Organization's `address` and does not appear here.
+ */
+export const marketsServed = [
+  { "@type": "Country", name: "United States" },
+  { "@type": "Country", name: "United Kingdom" },
+] as const;
+
 export type NavLink = {
   label: string;
   href: string;
