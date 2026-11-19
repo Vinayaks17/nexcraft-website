@@ -202,13 +202,16 @@ export const fuelPreview = {
   video: {
     src: "/video-nex-one.mp4",
     /**
-     * Re-cut from the recording at 00:04 — the previous poster was grabbed
-     * from a frame where the recorded page's own video embed had failed, so
-     * the still that greeted every visitor read "this video isn't available".
-     * Regenerate with:
-     *   ffmpeg -ss 4 -i public/video-nex-one.mp4 -frames:v 1 -q:v 4 \
-     *     public/video-posters/nex-one.jpg
-     * Keep it a full 1080×1920 frame: it is object-cover'd exactly like the
+     * The video is a 1080×1920, 24fps recording re-encoded for the web:
+     * H.264 at CRF 24, no audio track (FuelVideo always plays muted), moov
+     * atom first so playback can start before the file has finished arriving.
+     *   ffmpeg -i <source>.mp4 -an -c:v libx264 -preset slow -crf 24 \
+     *     -pix_fmt yuv420p -movflags +faststart public/video-nex-one.mp4
+     *
+     * The poster is the frame at 00:00.5, scaled to 720×1280. Regenerate with:
+     *   ffmpeg -ss 0.5 -i public/video-nex-one.mp4 -frames:v 1 \
+     *     -vf scale=720:1280 -q:v 4 public/video-posters/nex-one.jpg
+     * Keep it the full 9:16 frame: it is object-cover'd exactly like the
      * video, so a pre-cropped poster would jump when playback starts.
      */
     poster: "/video-posters/nex-one.jpg",
