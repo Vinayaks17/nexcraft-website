@@ -51,9 +51,8 @@ import { seoPages } from "@/lib/seo-content";
  * value strip and band B five sections apart, which is the gap the rhythm rule
  * exists to prevent.
  *
- * Two things that used to be here are not: the pricing band, which /pricing
- * carries alone now (and which the navbar numbers 03), and the project
- * archive, which moved to the foot of /portfolio where the full index belongs.
+ * The project archive used to be here too; it moved to the foot of
+ * /portfolio, where the full index belongs.
  */
 export const metadata = pageMeta(seoPages.home);
 

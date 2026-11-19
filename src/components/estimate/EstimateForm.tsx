@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronLeft, X } from "lucide-react";
+import { Check, ChevronLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
 import {
@@ -24,9 +23,6 @@ import {
 } from "@/lib/estimate-content";
 import {
   emptyEstimate,
-  isPlanId,
-  planLabels,
-  planToNeed,
   submitEstimate,
   validateStep,
   type BudgetId,
@@ -46,18 +42,7 @@ const slide = {
 };
 
 export function EstimateForm() {
-  const searchParams = useSearchParams();
-  const planParam = searchParams.get("plan");
-  const initialPlan = isPlanId(planParam) ? planParam : null;
-
-  // Lazy initialisers so the ?plan= prefill is applied on the very first render
-  // rather than being patched in afterwards.
-  const [data, setData] = useState<EstimateData>(() => ({
-    ...emptyEstimate,
-    plan: initialPlan,
-    need: initialPlan ? planToNeed(initialPlan) : null,
-  }));
-  const [showPlanChip, setShowPlanChip] = useState(() => initialPlan !== null);
+  const [data, setData] = useState<EstimateData>(emptyEstimate);
 
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -199,30 +184,6 @@ export function EstimateForm() {
         >
           {steps[step].title}
         </h2>
-
-        {/* Plan prefill chip */}
-        <AnimatePresence>
-          {showPlanChip && data.plan && step === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="mt-5 inline-flex items-center gap-2 rounded-[2px] bg-cream px-3 py-2"
-            >
-              <span className="font-mono text-[0.6875rem] leading-none tracking-[0.08em] text-ink uppercase">
-                Customising: {planLabels[data.plan]}
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowPlanChip(false)}
-                aria-label="Dismiss selected plan"
-                className="rounded-full p-0.5 text-ink/60 transition-colors hover:text-ink"
-              >
-                <X className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         <div className="relative mt-6">
           <AnimatePresence mode="wait" custom={direction} initial={false}>

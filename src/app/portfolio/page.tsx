@@ -16,7 +16,6 @@ import {
 import { FuelArchive } from "@/components/fuel/FuelArchive";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { FlowCard } from "@/components/portfolio/FlowCard";
-import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { renderAccent } from "@/components/ui/AccentWord";
 import {
   automationsSection,
@@ -107,14 +106,6 @@ export default function PortfolioPage() {
               >
                 {portfolioCta.cta.label}
               </FuelBracketLink>
-
-              <MonoArrowLink
-                href={portfolioCta.secondary.href}
-                tone="light"
-                className="mt-8"
-              >
-                {portfolioCta.secondary.label}
-              </MonoArrowLink>
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/Button";
-import { MonoArrowLink } from "@/components/ui/MonoArrowLink";
 import { fuelLabel, fuelShell } from "@/components/fuel/FuelPrimitives";
 import { valueLine } from "@/lib/home-fuel-content";
 import { enterProps } from "@/lib/motion";
@@ -15,10 +14,9 @@ import { cn } from "@/lib/utils";
  * number.
  *
  * It grew a real button in F6. It is the first point on the page where a
- * visitor has seen both the claim and a build, and with pricing no longer a
- * homepage band it is also the only route to /pricing above the footer. Making
- * it the page's first ask is what lets the reorder run three numbered sections
- * before the next one without a gap in the rhythm.
+ * visitor has seen both the claim and a build. Making it the page's first ask
+ * is what lets the reorder run three numbered sections before the next one
+ * without a gap in the rhythm.
  */
 export function FuelValueLine() {
   return (
@@ -51,14 +49,9 @@ export function FuelValueLine() {
             ))}
           </ul>
 
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-            <Button href={valueLine.primaryCta.href} magnetic>
-              {valueLine.primaryCta.label}
-            </Button>
-            <MonoArrowLink href={valueLine.secondaryCta.href}>
-              {valueLine.secondaryCta.label}
-            </MonoArrowLink>
-          </div>
+          <Button href={valueLine.primaryCta.href} magnetic>
+            {valueLine.primaryCta.label}
+          </Button>
         </motion.div>
       </div>
     </section>

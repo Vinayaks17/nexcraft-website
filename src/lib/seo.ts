@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
  * Next inherits `openGraph` from the root layout but does NOT merge it field by
  * field: declare `openGraph` on a page and the parent's object is replaced
  * whole, so a page that only wanted its own title would silently lose the card
- * image and the site name. Rather than restate the full block on eight pages,
+ * image and the site name. Rather than restate the full block on seven pages,
  * every route calls this and gets a complete, self-consistent set.
  *
  * `canonical` is a path, not a URL — Next resolves it against `metadataBase`,

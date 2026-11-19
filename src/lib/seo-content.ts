@@ -1,10 +1,10 @@
 /**
  * Every route's search targeting, in one place.
  *
- * Centralised rather than scattered across eight `page.tsx` files for one
+ * Centralised rather than scattered across seven `page.tsx` files for one
  * practical reason: the failure mode of per-page SEO copy is duplication —
  * two routes drifting onto the same title, or the same description getting
- * pasted twice — and that is invisible when the strings live eight files
+ * pasted twice — and that is invisible when the strings live seven files
  * apart and obvious when they sit in one list. The test at the bottom of this
  * file enforces it.
  *
@@ -47,17 +47,6 @@ export const seoPages = {
     ogTitle: "NexCRAFT — websites and automations, built from scratch",
     ogDescription:
       "A design-led studio in India building custom websites and the systems behind them for clients across Europe and the US.",
-  },
-
-  pricing: {
-    path: "/pricing",
-    keyword: "website design pricing",
-    title: "Website Design Pricing & Packages",
-    description:
-      "Transparent website design pricing from €799 — three fixed-scope packages plus custom automation, every add-on priced up front. No hourly billing.",
-    ogTitle: "What a NexCRAFT website costs",
-    ogDescription:
-      "Four fixed-scope plans with every add-on priced up front, plus a free strategy call and a clickable prototype before you commit.",
   },
 
   portfolio: {

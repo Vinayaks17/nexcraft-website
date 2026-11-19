@@ -63,7 +63,7 @@ export const whatHappensNext = {
     {
       number: "01",
       title: "We review your brief",
-      description: "A real person reads it — no auto-responder pricing.",
+      description: "A real person reads it — no auto-responder quotes.",
     },
     {
       number: "02",

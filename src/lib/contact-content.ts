@@ -6,11 +6,12 @@
  * the whole site. This file only carries the surrounding words.
  */
 
-import { routes } from "@/lib/site";
+import { navLinks, routes } from "@/lib/site";
 
 
 export const contactPage = {
-  num: "05",
+  /** The page's own number in the nav, read from it so the two can't disagree. */
+  num: navLinks.find((link) => link.href === routes.contact)?.num,
   label: "Contact",
   heading: "Let's work *together.*",
   intro:

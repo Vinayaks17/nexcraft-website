@@ -8,14 +8,13 @@ import { site } from "@/lib/site";
  * lands in `app/` next, and a sitemap that indexes a page nobody meant to
  * publish is worse than one that needs a line added.
  *
- * Priorities are relative, not absolute — the homepage leads, the three pages
- * that sell (pricing, portfolio, estimate) follow, and the legal pages sit at
+ * Priorities are relative, not absolute — the homepage leads, the two pages
+ * that sell (portfolio, estimate) follow, and the legal pages sit at
  * the bottom where they belong.
  */
 const ROUTES: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
   { path: "/", priority: 1, changeFrequency: "monthly" },
   { path: "/portfolio", priority: 0.9, changeFrequency: "monthly" },
-  { path: "/pricing", priority: 0.9, changeFrequency: "monthly" },
   { path: "/estimate", priority: 0.8, changeFrequency: "yearly" },
   { path: "/about", priority: 0.7, changeFrequency: "yearly" },
   { path: "/contact", priority: 0.7, changeFrequency: "yearly" },

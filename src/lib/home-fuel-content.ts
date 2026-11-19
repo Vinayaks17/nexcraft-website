@@ -41,14 +41,11 @@ export const showTestimonials = false;
    mono line saying what the visitor is looking at — so a section can never
    drift out of sequence with its own heading.
 
-   The order is show-first, talk-second: the work and what it costs to build
+   The order is show-first, talk-second: what we build and the work itself
    come before the studio's own story. Proof is front-loaded (the hero preview
    and (02) Our work), the argument follows in (03), and (04) Who we are is a
    compact band rather than the page's second-biggest section — the long
    version of it lives on /about, which is where someone who wants it goes.
-
-   Pricing is no longer a homepage band at all; /pricing carries it and the
-   navbar now numbers it 03.
 
    `id` is the scroll target. The ids that already had anchors — work,
    services, faqs — keep the ones they shipped with.
@@ -224,7 +221,7 @@ export const fuelPreview = {
 ------------------------------------------------------------------------- */
 
 export const valueLine = {
-  statement: "Pick a plan. Send the brief. We start within 24 hours.",
+  statement: "Send the brief. We start within 24 hours.",
   /**
    * Mono qualifier under the statement — (03) Why NexCRAFT's fifth USP, stated
    * early. Worded to echo that claim rather than paraphrase it: if the USP is
@@ -235,11 +232,9 @@ export const valueLine = {
   /**
    * The strip carries a real ask now. It sits directly under the hero and the
    * build preview, which is the first point on the page where a visitor has
-   * seen enough to act — and with pricing off the homepage, it is also the
-   * only signpost to /pricing above the footer.
+   * seen enough to act.
    */
   primaryCta: { label: "Get a quick estimate", href: "/estimate" },
-  secondaryCta: { label: "See what it costs", href: "/pricing" },
 } as const;
 
 /* -------------------------------------------------------------------------
@@ -263,7 +258,7 @@ export type FuelService = {
 export const fuelServices = {
   statement:
     "Design-led studio shipping websites, the systems behind them, and the *search presence* that feeds both.",
-  cta: { label: "See what it costs", href: "/pricing" },
+  cta: { label: "Get a quick estimate", href: "/estimate" },
   items: [
     {
       num: "01",
@@ -280,7 +275,7 @@ export const fuelServices = {
         ],
         alt: "Homepages of three websites designed and built by NexCRAFT — Aidify, The Big Media Studios and Ovalon",
       },
-      href: "/pricing",
+      href: "/estimate",
     },
     {
       num: "02",
@@ -289,7 +284,7 @@ export const fuelServices = {
       description:
         "Custom workflow mapping, CRM integrations, email sequences and AI bots — wired into the tools you already run so the repetitive work stops reaching a human.",
       media: { kind: "diagram", diagramId: "CRM" },
-      href: "/estimate?plan=automation",
+      href: "/estimate",
     },
     {
       num: "03",

@@ -2,7 +2,6 @@
  * Estimate form types, validation, and the single submission entry point.
  */
 
-export type PlanId = "basic" | "business" | "enterprise" | "automation";
 export type NeedId = "website" | "automation" | "both";
 export type BudgetId = "under-800" | "800-2500" | "2500-5000" | "5000-plus" | "unsure";
 export type TimelineId = "asap" | "1-2-months" | "flexible";
@@ -16,8 +15,6 @@ export type EstimateData = {
   email: string;
   company: string;
   phone: string;
-  /** Set when the visitor arrived from a pricing card. */
-  plan: PlanId | null;
 };
 
 export const emptyEstimate: EstimateData = {
@@ -29,25 +26,7 @@ export const emptyEstimate: EstimateData = {
   email: "",
   company: "",
   phone: "",
-  plan: null,
 };
-
-/** Human-readable plan names, used by the "Customising: …" chip. */
-export const planLabels: Record<PlanId, string> = {
-  basic: "Basic Website",
-  business: "Business Website",
-  enterprise: "Enterprise Website",
-  automation: "Custom Business Automation",
-};
-
-export function isPlanId(value: string | null | undefined): value is PlanId {
-  return value === "basic" || value === "business" || value === "enterprise" || value === "automation";
-}
-
-/** Which "what do you need" option a pricing plan implies. */
-export function planToNeed(plan: PlanId): NeedId {
-  return plan === "automation" ? "automation" : "website";
-}
 
 /* -------------------------------------------------------------------------- */
 /* Validation                                                                  */
@@ -171,7 +150,6 @@ export async function submitEstimate(
     "What they need": data.need ? NEED_LABELS[data.need] : "—",
     Budget: data.budget ? BUDGET_LABELS[data.budget] : "—",
     Timeline: data.timeline ? TIMELINE_LABELS[data.timeline] : "—",
-    "Plan they came from": data.plan ? planLabels[data.plan] : "None (came direct)",
     "Project details": data.details.trim(),
   };
 

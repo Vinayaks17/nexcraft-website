@@ -11,7 +11,7 @@ import { contact, site } from "@/lib/site";
  *
  * The type is ProfessionalService rather than plain Organization: it inherits
  * everything Organization has and adds the fields that make a studio legible
- * to search — what it does, where it does it from, and what it costs.
+ * to search — what it does and where it does it from.
  */
 export function OrganizationSchema() {
   const schema = {
@@ -43,7 +43,6 @@ export function OrganizationSchema() {
       { "@type": "Place", name: "Worldwide" },
     ],
     sameAs: [contact.linkedin],
-    priceRange: "€€",
     contactPoint: [
       {
         "@type": "ContactPoint",

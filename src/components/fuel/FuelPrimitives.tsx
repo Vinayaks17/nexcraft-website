@@ -42,8 +42,7 @@ export const fuelShell = "mx-auto w-full max-w-[1720px] px-5 sm:px-8 lg:px-10";
 
    The arbitrary-property form is grouped by tailwind-merge under its property
    name instead, so it survives both the token's own `text-[…]` and any size
-   override a call site adds afterwards (FuelTierCard and FuelStats both do
-   exactly that). Reordering the classes would fix today's string and break
+   override a call site adds afterwards (the stats rows do exactly that). Reordering the classes would fix today's string and break
    again the next time someone appends a size — this form cannot.
 
    The values themselves are the ~1.03–1.08 band: tight enough that a
@@ -64,7 +63,7 @@ export const fuelStatement =
 export const fuelHeadline =
   "font-display font-semibold [line-height:1.06] tracking-[-0.03em] text-[clamp(1.625rem,3.8vw,3.375rem)]";
 
-/** Big numerals — pricing figures and the stats row. Single line, so tighter. */
+/** Big numerals — the stats rows. Single line, so tighter. */
 export const fuelNumeral =
   "font-display font-semibold [line-height:0.92] tracking-[-0.035em] text-[clamp(2.5rem,6vw,5.5rem)]";
 

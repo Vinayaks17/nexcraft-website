@@ -43,27 +43,26 @@ export type NavLink = {
 
 /**
  * Primary navigation, in the numbered convention the whole site now uses.
- * The number is presentational — it is the reading order, not an id — so
- * reordering this array is all that's needed to renumber the nav.
+ * The number is presentational — it is the reading order, not an id — and it
+ * is derived from the position in this array rather than written beside each
+ * entry, so adding, removing or reordering a link renumbers the nav, the
+ * footer and the mobile menu without a second edit.
  */
 export type NumberedNavLink = NavLink & { num: string };
 
-export const navLinks: NumberedNavLink[] = [
-  { label: "Home", num: "01", href: "/" },
-  { label: "Portfolio", num: "02", href: "/portfolio" },
-  { label: "Pricing", num: "03", href: "/pricing" },
-  { label: "About", num: "04", href: "/about" },
-  { label: "Contact", num: "05", href: "/contact" },
+const primaryNav: NavLink[] = [
+  { label: "Home", href: "/" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
-/**
- * Secondary routes — reachable from the footer rather than the nav.
- *
- * Pricing was here until the homepage stopped carrying a pricing band. With
- * that band gone /pricing is the only place the numbers exist, so it moved up
- * into the primary nav; the footer still lists it because the footer renders
- * navLinks above this row.
- */
+export const navLinks: NumberedNavLink[] = primaryNav.map((link, i) => ({
+  ...link,
+  num: String(i + 1).padStart(2, "0"),
+}));
+
+/** Secondary routes — reachable from the footer rather than the nav. */
 export const footerPages: NavLink[] = [
   { label: "Get an estimate", href: "/estimate" },
 ];

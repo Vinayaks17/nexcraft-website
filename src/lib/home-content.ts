@@ -211,7 +211,7 @@ export const faqs = {
     {
       question: "Do you provide hosting?",
       answer:
-        "Yes. Domain and hosting setup is available as an add-on on every plan, so you're never left wrangling DNS records on your own. Our maintenance plans go a step further and keep the platform, plugins, and security patches up to date for you.",
+        "Yes. We can take care of domain and hosting setup as part of your project, so you're never left wrangling DNS records on your own. Ongoing maintenance goes a step further and keeps the platform, plugins, and security patches up to date for you.",
     },
   ],
 } as const;

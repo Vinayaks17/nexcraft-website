@@ -311,10 +311,4 @@ export const portfolioCta = {
   description:
     "Tell us what you're building. We'll come back within 24 hours with scope and a number.",
   cta: { label: "Get a quick estimate", href: "/estimate" },
-  /**
-   * The one contextual route out of this page other than the estimate form.
-   * Somebody who has just scrolled eleven builds is asking what one costs, and
-   * before this the only way from here to /pricing was the navbar.
-   */
-  secondary: { label: "See what a build costs", href: "/pricing" },
 } as const;
